@@ -1,0 +1,24 @@
+.LoginBtn:focus{
+border: 0 !important;
+}
+.dropdown-menu{
+    width: 250px;
+}
+.form-control::placeholder{
+    color:#c2274b !important;
+}
+.LoginBtn2{
+    background-color: #c2274b !important;
+    color: white !important;
+}
+.dropdown-menu button{
+    color: #c2274b;
+    display: inline;
+}
+.dropdown-menu button:focus{
+    background-color: white!important;
+    color: #c2274b !important;
+}
+.dropdown-menu p{
+    display: inline;
+}

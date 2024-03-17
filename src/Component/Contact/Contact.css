@@ -1,0 +1,20 @@
+.contact-content{
+background-color: rgb(85, 107, 141, .6);
+}
+.contact-content  h2 {
+    font-size: 28px;
+    font-family: forum, serif;
+    font-style: italic;
+    font-weight: 400;
+    color: #282936;
+    display: flex;
+    justify-content: center;
+}
+.no-background {
+    background: none;
+    border: none;
+}
+.form-item::placeholder{
+color: white;
+}
+  

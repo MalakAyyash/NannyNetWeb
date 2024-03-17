@@ -1,0 +1,63 @@
+.react-datepicker,.react-datepicker__header{
+    border: 0;
+    background-color: white;
+    font-size: 15px;
+    font-family: 'AvenirLight';
+
+}
+.react-datepicker-time__header{
+background-color: white;
+}
+  .react-datepicker__day:hover {
+    background-color: pink;
+  }
+  .react-datepicker__day--selected {
+    background-color:rgb(194, 39, 75);
+    color: white;
+  }
+.react-datepicker__day-name, .react-datepicker__day{
+    padding-left: 25px; 
+    padding-right: 25px;
+    padding-top: 10px;
+
+  }
+  .react-datepicker__day-name{
+    color: rgb(194, 39, 75);
+  }
+  .DetaliedBook p {
+    font-size: 18px;
+    color: #000 ;
+    font-family: 'AvenirLight';
+    font-style: italic;
+  }
+  /* Add this CSS to your stylesheet or component styles */
+.react-time-picker__clear-button{
+    display: none !important;
+  }
+  .react-time-picker__clock-button{
+    pointer-events: none;
+
+  }
+  .react-time-picker__wrapper{
+
+    padding-left: 30% !important;
+    padding-right: 30% !important;
+    color:rgb(194, 39, 75) ;
+  }
+  .ServiceDeatils button{
+    background-color: rgb(194, 39, 75) ;
+    border-radius: 0;
+    color: white;
+    font-family: 'AvenirLight';
+  }
+  .ServiceDeatils p{ 
+    font-size: 14px;
+    line-height: 10px;
+    color:rgb(194, 39, 75) ;
+  }
+  .DetaliedBookTitle{
+    font-size: 20px !important;
+    font-style: normal !important;
+  }
+
+    

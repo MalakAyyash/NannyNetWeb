@@ -1,0 +1,9 @@
+/* fonts.css */
+
+@font-face {
+    font-family: 'AvenirLight';
+    src: local('AvenirLight'), url('../../../public/fonts/AvenirLight/AvenirLight.ttf') format('truetype');
+    font-weight: 200;
+    font-style: normal;
+  }
+  

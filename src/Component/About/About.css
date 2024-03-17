@@ -1,0 +1,25 @@
+.AboutBackground{
+    background-color: rgb(255, 240, 236);
+}
+.my-image {
+    width: 100%;
+    height: auto;
+}
+.AboutContent{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.AboutContent h2{
+    font-size: 28px;
+    font-family: forum, serif;
+    font-style: italic;
+}
+.AboutContent p{
+    font-size: 17px;
+    line-height: 1.4rem;
+}
+.start-justified {
+    text-align: justify;
+  }

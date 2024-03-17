@@ -1,0 +1,16 @@
+.TestimonialsBackground{
+    background-color: rgb(255, 240, 236, .4);
+}
+.TestimonialsBackground h2 , .TestimonialsBackground p{
+    font-size: 28px;
+    font-family: forum, serif;
+    font-style: italic;
+    font-weight: 400;
+    color: #282936;
+    display: flex;
+    justify-content: center;
+}
+.TestimonialsBackground p{
+    font-size: 35px;
+
+}
