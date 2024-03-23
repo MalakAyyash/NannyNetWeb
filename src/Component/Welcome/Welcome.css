@@ -1,0 +1,25 @@
+/* Welcome.css */
+.WelcomeImg {
+background-image: url('/public/images/babyHome.jpg');
+background-size: cover;
+height: 100vh;
+background-attachment: fixed;
+}
+.WelcomeImg h1{
+    font-size: 60px;
+    font-family: baskervillemtw01-smbdit, baskervillemtw05-smbdit, serif;
+    font-style: italic;
+    color: #556b8d;
+}
+.WelcomeImg p{
+    font-size: 25px;
+    font-family: forum, serif;
+    font-style: italic;
+    color: #556b8d;
+}
+.WelcomeImg button{
+    background-color: #7B736F;
+}
+.WelcomeImg h1,.WelcomeImg p, .welcome-btn{
+    padding-left: 10%;
+}

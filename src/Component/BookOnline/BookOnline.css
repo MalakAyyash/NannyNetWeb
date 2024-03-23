@@ -1,0 +1,28 @@
+.Book-container-fluid{
+ padding-left: 15%;
+ padding-right: 15%;
+}
+.btn-secondary{
+    border-radius: 0 !important;
+    background-color: white !important;
+    color: black;
+    border-color: silver;
+    border-top: 0;
+    border-bottom: 0;
+    border-right: 0;
+}
+.btn{
+    padding-right: 20% !important;
+}
+.text{
+    color: rgb(194, 39, 75) !important;
+}
+.card-body button{
+    background-color: rgb(194, 39, 75);
+}
+
+/* .card-img-top{
+    border-radius: 100%;
+ 
+    
+} */

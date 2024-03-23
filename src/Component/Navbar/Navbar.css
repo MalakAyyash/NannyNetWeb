@@ -1,0 +1,26 @@
+.nav-link{
+    color: rgb(194, 39, 75) !important;
+}
+.nav-link:hover{
+Color:#556b8d !important;
+}
+.icons{
+    color: rgb(194, 39, 75);
+    font-size: 24px;
+}
+.nav button{
+    color: rgb(194, 39, 75) !important;
+}
+.nav-link {
+    cursor: pointer !important;
+  }
+.navbar-brand img{
+    
+    /* border-radius: 50%; */
+    width: 100%;
+}
+.navbar-brand{
+    width: 10% !important;
+}
+  
+  
