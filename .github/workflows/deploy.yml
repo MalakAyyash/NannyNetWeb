@@ -29,4 +29,5 @@ jobs:
           script: |
             cd ${{ secrets.SSH_TARGET }}
             npm i --loglevel=error
+            pm2 restart frontend
           
