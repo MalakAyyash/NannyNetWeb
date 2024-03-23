@@ -20,4 +20,7 @@ jobs:
           SOURCE: "./"
           TARGET: ${{ secrets.SSH_TARGET }}
           EXCLUDE: '/node_modules/'
-          # SCRIPT_AFTER_REQUIRED: 
+          SCRIPT_AFTER_REQUIRED: |
+            cd ${{ secrets.SSH_TARGET }}
+            npm ci
+            pm2 restart ecosystem.config.js
