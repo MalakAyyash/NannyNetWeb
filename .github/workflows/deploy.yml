@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -20,7 +20,20 @@ jobs:
           SOURCE: "./"
           TARGET: ${{ secrets.SSH_TARGET }}
           EXCLUDE: '/node_modules/'
-          SCRIPT_AFTER_REQUIRED: |
-            cd ${{ secrets.SSH_TARGET }}
-            npm ci
-            pm2 restart ecosystem.config.js
+      - name: restart
+        uses: easingthemes/ssh-deploy@v5.0.3
+        with:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          REMOTE_HOST: ${{ secrets.SSH_HOST }}
+          REMOTE_USER: ${{ secrets.SSH_USER }}
+          SOURCE: "./"
+          TARGET: ${{ secrets.SSH_TARGET }}
+          EXCLUDE: '/node_modules/'
+      - name: SSH Remote Commands
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: npm ci
+          
