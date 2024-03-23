@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: ssh deploy
+      - name: Deploy Application
         uses: easingthemes/ssh-deploy@v5.0.3
         with:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
@@ -20,16 +20,7 @@ jobs:
           SOURCE: "./"
           TARGET: ${{ secrets.SSH_TARGET }}
           EXCLUDE: '/node_modules/'
-      - name: restart
-        uses: easingthemes/ssh-deploy@v5.0.3
-        with:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          REMOTE_HOST: ${{ secrets.SSH_HOST }}
-          REMOTE_USER: ${{ secrets.SSH_USER }}
-          SOURCE: "./"
-          TARGET: ${{ secrets.SSH_TARGET }}
-          EXCLUDE: '/node_modules/'
-      - name: SSH Remote Commands
+      - name: Restart Application
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
