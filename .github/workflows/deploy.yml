@@ -28,5 +28,5 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd ${{ secrets.SSH_TARGET }}
-            npm i
+            npm i --loglevel=error
           
