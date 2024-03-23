@@ -37,5 +37,5 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd ${{ secrets.SSH_TARGET }}
-            npm ci
+            npm i
           
