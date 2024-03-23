@@ -1,0 +1,13 @@
+.BlogBackground{
+    background-image: url('/public/images/children.jpg');
+    background-size: cover;
+    height: 80vh;
+    background-attachment: fixed;
+}
+.BlogBackground button{
+    color: rgb(194, 39, 75);
+    font-family: forum, serif;
+    font-style: italic;
+    font-size: 20px;
+}
+

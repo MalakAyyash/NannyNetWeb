@@ -1,0 +1,24 @@
+body {
+    margin: 0;
+    padding: 0;
+    --scrollbar-width: 0px;
+    font-family: 'AvenirLight';
+    font-size: 10px;
+}
+.Home{
+    background-image: url('/public/images/Backdround.jpg');
+    background-attachment: fixed;
+}
+.empty-section {
+    height: 50vh;
+}
+.title{
+    font-size: 60px;
+    font-family: forum, serif;
+    font-style: italic;
+    font-weight: 400;
+    color: #556b8d;
+    display: flex;
+    justify-content: center;
+}
+  
