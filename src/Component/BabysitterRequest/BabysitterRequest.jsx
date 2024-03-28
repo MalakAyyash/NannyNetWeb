@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { useFormik } from 'formik'
 import * as Yup from 'yup';
-import { ref, push, set, get, child } from 'firebase/database';
-import { database } from '../Firebase/Firebase.jsx';
-import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Swal from 'sweetalert2';
@@ -14,34 +12,45 @@ const schema = Yup.object({ // validation
     lname: Yup.string().required("Last Name is required"),
     age: Yup.date().required("Birth Date is required"),
     email: Yup.string().required("Email is required").email('not valid Email'),
-    massage: Yup.string().required("Massage is required"),
-    country: Yup.string().required("Country is required"),
-    city: Yup.string().required("City is required"),
-    phone: Yup.number().required("Number is required"),
+    telNumber: Yup.number().required("Number is required"),
     area: Yup.string().required("Area is required"),
+    accountNumber: Yup.number().required("Account Number is required"),
     type: Yup.array().min(1, 'Babysitter type is required'),
-    photo: Yup.string().required("Image is required"),
 });
+
+
 function BabysitterRequest() {
+    const [requestId, setRequestId] = useState(1);
+
     const formik = useFormik({
         initialValues: {
+            id: requestId, // Add requestId here
             fname: '',
             lname: '',
             age: null,
             email: '',
             type: [],
-            phone: '',
-            country: '',
+            telNumber: '',
             city: '',
-            massage: '',
-            area: '',
-            photo: '',
+            description: '',
+            accountNumber: '',
+            gender: '',
+
         },
         validationSchema: schema,
         validateOnChange: true,
         validateOnBlur: true,
         onSubmit: async (values) => {
             try {
+                const { fname, lname, ...otherValues } = values;
+                const name = `${fname} ${lname}`;
+                const dataToSend = { ...otherValues, name };
+                const response = await axios.post('http://176.119.254.188:8080/signup/provider', dataToSend);
+
+                console.log(response.data); // Log response from the server
+                console.log(response.status); // Log response from the server
+
+                setRequestId(prevId => prevId + 1); // Increment request ID
                 const formattedBirthdate = values.age.toLocaleDateString('en-US');
                 let totalPrice = 10;  // Base price for underFive or aboveFive
                 if (values.type.includes('medical')) {
@@ -50,24 +59,6 @@ function BabysitterRequest() {
                 if (values.type.includes('specialcare')) {
                     totalPrice += 10;  // Additional price for special care babysitter
                 }
-                const orderRef = ref(database, 'BabysitterRequest');
-                const newOrderEntry = push(orderRef);
-                const orderKey = newOrderEntry.key;
-                await set(newOrderEntry, {
-                    id: orderKey,
-                    fname: values.fname,
-                    lname: values.lname,
-                    age: formattedBirthdate,
-                    email: values.email,
-                    type: values.type,
-                    phone: values.phone,
-                    country: values.country,
-                    city: values.city,
-                    massage: values.massage,
-                    area: values.area,
-                    photo: values.photo,
-                    price: totalPrice,
-                });
                 Swal.fire({
                     title: "Great!",
                     text: "Your Request was sent!",
@@ -114,31 +105,25 @@ function BabysitterRequest() {
                                                     <p className='text-danger small'>{formik.errors.email}</p>
                                                 </div>
                                                 <div className='col-md-6 form-outline'>
-                                                    <label htmlFor="phone" className="form-label">Phone</label>
-                                                    <input type="text" className="form-control" id="phone" placeholder="" value={formik.values.phone} onChange={formik.handleChange} />
-                                                    <p className='text-danger small'>{formik.errors.phone}</p>
+                                                    <label htmlFor="telNumber" className="form-label">Phone</label>
+                                                    <input type="text" className="form-control" id="telNumber" placeholder="" value={formik.values.telNumber} onChange={formik.handleChange} />
+                                                    <p className='text-danger small'>{formik.errors.telNumber}</p>
                                                 </div>
                                                 <div className='col-md-6 form-outline'>
                                                     <label htmlFor="age" className="form-label">Birth Date</label>
                                                     <br></br>
-                                                    <DatePicker
-                                                        selected={formik.values.age}
-                                                        onChange={(date) => formik.setFieldValue('age', date)}
-                                                        dateFormat="MM/dd/yyyy"
-                                                        placeholderText="MM/DD/YYYY"
-                                                        className="form-control"
-                                                    />
+                                                    <input type="date" className="form-control " id="age" placeholder="" value={formik.values.age} onChange={formik.handleChange} />                                            
                                                     <p className='text-danger small'>{formik.errors.age}</p>
                                                 </div>
-                                                <div className="col-md-6 form-outline">
-                                                    <label htmlFor="country" className="form-label ">Country Location</label>
-                                                    <select class="form-select" id="country" aria-label="Default select example" name="country" value={formik.values.country} onChange={formik.handleChange}>
-                                                        <option value="Palestine">Palestine</option>
-                                                        <option value="Jordan">Jordan</option>
-                                                        <option value="Lebanon">Lebanon</option>
+                                                <div className=" col-md-6 form-outline">
+                                                    <label htmlFor="gender" className="form-label">Gender</label>
+                                                    <select class="form-select" id="gender" aria-label="Default select example" name="gender" value={formik.values.gender} onChange={formik.handleChange}>
+                                                        <option value="Male">Male</option>
+                                                        <option value="Female">Female</option>
                                                     </select>
-                                                    <p className='text-danger small'>{formik.errors.country}</p>
+                                                    <p className='text-danger small'>{formik.errors.gender}</p>
                                                 </div>
+
                                                 <div className=" col-md-6 form-outline">
                                                     <label htmlFor="city" className="form-label">City Location</label>
                                                     <select class="form-select" id="city" aria-label="Default select example" name="city" value={formik.values.city} onChange={formik.handleChange}>
@@ -148,11 +133,10 @@ function BabysitterRequest() {
                                                     </select>
                                                     <p className='text-danger small'>{formik.errors.city}</p>
                                                 </div>
-
-                                                <div className="col-md-6 form-outline">
-                                                    <label htmlFor="area" className="form-label">Village/Street</label>
-                                                    <textarea className="form-control" id="area" rows={1} defaultValue={""} value={formik.values.area} onChange={formik.handleChange} />
-                                                    <p className='text-danger small'>{formik.errors.area}</p>
+                                                <div className='col-md-6 form-outline'>
+                                                    <label htmlFor="accountNumber" className="form-label">Account Number</label>
+                                                    <input type="text" className="form-control" id="accountNumber" placeholder="" value={formik.values.accountNumber} onChange={formik.handleChange} />
+                                                    <p className='text-danger small'>{formik.errors.accountNumber}</p>
                                                 </div>
                                                 <div className="ms-2 form-outline pt-3">
                                                     <p>Babysitter type</p>
@@ -201,15 +185,10 @@ function BabysitterRequest() {
                                                     <label className="m-2" for="aboveFive">Above 5 years Babysitter</label><br /><br />
                                                     <p className='text-danger small'>{formik.errors.type}</p>
                                                 </div>
-                                                <div className="form-outline">
-                                                    <label htmlFor="photo" className="form-label">Profile Image</label>
-                                                    <input type="text" className="form-control " id="photo" placeholder="" value={formik.values.photo} onChange={formik.handleChange} />
-                                                    <p className='text-danger small'>{formik.errors.photo}</p>
-                                                </div>
                                                 <div className=" form-outline">
-                                                    <label htmlFor="massage" className="form-label">Add a Massage</label>
-                                                    <textarea className="form-control" id="massage" rows={3} defaultValue={""} value={formik.values.massage} onChange={formik.handleChange} />
-                                                    <p className='text-danger small'>{formik.errors.massage}</p>
+                                                    <label htmlFor="description" className="form-label">Description</label>
+                                                    <textarea className="form-control" id="description" rows={3} defaultValue={""} value={formik.values.description} onChange={formik.handleChange} />
+                                                    <p className='text-danger small'>{formik.errors.description}</p>
                                                 </div>
                                             </div>
                                             <div className='ServiceDeatils'>

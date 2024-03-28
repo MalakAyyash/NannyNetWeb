@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
 import './Login.css';
+import { Link } from 'react-router-dom';
 
 
-
-export default function Login({ toggleForm }) {
-  console.log('im at login')
+export default function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault(); // Prevent default form submission behavior
@@ -34,10 +33,10 @@ export default function Login({ toggleForm }) {
           </div>
           <button type="submit" className="btn w-100 LoginBtn2">Log In</button>
           <div className="dropdown-divider" />
-          <p>New to this site?<button className="dropdown-item w-25" onClick={() => toggleForm()}>Sign up</button></p>
+          <p>New to this site?<Link to={`/signUp`} className="text-decoration-none">
+          <button className=" border-0 bg-light">Sign up</button></Link></p>
        
-
-        </form>
+          </form>
       </div>        
        </div>
   )

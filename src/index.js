@@ -18,6 +18,7 @@ import BookingForm from './Component/BookingForm/BookingForm.jsx';
 import BabysitterRequest from './Component/BabysitterRequest/BabysitterRequest.jsx';
 import Profile from './Component/Profile/Profile.jsx';
 import Account from './Component/Account/Account.jsx';
+import SignUp from './Component/SignUp/SignUp.jsx';
 
 
 
@@ -35,6 +36,7 @@ function Main() {
     { path: 'BookingForm', element: <BookingForm /> },
     { path: 'BabysitterRequest', element: <BabysitterRequest /> },
     { path: 'Account/:babysitterKey', element: <Account /> },
+    { path: 'signUp', element: <SignUp /> },
 
 
 
