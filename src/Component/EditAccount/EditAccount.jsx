@@ -4,10 +4,6 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom'
 
 
-
-
-
-
 function EditAccount() {
     const babysitterData = BabysitterData(); // get the data of the babysitter
     const { babysitterKey } = useParams();
