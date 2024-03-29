@@ -15,7 +15,7 @@ const schema = Yup.object({ // validation
     telNumber: Yup.number().required("Number is required"),
     area: Yup.string().required("Area is required"),
     accountNumber: Yup.number().required("Account Number is required"),
-    type: Yup.array().min(1, 'Babysitter type is required'),
+    // type: Yup.array().min(1, 'Babysitter type is required'),
     username: Yup.string().required("Username is required"),
 
 });
@@ -32,7 +32,7 @@ function BabysitterRequest() {
             date: null,
             password: 'Xyz456',
             email: '',
-            type: [],
+            type: 'medical',
             telNumber: '',
             city: '',
             description: '',
@@ -147,7 +147,7 @@ function BabysitterRequest() {
                                                     <input type="text" className="form-control" id="accountNumber" placeholder="" value={formik.values.accountNumber} onChange={formik.handleChange} />
                                                     <p className='text-danger small'>{formik.errors.accountNumber}</p>
                                                 </div>
-                                                <div className="ms-2 form-outline pt-3">
+                                                {/* <div className="ms-2 form-outline pt-3">
                                                     <p>Babysitter type</p>
                                                     <input type="checkbox" id="medical" name="type" value='medical' onChange={(e) => {
                                                         formik.setFieldValue(
@@ -198,10 +198,11 @@ function BabysitterRequest() {
                                                     <label htmlFor="description" className="form-label">Description</label>
                                                     <textarea className="form-control" id="description" rows={3} defaultValue={""} value={formik.values.description} onChange={formik.handleChange} />
                                                     <p className='text-danger small'>{formik.errors.description}</p>
-                                                </div>
+                                                </div> */}
                                             </div>
                                             <div className='ServiceDeatils'>
                                                 <button className='mt-3 btn w-100 ' type="submit" onClick={() => console.log(formik.values)}>Apply Now</button>
+                                             
                                             </div>
                                         </div>
                                     </form>
