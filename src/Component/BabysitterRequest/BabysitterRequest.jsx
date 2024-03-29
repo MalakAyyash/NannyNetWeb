@@ -7,7 +7,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import Swal from 'sweetalert2';
 import './BabysitterRequest.css';
 
-const schema = Yup.object({ // validation 
+const schema = Yup.object({
     fname: Yup.string().required("First Name is required"),
     lname: Yup.string().required("Last Name is required"),
     date: Yup.date().required("Birth Date is required"),
@@ -15,7 +15,6 @@ const schema = Yup.object({ // validation
     telNumber: Yup.number().required("Number is required"),
     area: Yup.string().required("Area is required"),
     accountNumber: Yup.number().required("Account Number is required"),
-    // type: Yup.array().min(1, 'Babysitter type is required'),
     username: Yup.string().required("Username is required"),
 
 });
@@ -23,6 +22,7 @@ const schema = Yup.object({ // validation
 
 function BabysitterRequest() {
     const [requestId, setRequestId] = useState(1);
+    const [response1, setResponse1] = useState(null); // State to store the response1 data
 
     const formik = useFormik({
         initialValues: {
@@ -53,6 +53,7 @@ function BabysitterRequest() {
                 const response1 = await axios.get('http://176.119.254.188:8080/signup/customer');
 
                 console.log(response1.data); // Log response from the server
+                setResponse1(response1.data); // Store response1 data in state
 
                 console.log(response.data); // Log response from the server
                 console.log(response.status); // Log response from the server
@@ -150,62 +151,15 @@ function BabysitterRequest() {
                                                     <input type="text" className="form-control" id="accountNumber" placeholder="" value={formik.values.accountNumber} onChange={formik.handleChange} />
                                                     <p className='text-danger small'>{formik.errors.accountNumber}</p>
                                                 </div>
-                                                {/* <div className="ms-2 form-outline pt-3">
-                                                    <p>Babysitter type</p>
-                                                    <input type="checkbox" id="medical" name="type" value='medical' onChange={(e) => {
-                                                        formik.setFieldValue(
-                                                            'type',
-                                                            e.target.checked
-                                                                ? [...formik.values.type, e.target.value]
-                                                                : formik.values.type.filter((type) => type !== e.target.value)
-                                                        );
-                                                    }}
-                                                        checked={formik.values.type.includes('medical')} />
-                                                    <label className="m-2" for="medical">Medical Babysitter</label>
-                                                    <br />
-                                                    <input type="checkbox" id="specialcare" name="type" value="specialcare" onChange={(e) => {
-                                                        formik.setFieldValue(
-                                                            'type',
-                                                            e.target.checked
-                                                                ? [...formik.values.type, e.target.value]
-                                                                : formik.values.type.filter((type) => type !== e.target.value)
-                                                        );
-                                                    }}
-                                                        checked={formik.values.type.includes('specialcare')} />
-                                                    <label className="m-2" for="specialcare">Spetialcare Babysitter</label>
-                                                    <br />
-                                                    <input type="checkbox" id="underFive" name="type" value="underFive" onChange={(e) => {
-                                                        formik.setFieldValue(
-                                                            'type',
-                                                            e.target.checked
-                                                                ? [...formik.values.type, e.target.value]
-                                                                : formik.values.type.filter((type) => type !== e.target.value)
-                                                        );
-                                                    }}
-                                                        checked={formik.values.type.includes('underFive')} />
-                                                    <label className="m-2" for="underFive">Under 5 years Babysitter</label>
-                                                    <br />
-                                                    <input type="checkbox" id="aboveFive" name="type" value="aboveFive" onChange={(e) => {
-                                                        formik.setFieldValue(
-                                                            'type',
-                                                            e.target.checked
-                                                                ? [...formik.values.type, e.target.value]
-                                                                : formik.values.type.filter((type) => type !== e.target.value)
-                                                        );
-                                                    }}
-                                                        checked={formik.values.type.includes('aboveFive')} />
-                                                    <label className="m-2" for="aboveFive">Above 5 years Babysitter</label><br /><br />
-                                                    <p className='text-danger small'>{formik.errors.type}</p>
-                                                </div>*/}
                                                 <div className=" form-outline">
                                                     <label htmlFor="description" className="form-label">Description</label>
                                                     <textarea className="form-control" id="description" rows={3} defaultValue={""} value={formik.values.description} onChange={formik.handleChange} />
                                                     <p className='text-danger small'>{formik.errors.description}</p>
-                                                </div> 
+                                                </div>
                                             </div>
                                             <div className='ServiceDeatils'>
-                                                <button className='mt-3 btn w-100 ' type="submit" onClick={() => console.log(formik.values)}>Apply Now</button>
-                                             <button></button>
+                                                <button className='mt-3 btn w-100 ' type="submit">Apply Now</button>
+                                                <button className='mt-3 btn w-100 ' type="button" onClick={() => console.log(response1)}>Print Response1</button> {/* Button to print response1 */}
                                             </div>
                                         </div>
                                     </form>
