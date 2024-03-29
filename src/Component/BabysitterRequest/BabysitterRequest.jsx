@@ -159,7 +159,7 @@ function BabysitterRequest() {
                                             </div>
                                             <div className='ServiceDeatils'>
                                                 <button className='mt-3 btn w-100 ' type="submit">Apply Now</button>
-                                                <button className='mt-3 btn w-100 ' type="button" onClick={() => console.log(response1)}>Print Response1</button> {/* Button to print response1 */}
+                                                <button className='mt-3 btn w-100 ' type="button" onClick={() => console.log(response1.data)}>Print Response1</button> {/* Button to print response1 */}
                                             </div>
                                         </div>
                                     </form>
