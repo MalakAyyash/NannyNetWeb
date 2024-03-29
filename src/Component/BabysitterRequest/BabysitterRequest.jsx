@@ -10,7 +10,7 @@ import './BabysitterRequest.css';
 const schema = Yup.object({ // validation 
     fname: Yup.string().required("First Name is required"),
     lname: Yup.string().required("Last Name is required"),
-    age: Yup.date().required("Birth Date is required"),
+    date: Yup.date().required("Birth Date is required"),
     email: Yup.string().required("Email is required").email('not valid Email'),
     telNumber: Yup.number().required("Number is required"),
     area: Yup.string().required("Area is required"),
@@ -29,7 +29,8 @@ function BabysitterRequest() {
             id: requestId, // Add requestId here
             fname: '',
             lname: '',
-            age: null,
+            date: null,
+            password: 'Xyz456',
             email: '',
             type: [],
             telNumber: '',
@@ -118,10 +119,10 @@ function BabysitterRequest() {
                                                     <p className='text-danger small'>{formik.errors.telNumber}</p>
                                                 </div>
                                                 <div className='col-md-6 form-outline'>
-                                                    <label htmlFor="age" className="form-label">Birth Date</label>
+                                                    <label htmlFor="date" className="form-label">Birth Date</label>
                                                     <br></br>
-                                                    <input type="date" className="form-control " id="age" placeholder="" value={formik.values.age} onChange={formik.handleChange} />                                            
-                                                    <p className='text-danger small'>{formik.errors.age}</p>
+                                                    <input type="date" className="form-control " id="date" placeholder="" value={formik.values.date} onChange={formik.handleChange} />                                            
+                                                    <p className='text-danger small'>{formik.errors.date}</p>
                                                 </div>
                                                 <div className=" col-md-6 form-outline">
                                                     <label htmlFor="gender" className="form-label">Gender</label>

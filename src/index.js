@@ -19,6 +19,7 @@ import BabysitterRequest from './Component/BabysitterRequest/BabysitterRequest.j
 import Profile from './Component/Profile/Profile.jsx';
 import Account from './Component/Account/Account.jsx';
 import SignUp from './Component/SignUp/SignUp.jsx';
+import AdminHome from './Admin/AdminHome/AdminHome.jsx';
 
 
 
@@ -40,6 +41,15 @@ function Main() {
 
 
 
+  ],
+},
+// ======================================ADMIN=======================
+{
+  path: 'admin',
+  element: <AdminHome />,
+  children: [
+    
+   
   ],
 },
 ]);
