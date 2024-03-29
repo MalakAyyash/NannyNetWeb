@@ -109,7 +109,7 @@ function BabysitterRequest() {
                                                 </div>
                                                 <div className="form-outline col-md-6">
                                                     <label htmlFor="username" className="form-label">Username</label>
-                                                    <input type="email" className="form-control" id="username" placeholder="name@example.com" value={formik.values.username} onChange={formik.handleChange} />
+                                                    <input type="text" className="form-control" id="username" placeholder="name@example.com" value={formik.values.username} onChange={formik.handleChange} />
                                                     <p className='text-danger small'>{formik.errors.username}</p>
                                                 </div>
                                                 <div className='col-md-6 form-outline'>
