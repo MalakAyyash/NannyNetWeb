@@ -50,6 +50,9 @@ function BabysitterRequest() {
                 const name = `${fname} ${lname}`;
                 const dataToSend = { ...otherValues, name };
                 const response = await axios.post('http://176.119.254.188:8080/signup/provider', dataToSend);
+                const response1 = await axios.get('http://176.119.254.188:8080/signup/customer');
+
+                console.log(response1.data); // Log response from the server
 
                 console.log(response.data); // Log response from the server
                 console.log(response.status); // Log response from the server
@@ -202,7 +205,7 @@ function BabysitterRequest() {
                                             </div>
                                             <div className='ServiceDeatils'>
                                                 <button className='mt-3 btn w-100 ' type="submit" onClick={() => console.log(formik.values)}>Apply Now</button>
-                                             
+                                             <button></button>
                                             </div>
                                         </div>
                                     </form>
