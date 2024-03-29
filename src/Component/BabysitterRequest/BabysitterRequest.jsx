@@ -193,8 +193,7 @@ function BabysitterRequest() {
                                                         checked={formik.values.type.includes('aboveFive')} />
                                                     <label className="m-2" for="aboveFive">Above 5 years Babysitter</label><br /><br />
                                                     <p className='text-danger small'>{formik.errors.type}</p>
-                                                </div>
-                                                */
+                                                </div>*/}
                                                 <div className=" form-outline">
                                                     <label htmlFor="description" className="form-label">Description</label>
                                                     <textarea className="form-control" id="description" rows={3} defaultValue={""} value={formik.values.description} onChange={formik.handleChange} />
