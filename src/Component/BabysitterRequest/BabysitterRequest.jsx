@@ -16,6 +16,8 @@ const schema = Yup.object({ // validation
     area: Yup.string().required("Area is required"),
     accountNumber: Yup.number().required("Account Number is required"),
     type: Yup.array().min(1, 'Babysitter type is required'),
+    username: Yup.string().required("Username is required"),
+
 });
 
 
@@ -35,6 +37,7 @@ function BabysitterRequest() {
             description: '',
             accountNumber: '',
             gender: '',
+            username: '',
 
         },
         validationSchema: schema,
@@ -103,6 +106,11 @@ function BabysitterRequest() {
                                                     <label htmlFor="email" className="form-label">Email address</label>
                                                     <input type="email" className="form-control" id="email" placeholder="name@example.com" value={formik.values.email} onChange={formik.handleChange} />
                                                     <p className='text-danger small'>{formik.errors.email}</p>
+                                                </div>
+                                                <div className="form-outline col-md-6">
+                                                    <label htmlFor="username" className="form-label">Username</label>
+                                                    <input type="email" className="form-control" id="username" placeholder="name@example.com" value={formik.values.username} onChange={formik.handleChange} />
+                                                    <p className='text-danger small'>{formik.errors.username}</p>
                                                 </div>
                                                 <div className='col-md-6 form-outline'>
                                                     <label htmlFor="telNumber" className="form-label">Phone</label>
