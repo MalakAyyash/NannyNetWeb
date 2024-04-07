@@ -22,5 +22,8 @@ Color:#556b8d !important;
 .navbar-brand{
     width: 10% !important;
 }
+.dropdown-item:active{
+    background-color:rgb(194, 39, 75) !important ;
+}
   
   

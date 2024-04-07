@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik'
 import * as Yup from 'yup';
 import Swal from 'sweetalert2';
@@ -7,55 +7,84 @@ import axios from 'axios';
 const schema = Yup.object({ // validation 
   fname: Yup.string().required("First Name is required"),
   lname: Yup.string().required("Last Name is required"),
+  username: Yup.string().required("Username is required"),
   email: Yup.string().required("Email is required").email('not valid Email'),
   telNumber: Yup.number().required("Number is required"),
-  area: Yup.string().required("Area is required"),
-  password: Yup.string().required("Password is required"),
+  streetData: Yup.string().required("Area is required"),
   confirmPassword: Yup.string().required("Confirm Password is required").oneOf([Yup.ref('password'), null], 'Passwords must match'),
+  password: Yup.string()
+    .required("Password is required")
+    .matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/, "Password must contain at least one letter and one number, and be at least 6 characters long"),
 });
 function SignUp() {
-  const [requestId, setRequestId] = useState(1);
+
   const formik = useFormik({
     initialValues: {
-      id: requestId, // Add requestId here
       fname: '',
       lname: '',
       email: '',
+      username: '',
+      password: '',
       telNumber: '',
       gender: 'Male',
       city: 'Ramallah',
-      area: '',
-      message: '',
-      password: '',
+      streetData: '',
+      extraDescription: '',
     },
     validationSchema: schema,
     validateOnChange: true,
     validateOnBlur: true,
     onSubmit: async (values) => {
       try {
-        const { fname, lname, ...otherValues } = values;
+        const { fname, lname, city, streetData, extraDescription, ...otherValues } = values;
         const name = `${fname} ${lname}`;
-        const dataToSend = { ...otherValues, name };
+        const locations = [{ city, streetData, extraDescription}];
+        const dataToSend = { ...otherValues, name, locations };
         const response = await axios.post('http://176.119.254.188:8080/signup/customer', dataToSend);
-        console.log(response.data); // Log response from the server
-        Swal.fire({
-          title: "Great!",
-          text: "Signup successfully!",
-          icon: "success",
-          didOpen: () => {
-            const confirmButton = Swal.getConfirmButton();
-            confirmButton.style.backgroundColor = "rgb(194, 39, 75)";
-            confirmButton.style.color = "white";
-          }
-        });
-      } catch (error) {
-        console.error('Error storing data:', error);
+        console.log(response.data);
+        if (response.data.success) {
+          Swal.fire({
+            title: "Great!",
+            text: "Signup successfully!",
+            icon: "success",
+            didOpen: () => {
+              const confirmButton = Swal.getConfirmButton();
+              confirmButton.style.backgroundColor = "rgb(194, 39, 75)";
+              confirmButton.style.color = "white";
+            }
+          });
+        } else {
+          Swal.fire({
+            title: "Error!",
+            text: response.data.error || "An unknown error occurred.",
+            icon: "error",
+          });
+        }
+      }  catch (error) {
+        if (error.response && error.response.status === 409) { // Check if it's a conflict error (username or email already in use)
+          Swal.fire({
+            title: "Error!",
+            text: "Username or email already in use.",
+            icon: "error",
+          });
+        } else {
+          Swal.fire({
+            title: "Error!",
+            text: "An unexpected error occurred. Please try again later.",
+            icon: "error",
+          });
+
+        }
       }
+      
     }
   });
 
+  
+  
   return (
     <>
+    
       <div className=' Book-container-fluid my-5 pt-5'>
         <div className="row mt-5 pt-5">
           <div className="col-md-8">
@@ -78,9 +107,16 @@ function SignUp() {
                           <p className='text-danger small'>{formik.errors.lname}</p>
                         </div>
                         <div className="form-outline col-md-6">
+                          <label htmlFor="username" className="form-label">Username</label>
+                          <input type="text" className="form-control" id="username" placeholder="" value={formik.values.username} onChange={formik.handleChange} />
+                          <p className='text-danger small'>{formik.errors.username}</p>
+
+                        </div>
+                        <div className="form-outline col-md-6">
                           <label htmlFor="email" className="form-label">Email address</label>
                           <input type="email" className="form-control" id="email" placeholder="name@example.com" value={formik.values.email} onChange={formik.handleChange} />
                           <p className='text-danger small'>{formik.errors.email}</p>
+
                         </div>
                         <div className='col-md-6 form-outline'>
                           <label htmlFor="telNumber" className="form-label">Phone</label>
@@ -105,13 +141,13 @@ function SignUp() {
                           <p className='text-danger small'>{formik.errors.city}</p>
                         </div>
                         <div className="col-md-6 form-outline">
-                          <label htmlFor="area" className="form-label">Village/Street</label>
-                          <input type="text" className="form-control" id="area" rows={1} defaultValue={""} value={formik.values.area} onChange={formik.handleChange} />
-                          <p className='text-danger small'>{formik.errors.area}</p>
+                          <label htmlFor="streetData" className="form-label">Village/Street</label>
+                          <input type="text" className="form-control" id="streetData" rows={1} defaultValue={""} value={formik.values.streetData} onChange={formik.handleChange} />
+                          <p className='text-danger small'>{formik.errors.streetData}</p>
                         </div>
                         <div className=" form-outline">
-                          <label htmlFor="message" className="form-label">Extra Description</label>
-                          <textarea className="form-control" id="message" rows={3} defaultValue={""} value={formik.values.message} onChange={formik.handleChange} />
+                          <label htmlFor="extraDescription" className="form-label">Extra Description</label>
+                          <textarea className="form-control" id="extraDescription" rows={3} defaultValue={""} value={formik.values.extraDescription} onChange={formik.handleChange} />
                         </div>
                         <div className='col-md-6 form-outline'>
                           <label htmlFor="password" className="form-label">Password</label>

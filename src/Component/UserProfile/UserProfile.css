@@ -1,0 +1,16 @@
+.normalFont{
+    font-style: normal !important;
+    font-family: 'AvenirLight' !important;
+
+}
+.borderRed{
+    color: rgb(194, 39, 75) !important;
+    border-color: rgb(194, 39, 75) !important;
+    border-width: 1px !important; /* Adjust thickness as needed */
+    background-color: white;
+
+}
+.borderRed:hover{
+    background-color: rgb(194, 39, 75) !important;
+    color: white !important;
+}

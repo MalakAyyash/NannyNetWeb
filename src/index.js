@@ -1,16 +1,16 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import ReactDOM from 'react-dom';
 import App from './App';
 import './index.css';
 import './Component/Home/Home.css';
 import './Component/BookOnline/Fonts.css';
-import { RouterProvider, createBrowserRouter} from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../node_modules/@fortawesome/fontawesome-free/css/all.min.css'
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'; 
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'; // Import createBrowserRouter and RouterProvider
 import reportWebVitals from './reportWebVitals';
 import Layout from './Component/Layout/Layout.jsx';
 import Home from './Component/Home/Home.jsx';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import '../node_modules/@fortawesome/fontawesome-free/css/all.min.css'
 import ServicePage from './Component/ServicePage/ServicePage';
 import BookOnline from './Component/BookOnline/BookOnline.jsx';
 import DetailedBook from './Component/DetailedBook/DetailedBook.jsx';
@@ -20,10 +20,15 @@ import Profile from './Component/Profile/Profile.jsx';
 import Account from './Component/Account/Account.jsx';
 import SignUp from './Component/SignUp/SignUp.jsx';
 import AdminHome from './Admin/AdminHome/AdminHome.jsx';
+import UserAccount from './Component/UserAccount/UserAccount.jsx';
+import UserEditAccount from './Component/UserEditAccount/UserEditAccount.jsx';
 
 
 
 function Main() {
+
+
+  
   const router = createBrowserRouter([
   { 
   path: '/' ,
@@ -37,6 +42,8 @@ function Main() {
     { path: 'BookingForm', element: <BookingForm /> },
     { path: 'BabysitterRequest', element: <BabysitterRequest /> },
     { path: 'Account/:babysitterKey', element: <Account /> },
+    { path: 'profile', element: <UserAccount /> },
+    { path: 'UserEditAccount', element: <UserEditAccount /> },
     { path: 'signUp', element: <SignUp /> },
 
 
