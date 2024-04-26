@@ -2,7 +2,27 @@
 .nav-tabs .nav-link:focus{
 
     border: none !important; /* Remove existing border */
-    border-bottom: 2px solid rgb(194, 39, 75) !important; /* Add new border at the bottom */
+    border-bottom: 2px solid blue !important; /* Add new border at the bottom */
     border-color: rgb(194, 39, 75) !important;  
 
 }    
+.custom-tooltip-container {
+    position: relative;
+  }
+  
+  .custom-tooltip {
+    display: none;
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 5px;
+    background-color: #000;
+    color: #fff;
+    border-radius: 5px;
+  }
+  
+  .custom-tooltip-container:hover .custom-tooltip {
+    display: block;
+  }
+  

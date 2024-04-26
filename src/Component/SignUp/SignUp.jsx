@@ -38,11 +38,11 @@ function SignUp() {
       try {
         const { fname, lname, city, streetData, extraDescription, ...otherValues } = values;
         const name = `${fname} ${lname}`;
-        const locations = [{ city, streetData, extraDescription}];
-        const dataToSend = { ...otherValues, name, locations };
+        const location = { city, streetData, extraDescription};
+        const dataToSend = { ...otherValues, name, location };
         const response = await axios.post('http://176.119.254.188:8080/signup/customer', dataToSend);
         console.log(response.data);
-        if (response.data.success) {
+        if (response.status === 200) {
           Swal.fire({
             title: "Great!",
             text: "Signup successfully!",
@@ -137,6 +137,12 @@ function SignUp() {
                             <option value="Ramallah">Ramallah</option>
                             <option value="Nablus">Nablus</option>
                             <option value="Salfit">Salfit</option>
+                            <option value="Ramallah">BeitSahour</option>
+                            <option value="Nablus">BeitLehem</option>
+                            <option value="Salfit">Jenin</option>
+                            <option value="Ramallah">Hebron</option>
+                            <option value="Nablus">Qalqilya</option>
+                            <option value="Salfit">Tulkarm</option>
                           </select>
                           <p className='text-danger small'>{formik.errors.city}</p>
                         </div>

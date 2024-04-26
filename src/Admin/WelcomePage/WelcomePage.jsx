@@ -14,7 +14,6 @@ function WelcomePage() {
 
     return (
         <div className='p-0'>
-<AdminNavbar/>
        <div className='pt-3'>
         <div className="row pt-3 mx-0 ">
             <div className="col-md-6 p-0">

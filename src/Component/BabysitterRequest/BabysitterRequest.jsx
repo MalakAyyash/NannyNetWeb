@@ -61,7 +61,7 @@ function BabysitterRequest() {
         if (response.status === 200) {
           Swal.fire({
             title: "Great!",
-            text: "Signup successfully!",
+            text: "wait for the admin approval!",
             icon: "success",
             didOpen: () => {
               const confirmButton = Swal.getConfirmButton();

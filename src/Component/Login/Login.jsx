@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
-import Cookies from 'js-cookie'; // Import js-cookie
+import Cookies from 'js-cookie';
 import './Login.css';
 
 export default function Login() {
@@ -25,19 +25,22 @@ export default function Login() {
         });
 
         if (response.status === 200) {
-          const { jwt, id } = response.data; // Extract token from response
+          const { jwt, id, role } = response.data; // Extract token and role from response
           toast.success('Login successful!');
-          console.log('Login successful!');
 
           // Store user data in cookies
           Cookies.set('jwt', jwt);
           Cookies.set('userId', id);
+          Cookies.set('userRole', role);
 
-          // Refresh the page
-          window.location.reload();
-
-          // Redirect to the home page (optional)
-          // navigate('/home');
+          // Redirect based on user role
+          if (role === 'a') {
+            // Redirect to admin home page
+            navigate('/admin/home');
+          } else {
+            // Reload the page (you can redirect to another page here if needed)
+            window.location.reload();
+          }
         } else {
           setLoginError('Invalid email or password.');
         }

@@ -14,16 +14,24 @@ Color:#556b8d !important;
 .nav-link {
     cursor: pointer !important;
   }
-.navbar-brand img{
-    
-    /* border-radius: 50%; */
-    width: 100%;
-}
-.navbar-brand{
-    width: 10% !important;
-}
+
 .dropdown-item:active{
     background-color:rgb(194, 39, 75) !important ;
+    color: white !important;
 }
+.redText{
+    color: rgb(194, 39, 75) !important;
+}
+/* Navbar.css */
+.navbar-brand {
+    font-family: 'Acme', sans-serif; /* Apply the desired font family */
+    font-size: 24px; /* Adjust font size as needed */
+    font-weight: bold; /* Specify font weight */
+    /* Add any other custom styling */
+  }
+  .navbar-nav{
+    display: flex !important;
+    justify-content: center !important;
+  }
   
   

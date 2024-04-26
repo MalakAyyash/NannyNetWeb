@@ -7,13 +7,13 @@ import { Link as RouterLink } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
 
-function UserEditAccount() {
+function BabysitterEditAccount() {
     const [customerData, setCustomerData] = useState(null);
 
     useEffect(() => {
         const fetchCustomerData = async () => {
             try {
-                const response = await fetch(`http://176.119.254.188:8080/customer/${Cookies.get('userId')}`);
+                const response = await fetch(`http://176.119.254.188:8080/employee/${Cookies.get('userId')}`);
                 if (response.ok) {
                     const data = await response.json();
                     setCustomerData(data);
@@ -30,59 +30,58 @@ function UserEditAccount() {
         }
     }, []);
 
+const handleSubmit = async (values, actions) => {
+    try {
+        const token = Cookies.get('jwt');
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        };
 
-    const handleSubmit = async (values, actions) => {
-        try {
-            const { city, streetData, extraDescription, ...otherValues } = values;
-            const location = { city, streetData, extraDescription };
-            const dataToSend = { ...otherValues, location };
-    
-            const token = Cookies.get('jwt');
-    
-            const config = {
-                headers: {
-                    Authorization: `Bearer ${token}`,
+        const response = await axios.post('http://176.119.254.188:8080/provider/edit', values, config);
+
+        console.log('Server response:', response.data);
+
+        actions.setSubmitting(false);
+
+        if (response.status === 200) {
+            // Show success message
+            Swal.fire({
+                title: 'Great!',
+                text: 'Updated successfully!',
+                icon: 'success',
+                didOpen: () => {
+                    const confirmButton = Swal.getConfirmButton();
+                    confirmButton.style.backgroundColor = 'rgb(194, 39, 75)';
+                    confirmButton.style.color = 'white';
                 },
-            };
-    
-            const response = await axios.post('http://176.119.254.188:8080/customer/edit', dataToSend, config);
-    
-            console.log('Server response:', response.data);
-
-            actions.setSubmitting(false);
-    
-            if (response.status === 200) {
-                // Show success message
-                Swal.fire({
-                    title: "Great!",
-                    text: "updated successfully!",
-                    icon: "success",
-                    didOpen: () => {
-                      const confirmButton = Swal.getConfirmButton();
-                      confirmButton.style.backgroundColor = "rgb(194, 39, 75)";
-                      confirmButton.style.color = "white";
-                    }
-                  });            
-                } else {
-                // Handle unsuccessful response
-                console.error('Error updating profile:', response.data.error);
-            }
-        } catch (error) {
-            // Handle network errors or unexpected errors
-            console.error('Error:', error.response.data);
-            alert('An error occurred while updating profile.');
-            actions.setSubmitting(false);
-            
+            });
+        } else {
+            // Handle unsuccessful response
+            console.error('Error updating profile:', response.data.error);
         }
-    };
-    
-    
+    } catch (error) {
+        // Handle network errors or unexpected errors
+        console.error('Error:', error);
+
+        // Log specific error response if available
+        if (error.response) {
+            console.error('Error Response:', error.response.data);
+        }
+
+        alert('An error occurred while updating profile.');
+        actions.setSubmitting(false);
+    }
+};
+
 
     const profileValidationSchema = Yup.object().shape({
         name: Yup.string().required('Name is required'),
         telNumber: Yup.string().required('Phone Number is required'),
         city: Yup.string().required('City is required'),
-        streetData: Yup.string().required('Street data is required'),
+        accountNumber: Yup.string().required('accountNumber is required'),
+
     });
 
     const passwordValidationSchema = Yup.object().shape({
@@ -100,10 +99,9 @@ function UserEditAccount() {
             email: customerData?.user?.email || '',
             telNumber: customerData?.user?.telNumber || '',
             describtion: customerData?.user?.describtion || '',
-            city: customerData?.location?.city || '',
-            streetData: customerData?.location?.streetData || '',
+            city: customerData?.city || '',
             gender: customerData?.user?.gender || '',
-            extraDescription: customerData?.user?.extraDescription || '',
+            accountNumber: customerData?.accountNumber || '',
             currentPassword:  '',
             newPassword:  '',
             confirmPassword: '',
@@ -121,10 +119,9 @@ function UserEditAccount() {
                 email: customerData?.user?.email || '',
                 telNumber: customerData?.user?.telNumber || '',
                 describtion: customerData?.user?.describtion || '',
-                city: customerData?.location?.city || '',  // Ensure correct path to city
-                streetData: customerData?.location?.streetData || '',  // Ensure correct path to city
+                city: customerData?.city || '',  // Ensure correct path to city
                 gender: customerData?.user?.gender || '',
-                extraDescription: customerData?.user?.extraDescription || '',
+                accountNumber: customerData?.user?.accountNumber || '',
                 currentPassword:  '',
                 newPassword:  '',
                 confirmPassword:  '',
@@ -142,9 +139,8 @@ function UserEditAccount() {
                 telNumber: customerData?.user?.telNumber || '',
                 describtion: customerData?.user?.describtion || '',
                 gender: customerData?.user?.gender || '',
-                city: customerData?.location?.city || '',
-                streetData: customerData?.location?.streetData || '',
-                extraDescription: customerData?.user?.extraDescription || '',
+                city: customerData?.city || '',
+                accountNumber: customerData?.user?.accountNumber || '',
                 currentPassword:  '',
                 newPassword: '',
                 confirmPassword:  '',
@@ -159,10 +155,9 @@ function UserEditAccount() {
             email: customerData?.user?.email || '',
             telNumber: customerData?.user?.telNumber || '',
             describtion: customerData?.user?.describtion || '',
-            city: customerData?.location?.city || '', 
-            streetData: customerData?.location?.streetData || '',
+            city: customerData?.city || '', 
             gender: customerData?.user?.gender || '',
-            extraDescription: customerData?.user?.extraDescription || '',
+            accountNumber: customerData?.user?.accountNumber || '',
             currentPassword: '',
             newPassword: '',
             confirmPassword: '',
@@ -187,16 +182,16 @@ function UserEditAccount() {
         </div>
         <ul className="nav">
             <li className={`nav-item `}>
-                <RouterLink to={`/user-profile/${customerData.user.id}`} className={`nav-link`}>Profile</RouterLink>
+            <RouterLink to={`/babysitter-profile/${customerData.user.id}`} className={`nav-link`}>Profile</RouterLink>
             </li>
             <li className={`nav-item`}>
-            <RouterLink to={`/customerBookings/${customerData.user.id}`} className={`nav-link `}>My Bookings</RouterLink>
+            <RouterLink to={`/BabysitterBookings/${customerData.user.id}`} className={`nav-link `}>My Orders</RouterLink>
             </li>
             <li className={`nav-item`}>
                 <button className={`nav-link `} >My Wallet</button>
             </li>
             <li className={`nav-item`}>
-                <RouterLink to="/UserEditAccount" className={`nav-link border-bottom `}>Account</RouterLink>
+                <RouterLink to="/BabysitterEditAccount" className={`nav-link border-bottom `}>Account</RouterLink>
             </li>
         </ul>
        
@@ -260,25 +255,32 @@ function UserEditAccount() {
                                 <option value='ramallah'>Ramallah</option>
                                 <option value='nablus'>Nablus</option>
                                 <option value='Salfit'>Salfit</option>
+                                <option value='Bethlehem'>Bethlehem</option>
+                                <option value='Hebron'>Hebron</option>
+                                <option value='Jenen'>Jenen</option>
+                                <option value='Tulkarm'>Tulkarm</option>
+                                <option value='BeitSahour'>BeitSahour</option>
+                                <option value='Qalqilya'>Qalqilya</option>
+
                             </select>
                             {profileFormik.touched.city && profileFormik.errors.city ? (
                                 <div className='text-danger'>{profileFormik.errors.city}</div>
                             ) : null}
                         </div>
                         <div className='col-md-6 form-outline mb-4'>
-                            <label htmlFor='streetData' className='form-label'>
-                                Area
+                            <label htmlFor='accountNumber' className='form-label'>
+                            Account Number
                             </label>
                             <input
                                 type='text'
                                 className='form-control'
-                                id='streetData'
+                                id='accountNumber'
                                 placeholder=''
-                                value={profileFormik.values.streetData}
+                                value={profileFormik.values.accountNumber}
                                 onChange={profileFormik.handleChange}
                             />
-                            {profileFormik.touched.streetData && profileFormik.errors.streetData ? (
-                                <div className='text-danger'>{profileFormik.errors.streetData}</div>
+                            {profileFormik.touched.accountNumber && profileFormik.errors.accountNumber ? (
+                                <div className='text-danger'>{profileFormik.errors.accountNumber}</div>
                             ) : null}
                         </div>
                         <div className='col-md-6 form-outline mb-4'>
@@ -372,4 +374,4 @@ function UserEditAccount() {
     );
 }
 
-export default UserEditAccount;
+export default BabysitterEditAccount;

@@ -1,0 +1,10 @@
+.textRedColor{
+    color: rgb(194, 39, 75) !important;
+    text-decoration-line: none;
+}
+.textRedColor:hover{
+    color: black !important;
+}
+.table-row {
+    padding: 20px !important; /* Adjust the margin as needed */
+}

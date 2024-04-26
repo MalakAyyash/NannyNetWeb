@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
 import './SideNav.css';
+import { Link as RouterLink } from 'react-router-dom';
+
 
 function SideNav() {
-  const [showUsers, setShowUsers] = useState(false);
-  const [showAdminsSubMenu, setShowAdminsSubMenu] = useState(false);
-  const [showBabysittersSubMenu, setShowBabysittersSubMenu] = useState(false);
+  const [showUsers, setShowUsers] = useState(true);
+  const [showAdminsSubMenu, setShowAdminsSubMenu] = useState(true);
+  const [showBabysittersSubMenu, setShowBabysittersSubMenu] = useState(true);
+  const [activeMenuItem, setActiveMenuItem] = useState('dashboard'); // State to track active menu item
+
+  const handleMenuItemClick = (menuItem) => {
+    setActiveMenuItem(menuItem);}
 
   const toggleUsers = () => {
     setShowUsers(!showUsers);
@@ -21,11 +27,8 @@ function SideNav() {
   return (
     <div className="d-flex flex-column flex-shrink-0 pt-4 bg-dark sideNav" style={{ height: '100vh', width: 280 }}>
       <ul className="nav nav-pills flex-column mb-auto">
-        <li className="nav-item pt-3">
-          <a href="#" className="nav-link active" aria-current="page">
-            <i className="fas fa-home me-2"></i>
-            Dashboard
-          </a>
+      <li className={`nav-item pt-3 ${activeMenuItem === 'dashboard' ? 'active' : ''}`}>
+            <RouterLink to="/Admin" className="nav-link " onClick={() => handleMenuItemClick('dashboard')}><i className="fas fa-home me-2"></i>Dashboard</RouterLink>
         </li>
 
         <li className="nav-item pt-3 menu">
@@ -58,12 +61,10 @@ function SideNav() {
                 </a>
                 {showAdminsSubMenu && (
                   <ul className="nav flex-column sub-sub-menu">
-                    <li className="nav-item pt-2">
-                      <a href="#" className="nav-link text-light" style={{ fontSize: '0.9rem' }}>
-                      <i class="fa-solid fa-users ps-5 pe-3"></i>
-                        All Admins
-                      </a>
+                     <li className={`nav-item pt-3 ${activeMenuItem === 'AllAdmins' ? 'active' : ''}`}>
+                      <RouterLink to="/Admin/AllAdmins" className="nav-link " onClick={() => handleMenuItemClick('AllAdmins')}><i class="fa-solid fa-users ps-5 pe-3"></i>All Admins</RouterLink>
                     </li>
+
                     <li className="nav-item pt-2 pb-1">
                         
                       <a href="#" className="nav-link text-light" style={{ fontSize: '0.9rem' }}>
@@ -89,37 +90,24 @@ function SideNav() {
                 </a>
                 {showBabysittersSubMenu && (
                   <ul className="nav flex-column sub-sub-menu">
-                    <li className="nav-item pt-2">
-                      <a href="#" className="nav-link text-light" style={{ fontSize: '0.9rem' }}>
-                      <i class="fa-solid fa-users ps-5 pe-3"></i>
-
-                        All Babysitters
-                      </a>
+                    <li className={`nav-item pt-3 ${activeMenuItem === 'AllBabysitters' ? 'active' : ''}`}>
+                      <RouterLink to="/Admin/AllBabysitters" className="nav-link " onClick={() => handleMenuItemClick('AllBabysitters')}><i class="fa-solid fa-users ps-5 pe-3"></i>All Babysitters</RouterLink>
                     </li>
-                    <li className="nav-item pt-2 pb-1">
-                      <a href="#" className="nav-link text-light" style={{ fontSize: '0.9rem' }}>
-                      <i class="fa-solid fa-user-clock ps-5 pe-3"></i>
-                        Pinding Babysitters
-                      </a>
+                    <li className={`nav-item pt-3 ${activeMenuItem === 'PindingBabysitters' ? 'active' : ''}`}>
+                    <RouterLink to="/Admin/PindingBabysitters" className="nav-link " onClick={() => handleMenuItemClick('PindingBabysitters')}><i class="fa-solid fa-user-clock ps-5 pe-3"></i>Pinding Babysitters</RouterLink>
                     </li>
                   </ul>
                 )}
               </li>
-              <li className="nav-item pt-2">
-                <a href="#" className="nav-link text-light" style={{ fontSize: '0.9rem' }}>
-                  <i className="fa-solid fa-user  ps-4 pe-3"></i>
-                  Customers
-                </a>
+              <li className={`nav-item pt-3 mb-2 ${activeMenuItem === 'AllCustomers' ? 'active' : ''}`}>
+              <RouterLink to="/Admin/AllCustomers" className="nav-link " onClick={() => handleMenuItemClick('AllCustomers')}><i className="fa-solid fa-user  ps-4 pe-3"></i>All Customers</RouterLink>
               </li>
             </ul>
           )}
         </li>
 
-        <li className="nav-item menu">
-          <a href="#" className="nav-link link-dark text-light">
-            <i className="fa-solid fa-table me-2"></i>
-            Booking List
-          </a>
+        <li className={`nav-item pt-3 mb-2 ${activeMenuItem === 'BookingList' ? 'active' : ''}`}>
+        <RouterLink to="/Admin/BookingList" className="nav-link " onClick={() => handleMenuItemClick('BookingList')}><i className="fa-solid fa-table me-2"></i>Booking List</RouterLink>
         </li>
 
         <li className="nav-item menu">

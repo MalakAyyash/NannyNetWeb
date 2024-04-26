@@ -15,7 +15,7 @@ function Testimonials() {
 
                                 <div class="carousel-inner pb-5 w-50">
                                     <div class="carousel-item active">
-                                        <p className=''>“I found the perfect babysitter for my kids on Nanny Net. She was reliable and trustworthy, and my kids loved her!”</p>
+
                                     </div>
                                     <div class="carousel-item">
                                         <p>“I was really impressed with the nanny consultation services provided by Nanny Net. The consultant was knowledgeable and provided great advice.” </p>   </div>
