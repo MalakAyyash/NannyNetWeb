@@ -9,10 +9,22 @@ import Swal from 'sweetalert2';
 
 function BabysitterEditAccount() {
     const [customerData, setCustomerData] = useState(null);
+    const [profileImageUrl, setProfileImageUrl] = useState(null);
+    const token = Cookies.get('jwt');
 
     useEffect(() => {
         const fetchCustomerData = async () => {
             try {
+                if (!token) {
+                    console.error('Token not found.');
+                    return;
+                  }
+          
+                  const config = {
+                    headers: {
+                      Authorization: `Bearer ${token}`,
+                    },
+                  };
                 const response = await fetch(`http://176.119.254.188:8080/employee/${Cookies.get('userId')}`);
                 if (response.ok) {
                     const data = await response.json();
@@ -20,6 +32,16 @@ function BabysitterEditAccount() {
                 } else {
                     console.error('Failed to fetch customer data');
                 }
+
+                const responseImage = await fetch(`http://176.119.254.188:8080/user`, config);
+                if (responseImage.ok) {
+                  const imageData = await responseImage.blob(); // Convert response to Blob
+                  const imageUrl = URL.createObjectURL(imageData); // Create a Blob URL
+                  setProfileImageUrl(imageUrl);
+                } else {
+                  console.error('Failed to fetch profile image');
+                }
+
             } catch (error) {
                 console.error('Error fetching customer data:', error);
             }
@@ -28,7 +50,7 @@ function BabysitterEditAccount() {
         if (Cookies.get('userId')) {
             fetchCustomerData();
         }
-    }, []);
+    }, [profileImageUrl]);
 
 const handleSubmit = async (values, actions) => {
     try {
@@ -165,21 +187,61 @@ const handleSubmit = async (values, actions) => {
         validationSchema: passwordValidationSchema,
         onSubmit: handleSubmit,
     });
-
+    const handleImageUpload = async (event) => {
+        const file = event.target.files[0];
+        const formData = new FormData();
+        formData.append('image', file);
+    
+        try {
+          const response = await fetch('http://176.119.254.188:8080/upload/profile/image', {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            body: formData,
+          });
+    
+          if (response.ok) {
+            const updatedImageUrl = await response.text();
+            setProfileImageUrl(updatedImageUrl);
+          } else {
+            console.error('Failed to upload image');
+          }
+        } catch (error) {
+          console.error('Error uploading image:', error);
+        }
+      };
 
     if (!customerData) {
         return <div>Loading...</div>;
     }
     return (
         <div className='Book-container-fluid'>
-        <div className='Service pt-5 mt-5 mb-3'>
-            <div className='Cover d-flex align-items-center justify-content-start ps-3'>
-                <div className='photo-container mt-5 me-3 position-relative' style={{ width: '150px', height: '150px', overflow: 'hidden', borderRadius: '50%', zIndex: '1' }}>
-                    <img src="/images/UserProfile.jpg" className="card-img-top" alt="Profile" />
-                </div>
-                <h2 className='text-light pt-5 mt-5'>{customerData.user.username}</h2>
+         <div className='Service pt-5 mt-5 mb-3'>
+        <div className='Cover d-flex align-items-center justify-content-start ps-3'>
+          <div className='position-relative'>
+            <div className='photo-container mt-5 me-3 position-relative'>
+                <label htmlFor="image-upload">
+                  <i className="fa-solid fa-camera position-absolute bottom-0 start-0 translate-middle mb-1 ms-3 text-dark rounded bg-light p-1"
+                     style={{ fontSize: '24px' }}
+                     data-bs-toggle="tooltip"
+                     data-bs-placement="top"
+                     title="Change Your Image"
+                  ></i>
+                </label>
+              <div className="rounded-circle rounded-circle-container overflow-hidden">
+                <img src={profileImageUrl || "/images/UserProfile.jpg"} className="card-img-top" alt="Profile" />
+              </div>
+              <input id="image-upload" type="file" accept="image/*" onChange={handleImageUpload} className="input-file" />
+            </div>
+          </div>
+
+          <div>
+            <h2 className='text-light pt-5 mt-5'>{customerData.user.username}</h2>
+            <i className="fa-solid fa-user-tie text-secondary small fs-6">Babysitter</i>
             </div>
         </div>
+      </div>
         <ul className="nav">
             <li className={`nav-item `}>
             <RouterLink to={`/babysitter-profile/${customerData.user.id}`} className={`nav-link`}>Profile</RouterLink>
@@ -191,8 +253,14 @@ const handleSubmit = async (values, actions) => {
                 <button className={`nav-link `} >My Wallet</button>
             </li>
             <li className={`nav-item`}>
+                <RouterLink to={`/BabysitterFeedback/${customerData.user.id}`} className={`nav-link`}>Feedback</RouterLink>
+                </li>
+            <li className={`nav-item`}>
                 <RouterLink to="/BabysitterEditAccount" className={`nav-link border-bottom `}>Account</RouterLink>
             </li>
+            <li className={`nav-item`}>
+                <RouterLink to={`/BabysitterNotification/${customerData.user.id}`} className={`nav-link`}>Notification</RouterLink>
+                </li>
         </ul>
        
         <div className='DetaliedBook mt-5'>

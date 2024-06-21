@@ -32,6 +32,23 @@ import PindingBabysitters from './Admin/PindingBabysitters/PindingBabysitters.js
 import BookingList from './Admin/BookingList/BookingList.jsx';
 import AllAdmins from './Admin/AllAdmins/AllAdmins.jsx';
 import CustomerInfoStatus from './Admin/AllCustomers/CustomerInfoStatus.jsx';
+import Feedback from './Component/Feedback/Feedback.jsx';
+import BabysitterFeedback from './Babysitter/BabysitterFeedback/BabysitterFeedback.jsx';
+import AllFeedback from './Admin/AllCustomers/AllFeedback.jsx';
+import BabysitterInfoStatus from './Admin/AllBabysitters/BabysitterInfoStatus.jsx';
+import AllBabysitterFeedback from './Admin/AllBabysitters/AllBabysitterFeedback.jsx';
+import BabysitterNotification from './Babysitter/BabysitterNotification/BabysitterNotification.jsx';
+import FastBooking from './Component/FastBooking/FastBooking.jsx';
+import CustomerNotification from './Component/CustomerNotification/CustomerNotification.jsx';
+import FastOrderList from './Admin/FastOrderList/FastOrderList.jsx';
+import SuggestedBabysitters from './Admin/FastOrderList/SuggestedBabysitters.jsx';
+import AllBabysitterOrder from './Admin/AllBabysitters/AllBabysitterOrder.jsx';
+import AddOffer from './Admin/Offers/AddOffer.jsx';
+import ViewOffer from './Admin/Offers/ViewOffer.jsx';
+import ViewBlog from './Admin/Blog/Blog.jsx';
+import Offers from './Component/Offers/Offers.jsx';
+import OfferDetails from './Component/Offers/OfferDetails.jsx';
+import OfferBooking from './Component/OfferBooking/OfferBooking.jsx';
 
 
 
@@ -48,7 +65,7 @@ function Main() {
     { path: 'Home', element: <Home /> },
     { path: 'service', element: <ServicePage /> },
     { path: 'BabysittersList', element: <BabysittersList /> },
-    { path: 'DetailedBook/:id', element: <DetailedBook /> },
+    { path: 'DetailedBook', element: <DetailedBook /> },
     { path: 'BookingForm', element: <BookingForm /> },
     { path: 'BabysitterRequest', element: <BabysitterRequest /> },
     { path: 'Account/:babysitterKey', element: <Account /> },
@@ -61,6 +78,14 @@ function Main() {
     { path: 'BabysitterEditAccount', element: <BabysitterEditAccount /> },
     { path: 'BabysitterBookings/:id', element: <BabysitterBookings /> },
     { path: 'customerBookings/:id', element: <Bookings /> },
+    { path: 'Feedback/:id', element: <Feedback /> },
+    { path: 'BabysitterFeedback/:id', element: <BabysitterFeedback /> },
+    { path: 'BabysitterNotification/:id', element: <BabysitterNotification /> },
+    { path: 'CustomerNotification/:id', element: <CustomerNotification /> },
+    { path: 'FastBooking/:id', element: <FastBooking /> },
+    { path: 'offers/:id', element: <Offers /> },
+    { path: 'offerDetails/:id', element: <OfferDetails /> },
+    { path: 'offerBookings/:id', element: <OfferBooking /> },
 
 
 
@@ -84,10 +109,23 @@ function Main() {
     { path: 'PindingBabysitters', element: <PindingBabysitters /> },
     { path: 'BookingList', element: <BookingList /> },
     { path: 'CustomerInfoStatus/:id', element: <CustomerInfoStatus /> },
+    { path: 'BabysitterInfoStatus/:id', element: <BabysitterInfoStatus /> },
+    { path: 'AllFeedback/:id', element: <AllFeedback /> },
+    { path: 'AllBabysitterFeedback/:id', element: <AllBabysitterFeedback /> },
+    { path: 'fastRequestList', element: <FastOrderList /> },
+    { path: 'suggestedBabysitters/:id', element: <SuggestedBabysitters /> },
+    { path: 'AllBabysitterOrder/:id', element: <AllBabysitterOrder /> },
+    { path: 'AddOffer', element: <AddOffer /> },
+    { path: 'ViewOffer', element: <ViewOffer /> },
+    { path: 'blog', element: <ViewBlog /> },
 
 
 
-   
+
+
+
+
+
   ],
 },
 ]);

@@ -15,11 +15,22 @@ function BabysitterBookings() {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     const { id } = useParams(); // Get the ID parameter from the URL
     const [activeTab, setActiveTab] = useState('request');
-
+    const [profileImageUrl, setProfileImageUrl] = useState(null);
+    const token = Cookies.get('jwt');
 
     useEffect(() => {
         const fetchUserData = async () => {
             try {
+                if (!token) {
+                    console.error('Token not found.');
+                    return;
+                  }
+          
+                  const config = {
+                    headers: {
+                      Authorization: `Bearer ${token}`,
+                    },
+                  };
                 let response;
                 if (ownerProfile) {
                     // Fetch user data using the userId from cookies
@@ -35,6 +46,16 @@ function BabysitterBookings() {
                 } else {
                     console.error('Failed to fetch user data');
                 }
+
+                const responseImage = await fetch(`http://176.119.254.188:8080/user/image/${id}`);
+                if (responseImage.ok) {
+                  const imageData = await responseImage.blob(); // Convert response to Blob
+                  const imageUrl = URL.createObjectURL(imageData); // Create a Blob URL
+                  setProfileImageUrl(imageUrl);
+                } else {
+                  console.error('Failed to fetch profile image');
+                }
+
             } catch (error) {
                 console.error('Error fetching user data:', error);
             }
@@ -46,7 +67,7 @@ function BabysitterBookings() {
             setOwnerProfile(userId === id);
             fetchUserData();
         }
-    }, [id, ownerProfile]);
+    }, [id, ownerProfile,profileImageUrl]);
 
     // Function to render star rating
     const renderStarRating = (stars) => {
@@ -62,6 +83,31 @@ function BabysitterBookings() {
         }
         return starElements;
     };
+    const handleImageUpload = async (event) => {
+        const file = event.target.files[0];
+        const formData = new FormData();
+        formData.append('image', file);
+    
+        try {
+          const response = await fetch('http://176.119.254.188:8080/upload/profile/image', {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            body: formData,
+          });
+    
+          if (response.ok) {
+            const updatedImageUrl = await response.text();
+            setProfileImageUrl(updatedImageUrl);
+          } else {
+            console.error('Failed to upload image');
+          }
+        } catch (error) {
+          console.error('Error uploading image:', error);
+        }
+      };
+
 
     if (!babysitterData || !babysitterData.user) {
         return <div>Loading...</div>;
@@ -69,17 +115,31 @@ function BabysitterBookings() {
 
     return (
         <div className='Book-container-fluid'>
-            <div className='Service pt-5 mt-5 mb-3'>
-                <div className='Cover d-flex align-items-center justify-content-start ps-3'>
-                    <div className='photo-container mt-5 me-3 position-relative' style={{ width: '150px', height: '150px', overflow: 'hidden', borderRadius: '50%', zIndex: '1' }}>
-                        <img src="/images/UserProfile.jpg" className="card-img-top" alt="Profile" />
-                    </div>
-                    <div>
-                        <h2 className='text-light pt-5 mt-5'>{babysitterData.user.username}</h2>
-                        <i className="fa-solid fa-user-tie text-secondary small fs-6">  Babysitter</i>
-                    </div>
-                </div>
+          <div className='Service pt-5 mt-5 mb-3'>
+        <div className='Cover d-flex align-items-center justify-content-start ps-3'>
+          <div className='position-relative'>
+            <div className='photo-container mt-5 me-3 position-relative'>
+                <label htmlFor="image-upload">
+                  <i className="fa-solid fa-camera position-absolute bottom-0 start-0 translate-middle mb-1 ms-3 text-dark rounded bg-light p-1"
+                     style={{ fontSize: '24px' }}
+                     data-bs-toggle="tooltip"
+                     data-bs-placement="top"
+                     title="Change Your Image"
+                  ></i>
+                </label>
+              <div className="rounded-circle rounded-circle-container overflow-hidden">
+                <img src={profileImageUrl || "/images/UserProfile.jpg"} className="card-img-top" alt="Profile" />
+              </div>
+              <input id="image-upload" type="file" accept="image/*" onChange={handleImageUpload} className="input-file" />
             </div>
+          </div>
+
+          <div>
+            <h2 className='text-light pt-5 mt-5'>{babysitterData.user.username}</h2>
+            <i className="fa-solid fa-user-tie text-secondary small fs-6">Babysitter</i>
+            </div>
+        </div>
+      </div>
             {ownerProfile && (
                 <ul className="nav">
                     <li className={`nav-item`}>
@@ -92,8 +152,14 @@ function BabysitterBookings() {
                         <RouterLink to="/my-wallet" className={`nav-link `}>My Wallet</RouterLink>
                     </li>
                     <li className={`nav-item`}>
+                <RouterLink to={`/BabysitterFeedback/${babysitterData.user.id}`} className={`nav-link`}>Feedback</RouterLink>
+                </li>
+                    <li className={`nav-item`}>
                     <RouterLink to="/BabysitterEditAccount" className={`nav-link`}>Account</RouterLink>
                     </li>
+                    <li className={`nav-item`}>
+                <RouterLink to={`/BabysitterNotification/${babysitterData.user.id}`} className={`nav-link`}>Notification</RouterLink>
+                </li>
                 </ul>
             )}
             <div className='DetaliedBook mt-5 normalFont'>

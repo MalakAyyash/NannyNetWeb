@@ -6,32 +6,44 @@ import { Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import Swal from 'sweetalert2';
 
-function AllBabysiters() {
+function AllBabysitters() {
   const [babysittersData, setBabysittersData] = useState([]);
-
+  const renderStarRating = (stars) => {
+    const starElements = [];
+    for (let i = 1; i <= 5; i++) {
+      starElements.push(
+        <i
+          key={i}
+          className={`fa ${i <= stars ? 'fa-star text-warning' : 'fa-star text-secondary'}`}
+          style={{ fontSize: '10px' }}
+        ></i>
+      );
+    }
+    return starElements;
+  };
+  
   const columns = React.useMemo(
     () => [
-        { Header: 'ID', accessor: 'babysitter.user.id' },
-        { Header: 'Username', accessor: 'babysitter.user.username' },
-        {
-        
-            Header: 'Name',
-            accessor: 'babysitterName',
-            Cell: ({ row }) => (
-              <Link className='textRedColor' to={`/babysitter-profile/${row.original.babysitter.user.id}`}>
-                {row.original.babysitterName}
-              </Link>
-            ),
-          },
-        { Header: 'Email', accessor: 'babysitter.user.email' },
-        { Header: 'Gender', accessor: 'babysitter.user.gender' },
-        { Header: 'Date Added', accessor: 'babysitter.user.dateAdded' },
+      { Header: 'ID', accessor: 'babysitter.user.id' },
+      { Header: 'Username', accessor: 'babysitter.user.username' },
+      {
+        Header: 'Name',
+        accessor: 'user.name',
+        Cell: ({ row }) => (
+          <Link className='textRedColor' to={`/admin/BabysitterInfoStatus/${row.original.user.id}`}>
+            {row.original.user.name}
+          </Link>
+        ),
+      },
+      { Header: 'Email', accessor: 'babysitter.user.email' },
+      { Header: 'Gender', accessor: 'babysitter.user.gender' },
+      { Header: 'Date Added', accessor: 'babysitter.user.dateAdded' },
       { Header: 'Type', accessor: 'babysitterType' },
       { Header: 'City', accessor: 'city' },
       { Header: 'Availability', accessor: 'availability' },
       { Header: 'Phone', accessor: 'babysitter.user.telNumber' },
       { Header: 'Date of Birth', accessor: 'dateOfBirth' },
-      { Header: 'Stars', accessor: 'stars' },
+      { Header: 'Stars', accessor: 'stars', Cell: ({ value }) => renderStarRating(value) },
       { Header: '#Cancellations', accessor: 'numOfCancelation' },
     ],
     []
@@ -147,7 +159,7 @@ function AllBabysiters() {
 
   return (
     <div className="container mt-4">
-        <div className='DetaliedBook'>
+      <div className='DetaliedBook'>
         <p className='mt-4 profileTitle'>All Babysitters</p>
         <p className='small text-secondary fst-normal'>Review the list of All babysitters below.</p>
         <hr></hr>
@@ -213,4 +225,4 @@ function AllBabysiters() {
   );
 }
 
-export default AllBabysiters;
+export default AllBabysitters;

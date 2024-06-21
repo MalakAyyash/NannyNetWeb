@@ -11,25 +11,36 @@ function BookingList() {
 
   const columns = React.useMemo(
     () => [
-
       { Header: 'ID', accessor: 'id' },
       {
         Header: 'Customer',
         accessor: 'customer.user.name',
-        Cell: ({ row }) => (
-          <Link className='textRedColor' to={`/customer-profile/${row.original.customer.user.id}`}>
-            {row.original.customer.user.name}
-          </Link>
-        ),
+        Cell: ({ row }) => {
+          const customer = row.original.customer;
+          if (customer && customer.user) {
+            return (
+              <Link className='textRedColor' to={`/admin/CustomerInfoStatus/${customer.user.id}`}>
+                {customer.user.name}
+              </Link>
+            );
+          }
+          return null;
+        },
       },
       {
         Header: 'Employee',
         accessor: 'employee.user.name',
-        Cell: ({ row }) => (
-          <Link className='textRedColor' to={`/employee-profile/${row.original.employee.user.id}`}>
-            {row.original.employee.user.name}
-          </Link>
-        ),
+        Cell: ({ row }) => {
+          const employee = row.original.employee;
+          if (employee && employee.user) {
+            return (
+              <Link className='textRedColor' to={`/admin/BabysitterInfoStatus/${employee.user.id}`}>
+                {employee.user.name}
+              </Link>
+            );
+          }
+          return null;
+        },
       },
       { Header: 'Price', accessor: 'price' },
       { Header: '#Kids', accessor: 'numOfKids' },
@@ -94,7 +105,7 @@ function BookingList() {
     {
       columns,
       data,
-      initialState: { pageSize: 13 },
+      initialState: { pageSize: 8 }, // Ensure pageSize is set to 13
     },
     useSortBy,
     usePagination
@@ -102,7 +113,7 @@ function BookingList() {
 
   return (
     <div className="container mt-4">
-        <div className='DetaliedBook'>
+      <div className='DetaliedBook'>
         <p className='mt-4 profileTitle'>All Bookings</p>
         <p className='small text-secondary fst-normal'>Review the list of All Bookings below.</p>
         <hr></hr>

@@ -67,6 +67,7 @@ function RequestBookings() {
   
       if (response && response.data) {
         const bookings = response.data;
+        console.log(bookings)
         const bookingsWithData = await Promise.all(
           bookings.map(async (booking) => {
             const customerId = booking.customer.user.id;

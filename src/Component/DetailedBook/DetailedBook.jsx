@@ -5,10 +5,8 @@ import 'react-datepicker/dist/react-datepicker.css';
 import Swal from 'sweetalert2'; // Import SweetAlert library
 import './DetailedBook.css';
 import Cookies from 'js-cookie';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
-
-// Define TimePicker component here (if not already defined elsewhere)
 const TimePicker = ({ selectedTime, handleTimeChange }) => {
   return (
     <div>
@@ -27,9 +25,6 @@ const TimePicker = ({ selectedTime, handleTimeChange }) => {
 
 function DetailedBook() {
   const [startDate, setStartDate] = useState(new Date());
-  const [value1, setValue1] = useState('09:00 PM');
-  const [value2, setValue2] = useState('05:00 PM');
-  const [customerData, setCustomerData] = useState('05:00 PM');
   const [numOfKids, setNumOfKids] = useState(1);
   const [city, setCity] = useState('');
   const [streetData, setStreetData] = useState('');
@@ -38,7 +33,12 @@ function DetailedBook() {
   const [selectedTime1, setSelectedTime1] = useState(null);
   const [selectedTime2, setSelectedTime2] = useState(null);
   const { id } = useParams(); // Get the ID parameter from the URL
-  
+  const location = useLocation();
+  const selectedBabysitterIds = new URLSearchParams(location.search).get('ids').split(',').map(Number);
+
+  useEffect(() => {
+    console.log('Selected babysitter IDs:', selectedBabysitterIds);
+  }, [selectedBabysitterIds]);
 
   const handleTimeChange1 = (time) => {
     setSelectedTime1(time);
@@ -61,10 +61,8 @@ function DetailedBook() {
         const responseCustomer = await fetch(`http://176.119.254.188:8080/customer/${Cookies.get('userId')}`);
         if (responseCustomer.ok) {
           const data = await responseCustomer.json();
-          setCustomerData(data); // Update customerData state with fetched data
-        setCity(data.location.city || ''); // Set city to customer's location city
-        setStreetData(data.location.streetData || ''); // Set city to customer's location city
-
+          setCity(data.location.city || ''); // Set city to customer's location city
+          setStreetData(data.location.streetData || ''); // Set streetData to customer's location streetData
         }
       } catch (error) {
         console.error('Error fetching customer data:', error);
@@ -74,10 +72,9 @@ function DetailedBook() {
     fetchData();
   }, []); // Empty dependency array to run the effect only once on mount
 
-
   const handleSubmit = async () => {
     const token = Cookies.get('jwt');
-  
+
     // Format selected times from 24-hour format to 12-hour format with AM/PM
     const formattedStartTime = selectedTime1.toLocaleString('en-US', {
       hour: 'numeric',
@@ -89,33 +86,35 @@ function DetailedBook() {
       minute: 'numeric',
       hour12: true
     });
-  
+
     const dataToSend = {
-      orderDate: startDate.toISOString().slice(0, 10),
-      startTime: formattedStartTime,
-      endTime: formattedEndTime,
-      employeeId: id,
-      description: description,
-      numOfKids: numOfKids,
-      location: {
-        city: city,
-        streetData: streetData,
-        extraDescription: extraDescription
+      listOfEmployeeIds: selectedBabysitterIds,
+      orderDTO: {
+        orderDate: startDate.toISOString().slice(0, 10),
+        startTime: formattedStartTime,
+        endTime: formattedEndTime,
+        employeeId: id,
+        description: description,
+        numOfKids: numOfKids,
+        location: {
+          city: city,
+          streetData: streetData,
+          extraDescription: extraDescription
+        }
       }
     };
-  
+
     try {
       const response = await axios.post('http://176.119.254.188:8080/customer/order/request', dataToSend, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
-  
+
       if (response.status === 200) {
         Swal.fire({
           title: "Great!",
           text: "Appointment request submitted successfully!",
-          text: "Wait for the babysitter approval",
           icon: "success"
         });
       } else {
@@ -130,14 +129,13 @@ function DetailedBook() {
       });
     }
   };
-  
 
   return (
-    <div className='DetailedBook Book-container-fluid mt-5 pt-5'>
-      <p className='DetailedBookTitle'>Appointment</p>
+    <div className='DetailedBook Service Book-container-fluid mt-5 pt-5'>
+      <h2 className='mb-4'>Appointment</h2>
       <div className="row border-bottom mb-3">
         <div className="col-md-6"><p className='pt-2'>Select Date and Time</p></div>
-        <div className="col-md-6"><p className='d-flex justify-content-center pt-2'>Service Details</p></div>
+        <div className="col-md-6"><p className='d-flex justify-content-center pt-2 ms-5 ps-5'>Service Details</p></div>
       </div>
 
       <div className="row">
@@ -183,8 +181,8 @@ function DetailedBook() {
             <textarea id="description" value={description} onChange={e => setDescription(e.target.value)} />
             <br />
             <hr />
-            <div className='ServiceDetails'>
-              <button onClick={handleSubmit} className='my-3 btn w-100'>NEXT</button>
+            <div className='ServiceDeatils'>
+              <button onClick={handleSubmit} className='my-3 btn w-100'>Book Now</button>
             </div>
           </div>
         </div>

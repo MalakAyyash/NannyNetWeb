@@ -4,3 +4,13 @@
     height: 450px !important;
     width: 550px !important;
 } */
+.feedback-text-container {
+    max-width: 120px; /* Adjust the max-width as needed */
+    white-space: nowrap;
+    overflow-x: auto;
+  }
+  .table-header {
+    font-size: 14px;
+  }
+  
+  

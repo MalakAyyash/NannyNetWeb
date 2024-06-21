@@ -17,12 +17,49 @@
 .text{
     color: rgb(194, 39, 75) !important;
 }
-.card-body button{
-    background-color: rgb(194, 39, 75);
+.btn-red-background{
+    background-color: rgb(194, 39, 75) !important;
 }
-
-/* .card-img-top{
-    border-radius: 100%;
- 
-    
-} */
+.form-check-input:focus {
+    outline-color: rgb(136, 181, 223);
+  }
+  
+  .form-check-input:checked {
+    background-color: rgb(136, 181, 223);
+  }
+  
+  .red-border {
+    border: 1px solid #556b8d;
+    padding: 5px;
+    margin-bottom: 5px;
+    margin-top: 16px;
+  }
+  .checkbox-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .checkbox-container input[type="checkbox"] {
+    padding: 10px;
+    width: 20px;
+    height: 20px;
+    appearance: none; /* Hide default checkbox */
+    -webkit-appearance: none; /* Hide default checkbox for Safari */
+    background-color: transparent; /* Set background transparent */
+    border: 2px solid #ccc; /* Add border */
+    border-radius: 4px; /* Add border-radius */
+    outline: none; /* Remove outline */
+    cursor: pointer; /* Add pointer cursor */
+  }
+  
+  .checkbox-container input[type="checkbox"]:checked {
+    background-color: rgb(136, 181, 223);
+  }
+  
+  .checkbox-container label {
+    font-size: larger;
+    padding-left: 20px;
+  }
+  .BlueColor{
+    background-color: #556b8d !important;
+  }

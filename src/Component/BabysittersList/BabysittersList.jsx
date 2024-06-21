@@ -3,6 +3,8 @@ import './BabysittersList.css';
 import './Fonts.css';
 import { Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import Swal from 'sweetalert2';
+
 
 function BabysittersList() {
   const [babysitterData, setBabysitterData] = useState([]);
@@ -15,7 +17,9 @@ function BabysittersList() {
   ]);
   const [selectedCity, setSelectedCity] = useState('');
   const [selectedType, setSelectedType] = useState('Full-Time');
-  const [selectedStars, setSelectedStars] = useState(null); // State for selected star rating
+  const [selectedStars, setSelectedStars] = useState(null);
+  const [selectedBabysitters, setSelectedBabysitters] = useState([]); // State to store selected babysitters
+
 
   useEffect(() => {
     const fetchBabysitters = async () => {
@@ -121,13 +125,81 @@ function BabysittersList() {
     return starElements;
   };
 
+// Function to handle selection of a babysitter
+const handleSelectBabysitter = (babysitterId) => {
+  console.log('Selecting babysitter:', babysitterId);
+  const index = selectedBabysitters.indexOf(babysitterId);
+  if (index === -1) {
+    setSelectedBabysitters([...selectedBabysitters, babysitterId]);
+  } else {
+    setSelectedBabysitters(selectedBabysitters.filter(id => id !== babysitterId)); // Remove from selected babysitters if already selected
+  }
+  console.log('Selected babysitters:', selectedBabysitters);
+};
+
+
+ // Function to handle booking
+const handleBookNow = () => {
+  if (selectedBabysitters.length === 0) {
+    alert('Please select at least one babysitter.');
+  } else {
+    const selectedBabysitterNames = selectedBabysitters.map(id =>
+      babysitterData.find(babysitter => babysitter?.user?.id === id)?.user?.name
+    );
+
+    // Generate HTML for checkboxes with babysitter names
+    const checkboxesHTML = selectedBabysitterNames.map(name => `
+    <div class="red-border checkbox-container">
+      <input type="checkbox" id="${name}" name="${name}" value="${name}" checked>
+      <label for="${name}">${name}</label>
+    </div>
+    `).join('');
+
+    Swal.fire({
+      title: 'Booking Confirmation',
+      html: `
+        You have selected the following babysitter(s):<br/>
+        <div id="babysitters">
+          ${checkboxesHTML}
+        </div>
+      `,
+      icon: 'success',
+      showCancelButton: true,
+      confirmButtonText: 'Continue',
+      cancelButtonText: 'Cancel',
+      customClass: {
+        confirmButton: 'btn-red-background',
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Retrieve unique babysitter IDs
+        const uniqueBabysitterIds = [...new Set(selectedBabysitters)];
+
+        // Convert to comma-separated string
+        const selectedBabysitterIds = uniqueBabysitterIds.join(',');
+
+        window.location.href = `/DetailedBook?ids=${selectedBabysitterIds}`;
+      }
+    });
+  }
+};
+
   return (
     <>
       <div className="Book-container-fluid">
         <div className="Service pt-5 mt-5">
           <h2 className="py-5">Book Online</h2>
           <div className="">
-            <p>Check out our availability and book the date and time that works for you</p>
+            <div className="row pb-1">
+              <div className="col-md-8">
+                <p>Discover our babysitters' availability and choose one or more for your booking needs.</p>
+              </div>
+              <div className="col-md-4 d-flex justify-content-end align-items-start">
+                <div className='ServiceDeatils w-50'>
+                  <button className='btn w-100' onClick={handleBookNow}>Book Now</button>
+                </div>
+              </div>
+            </div>
             <div className="row border-top">
               <div className="col-md-1">
                 <p className="pt-2 text">Filter by:</p>
@@ -207,12 +279,15 @@ function BabysittersList() {
                 {(babysitterData || []).map((babysitter) => (
                   <div className="col-md-4" key={babysitter?.user?.id}>
                     <div className="card shadow mb-5" style={{ width: '15rem' }}>
-                      <div
-                        className="w-50 d-flex m-auto mt-2 bg-secondary"
-                        style={{ overflow: 'hidden', borderRadius: '100%', aspectRatio: '1/1' }}
-                      >
+                      <div className="w-50 d-flex m-auto mt-2 bg-secondary" style={{ overflow: 'hidden', borderRadius: '100%', aspectRatio: '1/1' }}>
                         <img src="/images/UserProfile.jpg" className="card-img-top w-100" alt="Babysitter" />
                       </div>
+                      {/* Add checkbox here */}
+                      <div className="form-check position-absolute top-0 end-0 mt-2 me-2">
+                        <input className="form-check-input border-danger" type="checkbox" value="" id={`checkbox-${babysitter?.user?.id}`}   onChange={() => handleSelectBabysitter(babysitter?.user?.id)} />
+                        <label className="form-check-label" htmlFor={`checkbox-${babysitter?.user?.id}`}></label>
+                      </div>
+                      {/* End of checkbox */}
                       <div className="card-body">
                         <h3>{babysitter?.user?.name}</h3>
                         <hr />
@@ -225,13 +300,13 @@ function BabysittersList() {
                           </div>
                         </div>
                         <p className="text-secondary">{babysitter?.city}</p>
-
                         <Link to={`/babysitter-profile/${babysitter?.user?.id}`}>
-                          <button className="text-light border-0 w-100">View Profile</button>
+                          <button className="text-light border-0 w-100 BlueColor" >View Profile</button>
                         </Link>
                       </div>
                     </div>
                   </div>
+
                 ))}
               </div>
             </div>

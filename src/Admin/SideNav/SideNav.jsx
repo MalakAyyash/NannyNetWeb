@@ -110,11 +110,39 @@ function SideNav() {
         <RouterLink to="/Admin/BookingList" className="nav-link " onClick={() => handleMenuItemClick('BookingList')}><i className="fa-solid fa-table me-2"></i>Booking List</RouterLink>
         </li>
 
-        <li className="nav-item menu">
-          <a href="#" className="nav-link link-dark text-light">
-          <i class="fa-brands fa-microblog me-2 mt-4"></i>
-            Blog
-          </a>
+        <li className={`nav-item pt-3 mb-2 ${activeMenuItem === 'fastRequestList' ? 'active' : ''}`}>
+          <RouterLink to="/Admin/fastRequestList" className="nav-link " onClick={() => handleMenuItemClick('fastRequestList')}><i class="fa-solid fa-clock-rotate-left me-2"></i>Fast Request</RouterLink>
+        </li>
+
+        <li className="nav-item pt-2">
+                <a href="#" className="nav-link text-light" onClick={toggleBabysittersSubMenu}>
+                <div className="row">
+                        <div className="col-md-10">
+                        <i class="fa-solid fa-percent pe-3"></i>
+                  Offers
+                        </div>
+                        <div className="col-md-2 d-flex justify-content-end">
+                        <span className="ml-auto">{showBabysittersSubMenu ? '▼' : '>'}</span>
+
+                        </div>
+                    </div>
+                </a>
+                {showBabysittersSubMenu && (
+                  <ul className="nav flex-column sub-sub-menu">
+                    <li className={`nav-item pt-3 ${activeMenuItem === 'addOffer' ? 'active' : ''}`}>
+                      <RouterLink to="/Admin/AddOffer" className="nav-link " onClick={() => handleMenuItemClick('addOffer')}><i class="fa-solid fa-plus ps-5 pe-3"></i>Add Offer</RouterLink>
+                    </li>
+                    <li className={`nav-item pt-3 ${activeMenuItem === 'showOffer' ? 'active' : ''}`}>
+                    <RouterLink to="/Admin/ViewOffer" className="nav-link " onClick={() => handleMenuItemClick('showOffer')}><i class="fa-regular fa-eye ps-5 pe-3"></i>Show Offers</RouterLink>
+                    </li>
+                  </ul>
+                )}
+              </li>
+
+
+              <li className={`nav-item pt-3 mb-2 ${activeMenuItem === 'blog' ? 'active' : ''}`}>
+        <RouterLink to="/Admin/blog" className="nav-link " onClick={() => handleMenuItemClick('blog')}><i class="fa-brands fa-microblog me-2 my-4"></i>
+        Blog</RouterLink>
         </li>
       </ul>
     </div>
