@@ -136,7 +136,7 @@ function SignUp() {
                           <select class="form-select" id="city" aria-label="Default select example" name="city" value={formik.values.city} onChange={formik.handleChange}>
                             <option value="Ramallah">Ramallah</option>
                             <option value="Nablus">Nablus</option>
-                            <option value="Salfit">Salfit</option>
+                            <option value="Salfit">Salfeet</option>
                             <option value="Ramallah">BeitSahour</option>
                             <option value="Nablus">BeitLehem</option>
                             <option value="Salfit">Jenin</option>
