@@ -21,21 +21,8 @@ function UserHistoryBookings() {
         ),
       },
       { Header: 'Price', accessor: 'price' },
-      {
-        Header: 'Type of Babysitter',
-        accessor: 'babysitterType',
-      },
-      {
-        Header: 'City/Street',
-        accessor: 'orderLocation',
-        Cell: ({ value }) => `${value.city}/${value.streetData}`,
-      },
       { Header: 'Start Time', accessor: 'startTime' },
       { Header: 'End Time', accessor: 'endTime' },
-      {
-        Header: 'Tel Number',
-        accessor: 'employee.user.telNumber',
-      },
     ],
     []
   );
@@ -160,10 +147,10 @@ function UserHistoryBookings() {
           <table {...getTableProps()} className="table table-striped">
             <thead>
               {headerGroups.map((headerGroup) => (
-                <tr {...headerGroup.getHeaderGroupProps()}>
+                <tr {...headerGroup.getHeaderGroupProps()} className='border'>
                   {headerGroup.headers.map((column) => (
-                    <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                      <div className="d-flex justify-content-center">
+                    <th {...column.getHeaderProps(column.getSortByToggleProps())} className='border'>
+                      <div className="d-flex justify-content-center border">
                         {column.render('Header')}
                         <span>
                           {column.isSorted ? (
@@ -188,7 +175,7 @@ function UserHistoryBookings() {
                 return (
                   <tr {...row.getRowProps()}>
                     {row.cells.map((cell) => (
-                      <td {...cell.getCellProps()} className="text-center">
+                      <td {...cell.getCellProps()} className="text-center border">
                         {cell.render('Cell')}
                       </td>
                     ))}

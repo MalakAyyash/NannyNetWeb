@@ -17,4 +17,12 @@ background-color: rgb(85, 107, 141, .6);
 .form-item::placeholder{
 color: white;
 }
-  
+.contact-content-width{
+    width: 50%;
+}
+@media (max-width: 500px) {
+    
+    .contact-content-width{
+        width: 90%;
+    }
+    }

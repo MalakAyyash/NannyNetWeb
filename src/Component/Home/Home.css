@@ -21,4 +21,12 @@ body {
     display: flex;
     justify-content: center;
 }
+/* For mobile devices */
+@media (max-width: 480px) {
+    .Book-container-fluid , .container-fluid {
+      padding-left: 5% !important;
+      padding-right: 5% !important;
+
+    }
+  }
   

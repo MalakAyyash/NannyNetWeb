@@ -110,8 +110,6 @@ function LeaveFeedback() {
                             <tr>
                                 <th>Babysitter Name</th>
                                 <th>Price</th>
-                                <th>Type of Babysitter</th>
-                                <th>City/Street</th>
                                 <th>Start Time</th>
                                 <th>End Time</th>
                                 <th>Actions</th>
@@ -122,8 +120,6 @@ function LeaveFeedback() {
                                 <tr key={order.id}>
                                     <td>{order.employee.user.name}</td>
                                     <td>{order.price}</td>
-                                    <td>{order.employee.type}</td>
-                                    <td>{`${order.orderLocation.city}/${order.orderLocation.streetData}`}</td>
                                     <td>{order.startTime}</td>
                                     <td>{order.endTime}</td>
                                     <td>

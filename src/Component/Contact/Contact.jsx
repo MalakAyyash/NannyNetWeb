@@ -45,9 +45,9 @@ function Contact() {
     <div id='Contact' className='bg-light'>
       <div className='container-fluid'>
         <div className='contact-content d-flex justify-content-center align-items-center'>
-          <div className='w-50'>
+          <div className='contact-content-width'>
             <h2 className='pt-5 pb-3 text-light'>Contact Me</h2>
-            <p className='w-50 m-auto pb-5 text-center'>
+            <p className=' m-auto pb-5 text-center'>
               Share your thoughts and experiences about our app. Click here to add your own text and become a part of our blog community. Your feedback helps us improve and grow!
             </p>
             <form onSubmit={handleSubmit}>

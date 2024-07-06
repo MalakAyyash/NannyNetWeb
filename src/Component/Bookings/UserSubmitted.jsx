@@ -21,15 +21,6 @@ function UserSubmitted() {
         ),
       },
       { Header: 'Price', accessor: 'price' },
-      {
-        Header: 'Type of Babysitter',
-        accessor: 'babysitterType',
-      },
-      {
-        Header: 'City/Street',
-        accessor: 'orderLocation',
-        Cell: ({ value }) => `${value.city}/${value.streetData}`,
-      },
       { Header: 'Start Time', accessor: 'startTime' },
       { Header: 'End Time', accessor: 'endTime' },
       {
@@ -41,7 +32,7 @@ function UserSubmitted() {
         accessor: 'id',
         Cell: ({ row }) => (
           <div>
-            <button className="btn btn-warning mr-2" onClick={() => handleCancel(row.original.id)}>
+            <button className="btn btn-warning mr-2 actionbtn" onClick={() => handleCancel(row.original.id)}>
               Cancel
             </button>
           </div>
@@ -229,9 +220,9 @@ function UserSubmitted() {
               {page.map((row) => {
                 prepareRow(row);
                 return (
-                  <tr {...row.getRowProps()}>
+                  <tr {...row.getRowProps()} className='border'>
                     {row.cells.map((cell) => (
-                      <td {...cell.getCellProps()} className="text-center">
+                      <td {...cell.getCellProps()} className="text-center border">
                         {cell.render('Cell')}
                       </td>
                     ))}

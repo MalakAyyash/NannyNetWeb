@@ -9,6 +9,7 @@ function UserProfile() {
   const { id } = useParams();
   const loggedInUserId = Cookies.get('userId');
   const token = Cookies.get('jwt');
+  const [showMenu, setShowMenu] = useState(false); // State for toggling menu
 
   const isOwnProfile = id === loggedInUserId;
 
@@ -77,6 +78,7 @@ function UserProfile() {
       console.error('Error uploading image:', error);
     }
   };
+
   if (!customerData || !customerData.user) {
     return <div>Loading...</div>;
   }
@@ -89,11 +91,10 @@ function UserProfile() {
             <div className='photo-container mt-5 me-3 position-relative'>
               {isOwnProfile && (
                 <label htmlFor="image-upload">
-                  <i className="fa-solid fa-camera position-absolute bottom-0 start-0 translate-middle mb-1 ms-3 text-dark rounded bg-light p-1"
-                     style={{ fontSize: '24px' }}
-                     data-bs-toggle="tooltip"
-                     data-bs-placement="top"
-                     title="Change Your Image"
+                  <i className="fa-solid fa-camera position-absolute bottom-0 start-0 translate-middle mb-1 ms-3 text-dark rounded p-1"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    title="Change Your Image"
                   ></i>
                 </label>
               )}
@@ -104,14 +105,15 @@ function UserProfile() {
             </div>
           </div>
 
-          <div>
-            <h2 className='text-light pt-5 mt-5'>{customerData.user.username}</h2>
-            <i className="fa-solid fa-user text-secondary small fs-6"> Parent</i>
+          <div >
+            <h2 className='text-light'>{customerData.user.username}</h2>
+            <i className="fa-solid fa-user text-secondary small"> Parent</i>
           </div>
         </div>
       </div>
+
       {isOwnProfile && (
-        <ul className="nav">
+        <ul className="nav d-none d-md-flex">
           <li className={`nav-item`}>
             <RouterLink to={`/user-profile/${customerData.user.id}`} className={`nav-link border-bottom`}>Profile</RouterLink>
           </li>
@@ -137,7 +139,31 @@ function UserProfile() {
           )}
         </ul>
       )}
-      <div className='DetaliedBook mt-5 normalFont'>
+      {/* Mobile Menu Toggle */}
+      <div className="d-md-none">
+        <div>
+          <hr />
+          <div className="btn-group w-100">
+            Profile
+            <button type="button" className="btn btn-secondary dropdown-toggle border-0 dropdown-toggle-split d-flex justify-content-end px-0" data-bs-toggle="dropdown" aria-expanded="false">
+              <span className="visually-hidden">Toggle Dropdown</span>
+            </button>
+            <ul className="dropdown-menu w-100">
+              <div id="mobile-nav" className="mt-2">
+                <RouterLink to={`/customerBookings/${customerData.user.id}`} className={`nav-link d-block mb-2`}>My Bookings</RouterLink>
+                <RouterLink to={`/offerBookings/${customerData.user.id}`} className={`nav-link d-block mb-2`}>My Offer Bookings</RouterLink>
+                <RouterLink to={`/Feedback/${customerData.user.id}`} className={`nav-link d-block mb-2`}>Feedback</RouterLink>
+                <RouterLink to={`/CustomerNotification/${customerData.user.id}`} className={`nav-link d-block mb-2`}>Notification</RouterLink>
+                <button className={`nav-link d-block mb-2`}>My Wallet</button>
+              </div>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+      <hr />
+      {/* Existing content */}
+      <div className='DetaliedBook normalFont'>
         <div className="row">
           <div className="col-md-10">
             <p className='pt-2 profileTitle'>Profile</p>
@@ -150,19 +176,24 @@ function UserProfile() {
               </div>
             </div>
           )}
-            {!isOwnProfile && (
-            <div className='d-flex m-auto p-3 col-md-2'>
-              <div className='border-0 fs-6 redColor text-light normalFont rounded-0 w-100 p-2'>
-                <RouterLink  to={`/Feedback/${customerData.user.id}`} className="text-decoration-none d-flex justify-content-center text-light">Feedback</RouterLink>
-              </div>
-            </div>
-          )}
         </div>
         <hr />
-        <div className='row mb-5 pb-5'>
+
+        <div className="d-md-none d-md-flex">
+          <div className="BookingForm">
+            <div className='mt-2 ServiceDeatils '>
+              <p className='text-dark normalFont'><i className="fa-solid fa-user pe-3"></i>{customerData.user.name}</p>
+              <p className='normalFont'><i className="fa-solid fa-envelope pe-3"></i>{customerData.user.email}</p>
+              {isOwnProfile && (<p className='text-dark normalFont'><i className="fa-solid fa-phone pe-3"></i>{customerData.user.telNumber}</p>)}
+              <p className='normalFont'><i className="fa-solid fa-venus-mars pe-3"></i>{customerData.user.gender}</p>
+              <p className='normalFont'><i className="fa-solid fa-location-dot pe-3"></i>{customerData.location.city}</p>
+            </div>
+          </div>
+        </div>
+        <div className='row  pb-5'>
           <div className='col-md-8'>
-            <div className='d-flex justify-content-center m-auto m-5'>
-              <div className='m-5 pt-5'>
+            <div className='d-flex justify-content-center m-auto '>
+              <div className=' pt-5'>
                 {isOwnProfile ? (
                   <p>You haven't written anything yet!</p>
                 ) : (
@@ -174,7 +205,7 @@ function UserProfile() {
               </div>
             </div>
           </div>
-          <div className="col-md-4 pt-4 px-5">
+          <div className="col-md-4 pt-4 px-5 d-none d-md-block">
             <div className="BookingForm">
               <p className='normalFont'>Profile Details</p>
               <div className='mt-4 my-3 py-3 ServiceDeatils'>

@@ -61,6 +61,8 @@
     font-style:normal;
     font-size: 35px;
     font-family: 'AvenirLight';
+    padding-top: 4rem;
+    margin-top: 3rem;
 
 }
 .profileTitle{
@@ -72,8 +74,53 @@
 
 }
 .about{
-    /* color: rgb(194, 39, 75) !important; */
     font-size: 17px !important;
 
 }
+
+/* For mobile devices */
+@media (max-width: 480px) {
+  
+  .Cover h2{
+    font-size: 23px;
+    padding-top: 2rem;
+    margin-top: 2rem;
+  }
+  .rounded-circle-container {
+    width: 120px;
+    height: 120px;
+  }
+  .fa-camera {
+    font-size: 20px;
+  }
+  .photo-container label {
+   
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 10px;
+  }
+  .Cover{
+    height: 160px;
+}
+.Cover .position-relative{
+  width: 125px;
+}
+.profileTitle{
+  font-size: 18px !important;
+  font-style: italic !important;
+
+}
+.profileDate{
+  font-size: 14px !important;
+}
+}
+@media (max-width: 700px) {
+  .Book-container-fluid {
+    padding-left: 5% !important;
+    padding-right: 5% !important;
+
+  }
+}
+
   

@@ -63,5 +63,33 @@
     background-size: 100% 100%;
     position: relative;
 }
+.DetaliedBook .nav-item .nav-link{
+  padding-left: 3rem;
+  padding-right: 3rem;
+}
+.actionbtn{
+  font-size: 13px !important;
+  padding: 1px;
+  border-radius: 0;
+}
+
+@media (max-width: 700px) {
+.DetaliedBook .nav-item .nav-link{
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+.ordersOverView{
+  font-size: 14px !important;
+  width: 90%;
+  padding-top: 7px;
+}
+thead , tbody{
+  font-size: 12px;
+}
+.actionbtn{
+  font-size: 10px !important;
+}
+
+}
 
   

@@ -365,7 +365,7 @@ function UserUpcomingBookings() {
             <p className='mt-3'>You`ve got nothing booked at the moment</p>
             <div className=''>
               <Link to={`/BabysittersList`} className='text-decoration-none'>
-                <p className='mb-5 redText'>Continue </p>
+            <p className='mb-5 redText'>Check Out Our Services</p>
               </Link>
             </div>
           </div>

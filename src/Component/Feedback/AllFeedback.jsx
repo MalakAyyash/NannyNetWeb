@@ -88,10 +88,6 @@ function AllFeedback() {
         ),
       },
       {
-        Header: 'Type',
-        accessor: 'employee.type',
-      },
-      {
         Header: 'Submitted Date',
         accessor: 'feedbackSubmittedDate',
         Cell: ({ value }) => new Date(value).toLocaleString(),

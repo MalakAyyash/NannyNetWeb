@@ -130,7 +130,7 @@ function Feedback() {
         </div>
       </div>
       {ownerProfile && (
-          <ul className="nav">
+          <ul className="nav d-none d-md-flex">
             <li className={`nav-item `}>
               <RouterLink to={`/user-profile/${customerData.user.id}`} className={`nav-link`}>Profile</RouterLink>
             </li>
@@ -155,18 +155,38 @@ function Feedback() {
             
           </ul>
       )}
+        <div className="d-md-none">
+        <div>
+          <hr />
+          <div className="btn-group w-100">
+             Feedback
+            <button type="button" className="btn btn-secondary dropdown-toggle border-0 dropdown-toggle-split d-flex justify-content-end px-0" data-bs-toggle="dropdown" aria-expanded="false">
+              <span className="visually-hidden">Toggle Dropdown</span>
+            </button>
+            <ul className="dropdown-menu w-100">
+              <div id="mobile-nav" className="mt-2">
+              <RouterLink to={`/user-profile/${customerData.user.id}`} className={`nav-link`}>Profile</RouterLink>
+              <RouterLink to={`/customerBookings/${customerData.user.id}`} className={`nav-link d-block mb-2`}>My Bookings</RouterLink>
+                <RouterLink to={`/offerBookings/${customerData.user.id}`} className={`nav-link d-block mb-2`}>My Offer Bookings</RouterLink>
+                <RouterLink to={`/CustomerNotification/${customerData.user.id}`} className={`nav-link d-block mb-2`}>Notification</RouterLink>
+                <button className={`nav-link d-block mb-2`}>My Wallet</button>
+              </div>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <hr />
             
-            <div className='DetaliedBook mt-5 normalFont'>
+            <div className='DetaliedBook  normalFont'>
     
-                <div className='DetaliedBook mt-5'>
+                <div className='DetaliedBook '>
                     <div className=''>
-                    <p className='pt-2 fst-normal'>View Feedbacks</p>
-                    <hr></hr>
+                    <p className='pt-2 profileTitle mb-5'>View Feedbacks</p>
                     </div>
                     <ul className="nav nav-tabs mb-5">
                     {ownerProfile && (
                     <li className="nav-item">
-                            <a className={`nav-link text-dark px-5 ${activeTab === 'AllFeedback' ? 'active' : ''}`} onClick={() => setActiveTab('AllFeedback')} href="#">
+                            <a className={`nav-link text-dark px-3 ${activeTab === 'AllFeedback' ? 'active' : ''}`} onClick={() => setActiveTab('AllFeedback')} href="#">
                                 All Feedbacks
                             </a>
                         </li>
@@ -174,7 +194,7 @@ function Feedback() {
                         {ownerProfile && (
 
                         <li className="nav-item">
-                            <a className={`nav-link text-dark px-5 ${activeTab === 'LeaveFeedback' ? 'active' : ''}`} onClick={() => setActiveTab('LeaveFeedback')} href="#">
+                            <a className={`nav-link text-dark px-3 ${activeTab === 'LeaveFeedback' ? 'active' : ''}`} onClick={() => setActiveTab('LeaveFeedback')} href="#">
                                 Leave Feedback
                             </a>
                         </li>

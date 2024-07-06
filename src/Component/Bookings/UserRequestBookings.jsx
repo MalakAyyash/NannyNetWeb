@@ -29,11 +29,6 @@ function UserRequestBookings() {
         Header: 'Type of Babysitter',
         accessor: 'babysitterType',
       },
-      {
-        Header: 'City/Street',
-        accessor: 'orderLocation',
-        Cell: ({ value }) => `${value.city}/${value.streetData}`,
-      },
       { Header: 'Start Time', accessor: 'startTime' },
       { Header: 'End Time', accessor: 'endTime' },
     ],
@@ -197,10 +192,10 @@ function UserRequestBookings() {
                       <td colSpan={columns.length} className="text-center">
                         <div className='row'>
                           <div className='col-md-10 d-flex justify-content-center'>
-                          <p>You have {orders.length} pending orders from {firstOrder.startTime} to {firstOrder.endTime}</p>
+                          <p className='ordersOverView'>You have {orders.length} pending orders from {firstOrder.startTime} to {firstOrder.endTime}</p>
                           </div>
                           <div className='col-md-2 d-flex justify-content-end my-1'>
-                          <button className='btn BlueColor text-light' onClick={() => handleRowClick(key)}>
+                          <button className='w-100 border-0 btn BlueColor text-light' onClick={() => handleRowClick(key)}>
                           {expandedRows[key] ? 'Hide' : 'Show'}
                         </button>
                         </div>
@@ -210,7 +205,7 @@ function UserRequestBookings() {
                     {expandedRows[key] && orders.map(order => {
                       return (
                         <tr key={order.id} className='text-center'>
-                          <td>
+                          <td className='border'>
                             <Link
                               to={`/babysitter-profile/${order.babysitter.user.id}`}
                               className='textRedColor'
@@ -218,11 +213,10 @@ function UserRequestBookings() {
                               {order.babysitterName}
                             </Link>
                           </td>
-                          <td>{order.price}</td>
-                          <td>{order.babysitterType}</td>
-                          <td>{order.orderLocation.city}/{order.orderLocation.streetData}</td>
-                          <td>{order.startTime}</td>
-                          <td>{order.endTime}</td>
+                          <td className='border'>{order.price}</td>
+                          <td className='border'>{order.babysitterType}</td>
+                          <td className='border'>{order.startTime}</td>
+                          <td className='border'>{order.endTime}</td>
                         </tr>
                       );
                     })}
