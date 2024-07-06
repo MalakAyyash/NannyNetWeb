@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Link as RouterLink, useParams } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import { Link } from 'react-router-dom';
 import UpcomingBookings from './UpcomingBookings.jsx';
 import HistoryBookings from './HistoryBookings.jsx';
 import RequestBookings from './RequestBookings.jsx';
 import BabysitterSubmitted from './BabysitterSubmitted.jsx';
 import BabysitterSceduleTable from './BabysitterSceduleTable.jsx';
-
-
 
 
 function BabysitterBookings() {

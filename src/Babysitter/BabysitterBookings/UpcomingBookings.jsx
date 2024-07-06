@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useTable, useSortBy, usePagination } from 'react-table';
-import { FaCaretSquareUp, FaCaretSquareDown } from 'react-icons/fa';
+// import { FaCaretSquareUp, FaCaretSquareDown } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import Swal from 'sweetalert2';
@@ -192,7 +192,7 @@ function UpcomingBookings() {
                       <div className="d-flex justify-content-center">
                         {column.render('Header')}
                         <span>
-                          {column.isSorted ? (
+                          {/* {column.isSorted ? (
                             column.isSortedDesc ? (
                               <FaCaretSquareDown />
                             ) : (
@@ -200,7 +200,7 @@ function UpcomingBookings() {
                             )
                           ) : (
                             ''
-                          )}
+                          )} */}
                         </span>
                       </div>
                     </th>
