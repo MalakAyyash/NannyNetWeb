@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useTable, useSortBy, usePagination } from 'react-table';
-import { FaCaretSquareUp, FaCaretSquareDown } from 'react-icons/fa/lib';
+import { FaCaretSquareUp, FaCaretSquareDown } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import Swal from 'sweetalert2';
