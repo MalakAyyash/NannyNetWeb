@@ -3,6 +3,8 @@ import { Link as RouterLink, useParams } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { Link } from 'react-router-dom';
 import LeaveFeedback from './LeaveFeedback.jsx';
+import AllFeedback from './AllFeedback.jsx';
+import ParentFeedback from './ParentFeedback.jsx';
 // import AllFeedback from './AllFeedback.jsx';
 
 
@@ -127,6 +129,7 @@ function Feedback() {
           </div>
         </div>
       </div>
+      {ownerProfile && (
           <ul className="nav">
             <li className={`nav-item `}>
               <RouterLink to={`/user-profile/${customerData.user.id}`} className={`nav-link`}>Profile</RouterLink>
@@ -151,31 +154,48 @@ function Feedback() {
               </li>
             
           </ul>
+      )}
             
             <div className='DetaliedBook mt-5 normalFont'>
     
                 <div className='DetaliedBook mt-5'>
                     <div className=''>
-                        <p className='pt-2 profileTitle'>Manage Your Feedbacks</p>
+                    <p className='pt-2 fst-normal'>View Feedbacks</p>
+                    <hr></hr>
                     </div>
-                    <p className='small mb-5 '>Stay organized and in control of your feedbacks.</p>
                     <ul className="nav nav-tabs mb-5">
-
+                    {ownerProfile && (
                     <li className="nav-item">
                             <a className={`nav-link text-dark px-5 ${activeTab === 'AllFeedback' ? 'active' : ''}`} onClick={() => setActiveTab('AllFeedback')} href="#">
                                 All Feedbacks
                             </a>
                         </li>
-                  
-                         <li className="nav-item">
+                    )}
+                        {ownerProfile && (
+
+                        <li className="nav-item">
                             <a className={`nav-link text-dark px-5 ${activeTab === 'LeaveFeedback' ? 'active' : ''}`} onClick={() => setActiveTab('LeaveFeedback')} href="#">
                                 Leave Feedback
                             </a>
                         </li>
+                        )}
+                          {!ownerProfile && (
+
+                            <li className="nav-item">
+                                <a className={`nav-link text-dark px-5 ${activeTab === 'AllFeedback' ? 'active' : ''}`} onClick={() => setActiveTab('AllFeedback')} href="#">
+                                    All Feedbacks
+                                </a>
+                            </li>
+                            )}
+                  
+                         
                     </ul>
                     <div>
-                    {activeTab === 'LeaveFeedback' && <LeaveFeedback />}
-                    {/* {activeTab === 'AllFeedback' && <AllFeedback />} */}
+                      
+                    {activeTab === 'LeaveFeedback' && ownerProfile && <LeaveFeedback />}
+                    {activeTab === 'AllFeedback' && ownerProfile && <AllFeedback />}
+                    {activeTab === 'AllFeedback' && !ownerProfile && <ParentFeedback id={id} />}
+
                     </div>
                 </div> 
       

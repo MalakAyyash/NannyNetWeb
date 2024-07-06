@@ -44,7 +44,11 @@ function HistoryOrders() {
         },
       },
       { Header: 'Price', accessor: 'price' },
-      { Header: 'Order Date', accessor: 'orderDate' },
+      { Header: '#Kids', accessor: 'numOfKids' },
+      { Header: 'Submitted Date', accessor: 'orderSubmittedDate'},
+      { Header: 'Order Date', accessor: 'orderDate'},
+      { Header: 'Start Time', accessor: 'startTime' },
+      { Header: 'End Time', accessor: 'endTime' },
       { Header: 'Status', accessor: 'orderStatus' },
     ],
     []
@@ -66,7 +70,7 @@ function HistoryOrders() {
 
       const response = await axios.post(
         'http://176.119.254.188:8080/admin/order/get/customer',
-        { employeeId: id },
+        { customerId: id },
         config
       );
       if (response && response.data) {
@@ -105,7 +109,7 @@ function HistoryOrders() {
     {
       columns,
       data,
-      initialState: { pageSize: 10 }, // Ensure pageSize is set to 13
+      initialState: { pageSize: 6 }, // Ensure pageSize is set to 13
     },
     useSortBy,
     usePagination
@@ -113,9 +117,6 @@ function HistoryOrders() {
 
   return (
     <div className="container mt-4">
-      <div className="text-end">
-        <Link to={`/Admin/AllBabysitterOrder/${id}`} className='textRedColor'>See All</Link>
-      </div>
       <div className='d-flex justify-content-center'>
         <table {...getTableProps()} className="table table-striped">
           <thead>

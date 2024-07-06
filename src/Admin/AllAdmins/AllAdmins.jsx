@@ -91,10 +91,10 @@ function AllAdmins() {
   return (
     <div className="container mt-4">
          <div className='DetaliedBook'>
-        <p className='mt-4 profileTitle'>All Admins</p>
-        <p className='small text-secondary fst-normal'>Review the list of All Admins below.</p>
-        <hr></hr>
+        <p className='mt-4 fst-normal'>All Admins</p>
       </div>
+      <p className='small text-secondary fst-normal'>Review the list of All Admins below.</p>
+        <hr></hr>
       <div className='d-flex justify-content-center'>
         <table {...getTableProps()} className="table table-striped">
           <thead>

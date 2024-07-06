@@ -4,20 +4,23 @@ import Swal from 'sweetalert2';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 
-
 function OfferDetails() {
   const [babysitterData, setBabysitterData] = useState([]);
   const [cities, setCities] = useState([
     'BeitSahour',
     'BeitLehem',
-    'Nabulus',
+    'Nablus',
     'Jenin',
     'Ramallah',
+    'Hebron',
+    'Tulkarm',
+    'Qalqilya',
+    'Salfeet'
   ]);
   const [selectedCity, setSelectedCity] = useState('');
-  const [selectedType, setSelectedType] = useState('Full-Time');
+  const [selectedType, setSelectedType] = useState('All');
   const [selectedStars, setSelectedStars] = useState(null);
-  const [selectedHours, setSelectedHours] = useState(null);
+  const [selectedHours, setSelectedHours] = useState(null); // State for selected hours
   const [selectedBabysitters, setSelectedBabysitters] = useState([]);
   const [offerDetails, setOfferDetails] = useState(null);
   const { id } = useParams();
@@ -26,6 +29,7 @@ function OfferDetails() {
     const fetchOfferDetails = async () => {
       try {
         const response = await fetch(`http://176.119.254.188:8080/offerType/view/${id}`);
+        
         if (response.ok) {
           const data = await response.json();
           setOfferDetails(data);
@@ -46,8 +50,17 @@ function OfferDetails() {
         const response = await fetch(`http://176.119.254.188:8080/customer/filter/stars/${stars}`);
         if (response.ok) {
           const data = await response.json();
-          setBabysitterData(data);
-          setSelectedStars(stars);
+          const babysittersWithImages = await Promise.all(data.map(async babysitter => {
+            const responseImage = await fetch(`http://176.119.254.188:8080/user/image/${babysitter.user.id}`);
+            if (responseImage.ok) {
+              const imageData = await responseImage.blob();
+              babysitter.profileImageUrl = URL.createObjectURL(imageData);
+            } else {
+              console.error(`Failed to fetch profile image for babysitter with id ${babysitter.user.id}`);
+            }
+            return babysitter;
+          }));
+          setBabysitterData(babysittersWithImages);
         } else {
           console.error('Failed to fetch babysitters by star rating');
         }
@@ -77,7 +90,7 @@ function OfferDetails() {
   };
 
   const handleSelectHours = (hours) => {
-    setSelectedHours(hours);
+    setSelectedHours(hours); // Update selected hours state
   };
 
   const renderStarRating = (stars) => {
@@ -105,26 +118,26 @@ function OfferDetails() {
     const token = Cookies.get('jwt');
 
     if (!token) {
-        console.error('Token not found.');
-        return;
+      console.error('Token not found.');
+      return;
     }
 
     const config = {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     };
     if (!selectedHours || !selectedStars) {
       alert('Please select hours and stars before proceeding.');
       return;
     }
-  
+
     if (selectedBabysitters.length === 0) {
       alert('Please select at least one babysitter.');
     } else {
       const uniqueBabysitterIds = [...new Set(selectedBabysitters)];
       const selectedBabysitterIds = uniqueBabysitterIds.join(',');
-      
+
       const requestBody = {
         maxHoursAllowed: selectedHours,
         maxStars: selectedStars,
@@ -134,36 +147,45 @@ function OfferDetails() {
 
       // Make API call to apply the offer
       axios.post('http://176.119.254.188:8080/customer/offer/apply', requestBody, config)
-      .then(response => {
-        if (response.ok) {
-          Swal.fire({
-            title: 'Subscribe Confirmation',
-            html: `
-              You have successfully applied the offer.<br/>
-              <p>Up to ${selectedHours} hours with ${selectedStars} stars</p>
-            `,
-            icon: 'success',
-            confirmButtonText: 'OK',
-            customClass: {
-              confirmButton: 'btn-red-background',
-            }
-          });
-        } else {
-          throw new Error('Failed to apply offer');
-        }
-      })
+        .then(response => {
+          if (response.ok) {
+            Swal.fire({
+              title: 'Subscribe Confirmation',
+              html: `
+                You have successfully applied the offer.<br/>
+                <p>Up to ${selectedHours} hours with ${selectedStars} stars</p>
+              `,
+              icon: 'success',
+              confirmButtonText: 'OK',
+              customClass: {
+                confirmButton: 'btn-red-background',
+              }
+            });
+          } else {
+            throw new Error('Failed to apply offer');
+          }
+        })
 
-      .catch(error => {
-        console.error('Error applying offer:', error);
-        Swal.fire({
-          title: 'Error',
-          text: 'Failed to apply the offer. Please try again later.',
-          icon: 'error',
-          confirmButtonText: 'OK',
+        .catch(error => {
+          console.error('Error applying offer:', error);
+          if (error.response) {
+            Swal.fire({
+              title: 'Error',
+              text: error.response.data, // Display the response data to the user
+              icon: 'error',
+              confirmButtonText: 'OK',
+            });
+          } else {
+            Swal.fire({
+              title: 'Error',
+              text: 'Failed to apply the offer. Please try again later.',
+              icon: 'error',
+              confirmButtonText: 'OK',
+            });
+          }
         });
-      });
+    };
     }
-  };
 
   const handleSelectCity = (city) => {
     setSelectedCity(city);
@@ -226,13 +248,28 @@ function OfferDetails() {
                   </a>
                   <ul className="dropdown-menu">
                     <li>
-                      <button className="dropdown-item" onClick={() => handleSelectType('Full-Time')}>
-                        Full-Time
+                      <button className="dropdown-item" onClick={() => handleSelectType('All')}>
+                        All
                       </button>
                     </li>
                     <li>
-                      <button className="dropdown-item" onClick={() => handleSelectType('Part-Time')}>
-                        Part-Time
+                      <button className="dropdown-item" onClick={() => handleSelectType('above 5Y old')}>
+                        above 5Y old
+                      </button>
+                    </li>
+                    <li>
+                      <button className="dropdown-item" onClick={() => handleSelectType('Under 5Y old')}>
+                        Under 5Y old
+                      </button>
+                    </li>
+                    <li>
+                      <button className="dropdown-item" onClick={() => handleSelectType('Medical')}>
+                        Medical
+                      </button>
+                    </li>
+                    <li>
+                      <button className="dropdown-item" onClick={() => handleSelectType('Special Care')}>
+                        Special Care
                       </button>
                     </li>
                   </ul>
@@ -248,7 +285,7 @@ function OfferDetails() {
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
-                    Hours ({offerDetails.maxHours || 'All'})
+                    Hours ({selectedHours || 'All'})
                   </a>
                   <ul className="dropdown-menu">
                     {[...Array(offerDetails.maxHours)].map((_, index) => (
@@ -289,10 +326,10 @@ function OfferDetails() {
                 <div className="row">
                   {(babysitterData || []).length > 0 ? (
                     applyFilters(babysitterData).map((babysitter) => (
-                      <div className="col-md-4" key={babysitter?.user?.id}>
-                        <div className="card shadow mb-5" style={{ width: '15rem' }}>
+                      <div className="col-md-4 mb-3" key={babysitter?.user?.id}>
+                        <div className="card shadow" style={{ width: '15rem' }}>
                           <div className="w-50 d-flex m-auto mt-2 bg-secondary" style={{ overflow: 'hidden', borderRadius: '100%', aspectRatio: '1/1' }}>
-                            <img src="/images/UserProfile.jpg" className="card-img-top w-100" alt="Babysitter" />
+                            <img src={babysitter.profileImageUrl || "/images/UserProfile.jpg"} className="card-img-top w-100" alt="Babysitter" />
                           </div>
                           <div className="form-check position-absolute top-0 end-0 mt-2 me-2">
                             <input className="form-check-input border-danger" type="checkbox" value="" id={`checkbox-${babysitter?.user?.id}`} onChange={() => handleSelectBabysitter(babysitter?.user?.id)} />

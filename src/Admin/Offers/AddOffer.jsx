@@ -67,8 +67,10 @@ function AddOffer() {
   };
 
   return (
-    <div className="container mt-4 DetaliedBook">
-      <p className='profileTitle'>Add Offer</p>
+    <div className="container mt-4">
+      <div className='DetaliedBook'>
+      <p className='fst-normal'>Add Offer</p>
+      </div>
       <p className='small text-secondary fst-normal'>Fill in the details below to add a new offer.</p>
       <hr></hr>
       <form onSubmit={handleFormSubmit}>
@@ -94,7 +96,8 @@ function AddOffer() {
             required
           >
             <option value="1m">1m</option>
-            <option value="1w">1w</option>
+            <option value="2m">2m</option>
+            <option value="3m">3m</option>
           </select>
         </div>
         <div className="mb-3">

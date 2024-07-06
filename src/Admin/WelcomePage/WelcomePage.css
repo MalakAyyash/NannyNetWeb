@@ -1,9 +1,27 @@
-.statics{
-    background-color: hsla(0, 7%, 92%, 0.701);
-}
-.UserCount{
-    background-color: hsla(0, 1%, 84%, 0.701);
-}
-.blueColor{
-    background-color: rgba(65, 95, 141, 0.6)!important;
-}
+.dashboard-container {
+    padding: 20px;
+  }
+  
+  .dashboard-title {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+  
+  .charts-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two columns */
+    gap: 20px; /* Gap between columns */
+  }
+  
+  .chart-item {
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .chart-item-full {
+    grid-column: span 2; /* This chart spans across both columns */
+  }
+  

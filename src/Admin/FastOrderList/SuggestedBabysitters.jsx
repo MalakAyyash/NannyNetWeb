@@ -1,17 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
-import { useParams, Link } from 'react-router-dom';
+import { useTable, useSortBy, usePagination } from 'react-table';
+import { FaCaretSquareUp, FaCaretSquareDown } from 'react-icons/fa';
+import { Link, useParams } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import Swal from 'sweetalert2';
-import './FastOrderList'; // Import the CSS file
 
-function SuggestedBabysitters() {
+const SuggestedBabysitters = () => {
   const { id } = useParams();
   const [availableBabysitters, setAvailableBabysitters] = useState([]);
-  const [selectedCity, setSelectedCity] = useState(''); // State to store the selected city
-  const [selectedType, setSelectedType] = useState(''); // State to store the selected type
-  const [selectedStars, setSelectedStars] = useState(null); // State to store the selected stars
-  const [selectedGender, setSelectedGender] = useState(''); // State to store the selected gender
+  const [selectedCity, setSelectedCity] = useState('');
+  const [selectedType, setSelectedType] = useState('');
+  const [selectedStars, setSelectedStars] = useState(null);
+  const [selectedGender, setSelectedGender] = useState('');
 
   const fetchAvailableBabysitters = async () => {
     try {
@@ -28,7 +29,7 @@ function SuggestedBabysitters() {
         },
       };
 
-      const response = await axios.post('http://176.119.254.188:8080/admin/order/fastOrder/suggest', { orderId: id }, config);
+      const response = await axios.post(`http://176.119.254.188:8080/admin/order/fastOrder/suggest`, { orderId: id }, config);
 
       if (response && response.data) {
         setAvailableBabysitters(response.data);
@@ -42,6 +43,10 @@ function SuggestedBabysitters() {
       });
     }
   };
+
+  useEffect(() => {
+    fetchAvailableBabysitters();
+  }, [id]);
 
   const handleAssign = async (babysitterId) => {
     try {
@@ -58,7 +63,7 @@ function SuggestedBabysitters() {
         },
       };
 
-      const completeResponse = await axios.post('http://176.119.254.188:8080/admin/order/fastOrder/complete', { employeeId: babysitterId, orderId: id }, config);
+      const completeResponse = await axios.post(`http://176.119.254.188:8080/admin/order/fastOrder/complete`, { employeeId: babysitterId, orderId: id }, config);
 
       if (completeResponse && completeResponse.data) {
         Swal.fire({
@@ -86,10 +91,6 @@ function SuggestedBabysitters() {
     }
   };
 
-  useEffect(() => {
-    fetchAvailableBabysitters();
-  }, [id]);
-
   const handleCitySelect = (city) => {
     setSelectedCity(city);
   };
@@ -108,17 +109,89 @@ function SuggestedBabysitters() {
 
   const cities = Array.from(new Set(availableBabysitters.map(babysitter => babysitter.city)));
   const types = ['Full-Time', 'Part-Time'];
-  const genders = ['Male', 'Female', 'Other']; // Define possible genders
+  const genders = ['Male', 'Female', 'Other'];
+
+  const columns = useMemo(
+    () => [
+      { Header: 'ID', accessor: 'user.id' },
+      {
+        Header: 'Username',
+        accessor: 'user.username',
+        Cell: ({ row }) => (
+          <Link to={`/admin/BabysitterInfoStatus/${row.original.user.id}`} className="textRedColor">
+            {row.original.user.username}
+          </Link>
+        )
+      },
+      { Header: 'Email', accessor: 'user.email' },
+      { Header: 'Phone', accessor: 'user.telNumber' },
+      { Header: 'Gender', accessor: 'user.gender' },
+      {
+        Header: 'Date Added',
+        accessor: 'user.dateAdded',
+        Cell: ({ value }) => new Date(value).toLocaleDateString()
+      },
+      { Header: 'Availability', accessor: 'availability' },
+      { Header: 'Type', accessor: 'type' },
+      { Header: 'City', accessor: 'city' },
+      {
+        Header: 'Date of Birth',
+        accessor: 'dateOfBirth',
+        Cell: ({ value }) => new Date(value).toLocaleDateString()
+      },
+      {
+        Header: 'Stars',
+        accessor: 'stars',
+        Cell: ({ value }) => value.toFixed(2)
+      },
+      { Header: '#Canceles', accessor: 'numOfCancelation' },
+      {
+        Header: 'Action',
+        Cell: ({ row }) => (
+          <button className="btn rounded-0 BlueColor text-light me-2" onClick={() => handleAssign(row.original.user.id)}>
+            Assign
+          </button>
+        )
+      }
+    ],
+    []
+  );
+
+  const data = useMemo(() => availableBabysitters, [availableBabysitters]);
+
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    prepareRow,
+    page,
+    canNextPage,
+    canPreviousPage,
+    pageOptions,
+    nextPage,
+    previousPage,
+    state: { pageIndex },
+  } = useTable(
+    {
+      columns,
+      data,
+      initialState: { pageIndex: 0, pageSize: 5 } // Adjust pageSize as per your requirement
+    },
+    useSortBy,
+    usePagination
+  );
 
   // Filter the babysitters based on the selected criteria
-  const filteredBabysitters = availableBabysitters.filter(babysitter => {
-    return (
-      (selectedCity === '' || babysitter.city === selectedCity) &&
-      (selectedType === '' || babysitter.type === selectedType) &&
-      (selectedStars === null || babysitter.stars >= selectedStars) &&
-      (selectedGender === '' || babysitter.user.gender === selectedGender)
-    );
-  });
+  const filteredBabysitters = useMemo(() => {
+    return availableBabysitters.filter(babysitter => {
+      return (
+        (selectedCity === '' || babysitter.city === selectedCity) &&
+        (selectedType === '' || babysitter.type === selectedType) &&
+        (selectedStars === null || babysitter.stars >= selectedStars) &&
+        (selectedGender === '' || babysitter.user.gender === selectedGender)
+      );
+    });
+  }, [availableBabysitters, selectedCity, selectedType, selectedStars, selectedGender]);
 
   return (
     <div className="container mt-4">
@@ -231,53 +304,67 @@ function SuggestedBabysitters() {
         </div>
       </div>
       <div className='d-flex justify-content-center'>
-        <table className="table table-striped">
+        <table className="table table-striped" {...getTableProps()}>
           <thead>
-            <tr>
-              <th>ID</th>
-              <th>Username</th>
-              <th>Email</th>
-              <th>Phone</th>
-              <th>Gender</th>
-              <th>Date Added</th>
-              <th>Availability</th>
-              <th>Type</th>
-              <th>City</th>
-              <th>Date of Birth</th>
-              <th>Stars</th>
-              <th>Number of Cancellations</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredBabysitters.map((babysitter) => (
-              <tr key={babysitter.user.id}>
-                <td>{babysitter.user.id}</td>
-                <td>
-                  <Link to={`/admin/BabysitterInfoStatus/${babysitter.user.id}`} className="textRedColor">
-                    {babysitter.user.username}
-                  </Link>
-                </td>
-                <td>{babysitter.user.email}</td>
-                <td>{babysitter.user.telNumber}</td>
-                <td>{babysitter.user.gender}</td>
-                <td>{new Date(babysitter.user.dateAdded).toLocaleDateString()}</td>
-                <td>{babysitter.availability}</td>
-                <td>{babysitter.type}</td>
-                <td>{babysitter.city}</td>
-                <td>{new Date(babysitter.dateOfBirth).toLocaleDateString()}</td>
-                <td>{babysitter.stars}</td>
-                <td>{babysitter.numOfCancelation}</td>
-                <td className='ServiceDeatils'>
-                  <button className="btn rounded-0 ColorRed" onClick={() => handleAssign(babysitter.user.id)}>Assign</button>
-                </td>
+            {headerGroups.map(headerGroup => (
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map(column => (
+                  <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                    <div className="d-flex justify-content-center">
+                      {column.render('Header')}
+                      <span>
+                        {column.isSorted ? (
+                          column.isSortedDesc ? (
+                            <FaCaretSquareDown />
+                          ) : (
+                            <FaCaretSquareUp />
+                          )
+                        ) : (
+                          ''
+                        )}
+                      </span>
+                    </div>
+                  </th>
+                ))}
               </tr>
             ))}
+          </thead>
+          <tbody {...getTableBodyProps()}>
+            {page.map(row => {
+              prepareRow(row);
+              return (
+                <tr {...row.getRowProps()}>
+                  {row.cells.map(cell => {
+                    return (
+                      <td {...cell.getCellProps()} className="text-center">
+                        {cell.render('Cell')}
+                      </td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
+      <div>
+        <div className="d-flex justify-content-center mt-4">
+          <button disabled={!canPreviousPage} onClick={() => previousPage()}>
+            Previous Page
+          </button>
+          <button disabled={!canNextPage} onClick={() => nextPage()}>
+            Next Page
+          </button>
+        </div>
+        <div>
+          <span className="text-light">
+            Page {pageIndex + 1} of {pageOptions.length}
+          </span>
+        </div>
+      </div>
+
     </div>
   );
-}
+};
 
 export default SuggestedBabysitters;

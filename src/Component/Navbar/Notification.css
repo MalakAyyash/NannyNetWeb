@@ -155,3 +155,12 @@
 .textRedColor {
     color: red;
 }
+.notification-header h3{
+  font-size: 20px !important;
+}
+.notification-option{
+  font-size: 15px;
+}
+.dropdown-item{
+  font-size: 14px;
+}

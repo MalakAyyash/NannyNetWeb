@@ -44,11 +44,21 @@ function HistoryOrders() {
         },
       },
       { Header: 'Price', accessor: 'price' },
-      { Header: 'Order Date', accessor: 'orderDate' },
+      { Header: '#Kids', accessor: 'numOfKids' },
+      { Header: 'Submitted Date', accessor: 'orderSubmittedDate', Cell: ({ value }) => formatDate(value) },
+      { Header: 'Order Date', accessor: 'orderDate', Cell: ({ value }) => formatDate(value) },
+      { Header: 'Start Time', accessor: 'startTime' },
+      { Header: 'End Time', accessor: 'endTime' },
       { Header: 'Status', accessor: 'orderStatus' },
     ],
     []
   );
+
+  const formatDate = (dateString) => {
+    if (!dateString) return 'Unknown';
+    const date = new Date(dateString);
+    return date.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+  };
 
   const fetchData = async () => {
     try {
@@ -105,17 +115,14 @@ function HistoryOrders() {
     {
       columns,
       data,
-      initialState: { pageSize: 7 }, // Ensure pageSize is set to 13
+      initialState: { pageSize: 7 }, // Ensure pageSize is set to 7
     },
     useSortBy,
     usePagination
   );
 
   return (
-    <div className="container mt-5">
-      <div className="text-end">
-        <Link to={`/Admin/AllBabysitterOrder/${id}`} className='textRedColor'>See All</Link>
-      </div>
+    <div className="container mt-3">
       <div className='d-flex justify-content-center'>
         <table {...getTableProps()} className="table table-striped">
           <thead>

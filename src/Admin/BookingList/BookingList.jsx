@@ -114,10 +114,10 @@ function BookingList() {
   return (
     <div className="container mt-4">
       <div className='DetaliedBook'>
-        <p className='mt-4 profileTitle'>All Bookings</p>
-        <p className='small text-secondary fst-normal'>Review the list of All Bookings below.</p>
-        <hr></hr>
+        <p className='mt-4 fst-normal'>All Bookings</p>
       </div>
+      <p className='small text-secondary fst-normal'>Review the list of All Bookings below.</p>
+        <hr></hr>
       <div className='d-flex justify-content-center'>
         <table {...getTableProps()} className="table table-striped">
           <thead>

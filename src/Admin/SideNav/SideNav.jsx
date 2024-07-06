@@ -4,9 +4,9 @@ import { Link as RouterLink } from 'react-router-dom';
 
 
 function SideNav() {
-  const [showUsers, setShowUsers] = useState(true);
-  const [showAdminsSubMenu, setShowAdminsSubMenu] = useState(true);
-  const [showBabysittersSubMenu, setShowBabysittersSubMenu] = useState(true);
+  const [showUsers, setShowUsers] = useState(false);
+  const [showAdminsSubMenu, setShowAdminsSubMenu] = useState(false);
+  const [showBabysittersSubMenu, setShowBabysittersSubMenu] = useState(false);
   const [activeMenuItem, setActiveMenuItem] = useState('dashboard'); // State to track active menu item
 
   const handleMenuItemClick = (menuItem) => {
@@ -94,7 +94,7 @@ function SideNav() {
                       <RouterLink to="/Admin/AllBabysitters" className="nav-link " onClick={() => handleMenuItemClick('AllBabysitters')}><i class="fa-solid fa-users ps-5 pe-3"></i>All Babysitters</RouterLink>
                     </li>
                     <li className={`nav-item pt-3 ${activeMenuItem === 'PindingBabysitters' ? 'active' : ''}`}>
-                    <RouterLink to="/Admin/PindingBabysitters" className="nav-link " onClick={() => handleMenuItemClick('PindingBabysitters')}><i class="fa-solid fa-user-clock ps-5 pe-3"></i>Pinding Babysitters</RouterLink>
+                    <RouterLink to="/Admin/PindingBabysitters" className="nav-link " onClick={() => handleMenuItemClick('PindingBabysitters')}><i class="fa-solid fa-user-clock ps-5 pe-3"></i>Pending Babysitters</RouterLink>
                     </li>
                   </ul>
                 )}
@@ -106,7 +106,7 @@ function SideNav() {
           )}
         </li>
 
-        <li className={`nav-item pt-3 mb-2 ${activeMenuItem === 'BookingList' ? 'active' : ''}`}>
+        <li className={`nav-item mb-2 ${activeMenuItem === 'BookingList' ? 'active' : ''}`}>
         <RouterLink to="/Admin/BookingList" className="nav-link " onClick={() => handleMenuItemClick('BookingList')}><i className="fa-solid fa-table me-2"></i>Booking List</RouterLink>
         </li>
 
@@ -138,11 +138,13 @@ function SideNav() {
                   </ul>
                 )}
               </li>
-
-
-              <li className={`nav-item pt-3 mb-2 ${activeMenuItem === 'blog' ? 'active' : ''}`}>
-        <RouterLink to="/Admin/blog" className="nav-link " onClick={() => handleMenuItemClick('blog')}><i class="fa-brands fa-microblog me-2 my-4"></i>
+              <li className={`nav-item  ${activeMenuItem === 'blog' ? 'active' : ''}`}>
+        <RouterLink to="/Admin/blog" className="nav-link " onClick={() => handleMenuItemClick('blog')}><i class="fa-brands fa-microblog  me-2"></i>
         Blog</RouterLink>
+        </li>
+        <li className={`nav-item  pt-4 ${activeMenuItem === 'payment' ? 'active' : ''}`}>
+        <RouterLink to="/Admin/payment" className="nav-link " onClick={() => handleMenuItemClick('payment')}><i class="fa-solid fa-sack-dollar me-2"></i>
+        Payment</RouterLink>
         </li>
       </ul>
     </div>

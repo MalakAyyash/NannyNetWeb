@@ -89,9 +89,6 @@ const CustomerFeedback = () => {
 
   return (
     <div className="container mt-4">
-      <div className="text-end">
-        <Link to={`/Admin/AllFeedback/${id}`} className='textRedColor'>See All</Link>
-      </div>
       <div className="d-flex justify-content-center">
         {feedbackData.length === 0 ? (
           <div className="text-center mb-3">

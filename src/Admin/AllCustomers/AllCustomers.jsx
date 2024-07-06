@@ -9,11 +9,43 @@ import Swal from 'sweetalert2';
 function AllCustomers() {
   const [customersData, setCustomersData] = useState([]);
 
+  const deleteCustomer = async (customerId) => {
+    try {
+      const token = Cookies.get('jwt');
+      if (!token) {
+        console.error('Token not found.');
+        return;
+      }
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      await axios.get(`http://176.119.254.188:8080/admin/delete/user/${customerId}`, config);
+      Swal.fire({
+        icon: 'success',
+        title: 'Deleted',
+        text: 'Customer has been deleted successfully.',
+      });
+
+      // Refresh data after deletion
+      fetchData();
+    } catch (error) {
+      console.error('Error deleting customer:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: error.message || 'Unknown error occurred.',
+      });
+    }
+  };
+
   const columns = React.useMemo(
     () => [
       { Header: 'ID', accessor: 'user.id' },
       {
-        
         Header: 'Name',
         accessor: 'user.name',
         Cell: ({ row }) => (
@@ -31,6 +63,18 @@ function AllCustomers() {
       { Header: 'Street Data', accessor: 'location.streetData' },
       { Header: '#Cancellations', accessor: 'numOfCancelation' },
       { Header: 'Points', accessor: 'points' }, // Include points field in columns
+      {
+        Header: 'Actions',
+        accessor: 'actions',
+        Cell: ({ row }) => (
+          <button
+            className="btn btn-danger btn-sm"
+            onClick={() => deleteCustomer(row.original.user.id)}
+          >
+            Delete
+          </button>
+        ),
+      },
     ],
     []
   );
@@ -52,9 +96,7 @@ function AllCustomers() {
       const response = await axios.get('http://176.119.254.188:8080/admin/getAllCustomers', config);
 
       if (response && response.data) {
-        const customers = response.data;
-
-        setCustomersData(customers);
+        setCustomersData(response.data);
       }
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -88,7 +130,7 @@ function AllCustomers() {
     {
       columns,
       data,
-      initialState: { pageSize: 10 },
+      initialState: { pageSize: 6 },
     },
     useSortBy,
     usePagination
@@ -96,7 +138,7 @@ function AllCustomers() {
 
   return (
     <div className="container mt-4">
-        <div className='DetaliedBook'>
+      <div className='DetaliedBook'>
         <p className='mt-4 profileTitle'>All Customers</p>
         <p className='small text-secondary fst-normal'>Review the list of All Customers below.</p>
         <hr></hr>

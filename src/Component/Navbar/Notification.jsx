@@ -9,6 +9,7 @@ function Notification() {
     const [notifications, setNotifications] = useState([]);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [userId, setUserId] = useState(0);
+    const [profileImages, setProfileImages] = useState({}); // State to store profile images
 
     useEffect(() => {
         const fetchNotifications = async () => {
@@ -31,6 +32,25 @@ function Notification() {
                 if (response.status === 200) {
                     const sortedNotifications = response.data.sort((a, b) => new Date(b.notificationDate) - new Date(a.notificationDate));
                     setNotifications(sortedNotifications);
+
+                    // Fetch profile images for each notification
+                    sortedNotifications.forEach(async (notification) => {
+                        try {
+                            const responseImage = await fetch(`http://176.119.254.188:8080/user/image/${notification.senderUser.id}`);
+                            if (responseImage.ok) {
+                                const imageData = await responseImage.blob(); // Convert response to Blob
+                                const imageUrl = URL.createObjectURL(imageData); // Create a Blob URL
+                                setProfileImages(prevImages => ({
+                                    ...prevImages,
+                                    [notification.senderUser.id]: imageUrl // Use senderUser.id for unique identification
+                                }));
+                            } else {
+                                console.error('Failed to fetch profile image');
+                            }
+                        } catch (error) {
+                            console.error('Error fetching profile image:', error);
+                        }
+                    });
                 }
             } catch (error) {
                 console.error('Error fetching notifications:', error);
@@ -74,7 +94,7 @@ function Notification() {
             };
 
             // Call the API to mark notification as read
-            await axios.get(`http://176.119.254.188:8080/user/notification/read/${notificationId}`);
+            await axios.get(`http://176.119.254.188:8080/user/notification/read/${notificationId}`, config);
 
             // Update the local state to mark the notification as read
             const updatedNotifications = notifications.map(notification =>
@@ -112,16 +132,20 @@ function Notification() {
                             <div key={index} className="dropdown-item notification-item" onClick={() => markNotificationAsRead(notification.id)}>
                                 <div className="notification-body text-secondary">
                                     <div className='row'>
-                                        <div className="notification-image-container col-md-4">
-                                            <img src="/images/UserProfile.jpg" alt="User Profile" className="notification-profile-image" />
-                                            <p className="notification-date textRedColor mb-0 mt-3 ps-2">{formatNotificationDate(notification.notificationDate)}</p>
+                                        <div className="notification-image-container col-md-2 pt-3">
+                                            <img 
+                                                src={profileImages[notification.senderUser.id] || "/images/UserProfile.jpg"} 
+                                                alt="User Profile" 
+                                                className="notification-profile-image" 
+                                            />
                                         </div>
-                                        <div className='col-md-8 d-flex justify-content-between align-items-center'>
+                                        <div className='col-md-8 d-flex justify-content-between align-items-center p-0'>
                                             <span className="notification-message-container">
                                                 <p className="notification-message small pt-2 mb-0">{notification.message}</p>
                                                 {!notification.read && <span className="unread-indicator"></span>}
                                             </span>
                                         </div>
+                                        <p className="notification-date textRedColor mb-0 ps-2">{formatNotificationDate(notification.notificationDate)}</p>
                                     </div>
                                 </div>
                             </div>

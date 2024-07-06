@@ -12,6 +12,8 @@ function RequestBookings() {
 
   const columns = React.useMemo(
     () => [
+      { Header: 'Booking ID', accessor: 'id' },
+
       {
         Header: 'Customer Username',
         accessor: 'customerUsername',
@@ -32,7 +34,7 @@ function RequestBookings() {
       { Header: 'End Time', accessor: 'endTime' },
       {
         Header: 'Accept/Reject',
-        accessor: 'id',
+        accessor: 'actions',
         Cell: ({ row }) => (
           <div>
             <button className="bg-success btn mb-1 text-light" onClick={() => handleAccept(row.original.id)}>

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import Chart from 'chart.js/auto';
 
-const ProfitChart = () => {
+const ProfitAnalysisChart = () => {
   const chartRef = useRef();
 
   const dummyProfitData = [
@@ -28,8 +28,8 @@ const ProfitChart = () => {
         datasets: [
           {
             label: 'Profit',
-            borderColor: 'rgba(75, 192, 192, 1)',
-            backgroundColor: 'rgba(75, 192, 192, 0.2)', // Color for the area under the line
+            borderColor: 'rgba(0, 0, 0, 1)',
+            backgroundColor: 'rgba(0, 0, 0, 0.2)', // Color for the area under the line
             data: profitData,
             fill: {
               target: 'origin', // Fill area under the line from the beginning (origin) of the chart
@@ -43,11 +43,13 @@ const ProfitChart = () => {
             beginAtZero: true,
           },
         },
+        responsive: true,
+        maintainAspectRatio: false, // Ensures the chart can resize to fit its container
       },
     });
   }, [dummyProfitData]);
 
-  return <canvas ref={chartRef} />;
+  return <canvas ref={chartRef} style={{ maxWidth: '100%', height: '400px' }} />; // Adjust max-width and max-height as needed
 };
 
-export default ProfitChart;
+export default ProfitAnalysisChart;

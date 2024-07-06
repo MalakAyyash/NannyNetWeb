@@ -10,6 +10,7 @@ function FastOrderList() {
   const [ordersData, setOrdersData] = useState([]);
   const navigate = useNavigate();
 
+
   const columns = React.useMemo(
     () => [
       { Header: 'ID', accessor: 'id' },
@@ -20,7 +21,7 @@ function FastOrderList() {
           const customer = row.original.customer;
           if (customer && customer.user) {
             return (
-              <Link className='textRedColor' to={`/admin/CustomerInfoStatus/${customer.user.id}`}>
+              <Link className='textRedColor text-center' to={`/admin/CustomerInfoStatus/${customer.user.id}`}>
                 {customer.user.name}
               </Link>
             );
@@ -28,24 +29,12 @@ function FastOrderList() {
           return null;
         },
       },
-      {
-        Header: 'Employee',
-        accessor: 'employee.user.name',
-        Cell: ({ row }) => {
-          const employee = row.original.employee;
-          if (employee && employee.user) {
-            return (
-              <Link className='textRedColor' to={`/admin/BabysitterInfoStatus/${employee.user.id}`}>
-                {employee.user.name}
-              </Link>
-            );
-          }
-          return null;
-        },
-      },
-      { Header: 'Price', accessor: 'price' },
-      { Header: '#Kids', accessor: 'numOfKids' },
+      { Header: 'Price', accessor: 'price',
+        Cell: ({ value }) => parseFloat(value).toFixed(2) }, // Format to 2 decimal places
+      { Header: '#Kids', accessor: 'numOfKids',
+        Cell: ({ value }) => Math.floor(value) }, // Display whole number
       { Header: 'Submitted Date', accessor: 'orderSubmittedDate' },
+      { Header: 'Description', accessor: 'describtion' },
       { Header: 'Order Date', accessor: 'orderDate' },
       { Header: 'Start Time', accessor: 'startTime' },
       { Header: 'End Time', accessor: 'endTime' },
@@ -65,7 +54,7 @@ function FastOrderList() {
     ],
     []
   );
-
+  
   const fetchData = async () => {
     try {
       const token = Cookies.get('jwt');
@@ -100,6 +89,21 @@ function FastOrderList() {
     fetchData();
   }, []);
 
+    // Function to render star rating
+    const renderStarRating = (stars) => {
+      const starElements = [];
+      for (let i = 1; i <= 5; i++) {
+          if (i <= stars) {
+              // Render a filled star
+              starElements.push(<i key={i} className="fa-solid fa-star text-warning"></i>);
+          } else {
+              // Render an empty star
+              starElements.push(<i key={i} className="fa-regular fa-star text-secondary"></i>);
+          }
+      }
+      return starElements;
+  };
+
   const data = React.useMemo(() => ordersData, [ordersData]);
 
   const {
@@ -131,10 +135,10 @@ function FastOrderList() {
   return (
     <div className="container mt-4">
       <div className='DetaliedBook'>
-        <p className='mt-4 profileTitle'>All Fast Request</p>
-        <p className='small text-secondary fst-normal'>Manage the list of All fast Bookings below.</p>
-        <hr></hr>
+        <p className='mt-4 fst-normal'>All Fast Request</p>
       </div>
+      <p className='small text-secondary fst-normal'>Manage the list of All fast Bookings below.</p>
+      <hr></hr>
       <div className='d-flex justify-content-center'>
         <table {...getTableProps()} className="table table-striped">
           <thead>

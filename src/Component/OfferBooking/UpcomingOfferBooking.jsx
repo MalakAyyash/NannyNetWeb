@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import Swal from 'sweetalert2';
 
-function UpcomingOfferBooking() {
+function UpcomingOfferBookings() {
   const [filteredRentData, setFilteredRentData] = useState([]);
 
   const columns = React.useMemo(
@@ -68,7 +68,7 @@ function UpcomingOfferBooking() {
         },
       };
 
-      const response = await axios.get('http://176.119.254.188:8080/customer/offer/orders/outgoing', config);
+      const response = await axios.get('http://176.119.254.188:8080/customer/offer/orders/accepted', config);
 
       if (response && response.data) {
         const bookings = response.data;
@@ -167,8 +167,43 @@ function UpcomingOfferBooking() {
   };
 
   const handleSubmit = async (bookingId) => {
-    // Implement submission logic here
-    console.log('Submit booking:', bookingId);
+    try {
+      const token = Cookies.get('jwt');
+      if (!token) {
+        console.error('Token not found.');
+        return;
+      }
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const requestBody = {
+        orderId: bookingId,
+      };
+
+      const response = await axios.post('http://176.119.254.188:8080/customer/offer/order/submit', requestBody, config);
+      console.log(response.data);
+
+      // Show success message using Swal
+      Swal.fire({
+        icon: 'success',
+        title: 'Order Submitted!',
+        text: 'The order has been submitted successfully.',
+      }).then(() => {
+        // Refresh data after submission
+        fetchData();
+      });
+    } catch (error) {
+      console.error('Error submitting order:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Error submitting order',
+      });
+    }
   };
 
   const data = React.useMemo(() => filteredRentData, [filteredRentData]);
@@ -200,13 +235,13 @@ function UpcomingOfferBooking() {
       <div className='d-flex justify-content-center'>
         {data.length === 0 ? (
           <div className="text-center mb-3">
-          <p className='mt-3'>You`ve got nothing booked at the moment</p>
-          <div className=''>
-          <Link to={`/BabysittersList`} className='text-decoration-none'>
-          <p className='mb-5 redText'>Check Out Our Services</p>
-          </Link>
+            <p className='mt-3'>You`ve got nothing booked at the moment</p>
+            <div className=''>
+              <Link to={`/BabysittersList`} className='text-decoration-none'>
+                <p className='mb-5 redText'>Check Out Our Services</p>
+              </Link>
+            </div>
           </div>
-        </div>
         ) : (
           <table {...getTableProps()} className="table table-striped">
             <thead>
@@ -271,4 +306,4 @@ function UpcomingOfferBooking() {
   );
 }
 
-export default UpcomingOfferBooking;
+export default UpcomingOfferBookings;

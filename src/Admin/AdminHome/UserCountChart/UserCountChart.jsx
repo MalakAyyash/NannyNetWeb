@@ -21,14 +21,14 @@ const UserCountChart = () => {
           label: 'Number of Users',
           data: [dummyData.customerCount, dummyData.babysitterCount, dummyData.adminCount],
           backgroundColor: [
-            'rgba(255, 99, 132, 0.5)', // Red for Customers
-            'rgba(54, 162, 235, 0.5)', // Blue for Babysitters
-            'rgba(255, 206, 86, 0.5)', // Yellow for Admins
+            'rgb(0, 0, 0 ,.5)', 
+            'rgb(0, 0, 0 ,.5)',
+            'rgb(0, 0, 0 ,.5)',
           ],
           borderColor: [
-            'rgba(255, 99, 132, 1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
+            'rgb(0, 0, 0 ,1)',
+            'rgb(0, 0, 0 ,1)',
+            'rgb(0, 0, 0 ,1)',
           ],
           borderWidth: 1,
         }],

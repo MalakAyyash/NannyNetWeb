@@ -5,10 +5,10 @@ import { FaCaretSquareUp, FaCaretSquareDown } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import Swal from 'sweetalert2';
-import UserRequestTable from './UserRquestTable';
 
 function UserRequestBookings() {
   const [filteredRentData, setFilteredRentData] = useState([]);
+  const [expandedRows, setExpandedRows] = useState({});
 
   const columns = React.useMemo(
     () => [
@@ -16,7 +16,10 @@ function UserRequestBookings() {
         Header: 'Babysitter Name',
         accessor: 'babysitterName',
         Cell: ({ row }) => (
-          <Link className='textRedColor' to={`/babysitter-profile/${row.original.babysitter.user.id}`}>
+          <Link
+            to={`/babysitter-profile/${row.original.babysitter.user.id}`}
+            className='textRedColor'
+          >
             {row.original.babysitterName}
           </Link>
         ),
@@ -33,10 +36,6 @@ function UserRequestBookings() {
       },
       { Header: 'Start Time', accessor: 'startTime' },
       { Header: 'End Time', accessor: 'endTime' },
-      {
-        Header: 'Tel Number',
-        accessor: 'employee.user.telNumber',
-      },
     ],
     []
   );
@@ -109,6 +108,23 @@ function UserRequestBookings() {
     fetchData();
   }, []);
 
+  const groupByTime = (data) => {
+    return data.reduce((acc, order) => {
+      const key = `${order.startTime}-${order.endTime}`;
+      if (!acc[key]) {
+        acc[key] = [];
+      }
+      acc[key].push(order);
+      return acc;
+    }, {});
+  };
+
+  const groupedData = groupByTime(filteredRentData);
+
+  const handleRowClick = (key) => {
+    setExpandedRows(prev => ({ ...prev, [key]: !prev[key] }));
+  };
+
   const data = React.useMemo(() => filteredRentData, [filteredRentData]);
 
   const {
@@ -127,7 +143,7 @@ function UserRequestBookings() {
     {
       columns,
       data,
-      initialState: { pageSize: 2 },
+      initialState: { pageSize: 3 },
     },
     useSortBy,
     usePagination
@@ -138,7 +154,7 @@ function UserRequestBookings() {
       <div className='d-flex justify-content-center'>
         {data.length === 0 ? ( // Check if data array is empty
           <div className="text-center mb-3">
-            <p className='mt-3'>You`ve got nothing pinned at the moment</p>
+            <p className='mt-3'>You've got nothing pinned at the moment</p>
             <div className=''>
             <Link to={`/BabysittersList`} className='text-decoration-none'>
             <p className='mb-5 redText'>Check Out Our Services</p>
@@ -172,16 +188,45 @@ function UserRequestBookings() {
               ))}
             </thead>
             <tbody {...getTableBodyProps()}>
-              {page.map((row) => {
-                prepareRow(row);
+              {Object.keys(groupedData).map((key) => {
+                const orders = groupedData[key];
+                const firstOrder = orders[0];
                 return (
-                  <tr {...row.getRowProps()}>
-                    {row.cells.map((cell) => (
-                      <td {...cell.getCellProps()} className="text-center">
-                        {cell.render('Cell')}
+                  <React.Fragment key={key}>
+                    <tr>
+                      <td colSpan={columns.length} className="text-center">
+                        <div className='row'>
+                          <div className='col-md-10 d-flex justify-content-center'>
+                          <p>You have {orders.length} pending orders from {firstOrder.startTime} to {firstOrder.endTime}</p>
+                          </div>
+                          <div className='col-md-2 d-flex justify-content-end my-1'>
+                          <button className='btn BlueColor text-light' onClick={() => handleRowClick(key)}>
+                          {expandedRows[key] ? 'Hide' : 'Show'}
+                        </button>
+                        </div>
+                        </div>
                       </td>
-                    ))}
-                  </tr>
+                    </tr>
+                    {expandedRows[key] && orders.map(order => {
+                      return (
+                        <tr key={order.id} className='text-center'>
+                          <td>
+                            <Link
+                              to={`/babysitter-profile/${order.babysitter.user.id}`}
+                              className='textRedColor'
+                            >
+                              {order.babysitterName}
+                            </Link>
+                          </td>
+                          <td>{order.price}</td>
+                          <td>{order.babysitterType}</td>
+                          <td>{order.orderLocation.city}/{order.orderLocation.streetData}</td>
+                          <td>{order.startTime}</td>
+                          <td>{order.endTime}</td>
+                        </tr>
+                      );
+                    })}
+                  </React.Fragment>
                 );
               })}
             </tbody>
@@ -206,8 +251,6 @@ function UserRequestBookings() {
         </div>
       )}
       <hr></hr>
-
-      <UserRequestTable />
     </div>
   );
 }

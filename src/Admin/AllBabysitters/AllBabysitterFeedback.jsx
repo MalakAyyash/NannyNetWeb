@@ -26,7 +26,7 @@ function AllBabysitterFeedback() {
   const columns = useMemo(
     () => [
       { Header: 'Babysitter ID', accessor: 'employee.user.id' },
-      { Header: 'Babysitter Username', accessor: 'employee.user.username' },
+      { Header: 'Parent Username', accessor: 'customer.user.username' },
       { Header: 'Comment', accessor: 'comment' },
       { Header: 'Stars', accessor: 'stars', Cell: ({ value }) => renderStarRating(value) },
       { Header: 'Feedback Date', accessor: 'feedbackSubmittedDate' },

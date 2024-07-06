@@ -101,8 +101,10 @@ function ViewOffer() {
   }
 
   return (
-    <div className="container DetaliedBook">
-      <p className="profileTitle">View Offers</p>
+    <div className="container">
+      <div className='DetaliedBook'>
+      <p className="fst-normal">View Offers</p>
+      </div>
       <div className="row pb-1">
         <div className="col-md-8">
           <p className='small text-secondary fst-normal'>Review the list of All Offers below.</p>

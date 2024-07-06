@@ -57,7 +57,6 @@ function BabysitterProfile() {
         };
 
         const userId = Cookies.get('userId');
-        console.log(Cookies.get('userId'))
         if (userId) {
             // Check if the user ID in cookies matches the profile user ID
             setOwnerProfile(userId === id);
@@ -172,6 +171,11 @@ function BabysitterProfile() {
                         {ownerProfile && (
                             <div className='border-0 fs-6 redColor text-light normalFont rounded-0 w-100 p-2'>
                                 <RouterLink to="/BabysitterEditAccount" className="text-decoration-none d-flex justify-content-center text-light">Edit Account</RouterLink>
+                            </div>
+                        )}
+                           {!ownerProfile && (
+                            <div className='border-0 fs-6 redColor text-light normalFont rounded-0 w-100 p-2'>
+                                <RouterLink to={`/BabysitterFeedback/${babysitterData.user.id}`} className="text-decoration-none d-flex justify-content-center text-center text-light">Feedbacks</RouterLink>
                             </div>
                         )}
                     </div>

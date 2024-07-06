@@ -1,31 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { Link as RouterLink, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import { Link } from 'react-router-dom';
 import HistoryOrders from './HistoryOrders';
-import CustomerStatus from './CustomerStatus';
-import CustomerCount from './CustomerFeedback';
-import CustomerFeedback from './CustomerFeedback';
+import CustomerStatus from './CustomerStatus'; // Renamed from BabysitterStatus
+import CustomerFeedback from './CustomerFeedback'; // Renamed from BabysitterFeedback
+import CustomerPayment from './CustomerPayment';
+import CustomerSchedule from './CustomerSchedule';
 
-
-
-
-function CustomerInfoStatus() {
-    const [customerData, setCustomerData] = useState(null);
-    const [ownerProfile, setOwnerProfile] = useState(false); // State to determine if the viewer is the owner of the profile
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+function CustomerInfoStatus() { // Renamed from BabysitterInfoStatus
+    const [customerData, setCustomerData] = useState(null); // Renamed from babysitterData
+    const [isCustomerOwner, setIsCustomerOwner] = useState(false); // Renamed from isBabysitterOwner
     const { id } = useParams(); // Get the ID parameter from the URL
 
+    const [activeTab, setActiveTab] = useState('orders');
 
     useEffect(() => {
-        const fetchUserData = async () => {
+        const fetchCustomerData = async () => {
             try {
                 let response;
-                if (ownerProfile) {
-                    // Fetch user data using the userId from cookies
+                if (isCustomerOwner) {
+                    // Fetch customer data using the userId from cookies
                     response = await fetch(`http://176.119.254.188:8080/customer/${Cookies.get('userId')}`);
                 } else {
-                    // Fetch employee data using the id from useParams
+                    // Fetch customer data using the id from useParams
                     response = await fetch(`http://176.119.254.188:8080/customer/${id}`);
                 }
 
@@ -33,21 +30,20 @@ function CustomerInfoStatus() {
                     const data = await response.json();
                     setCustomerData(data);
                 } else {
-                    console.error('Failed to fetch user data');
+                    console.error('Failed to fetch customer data');
                 }
             } catch (error) {
-                console.error('Error fetching user data:', error);
+                console.error('Error fetching customer data:', error);
             }
         };
 
         const userId = Cookies.get('userId');
         if (userId) {
             // Check if the user ID in cookies matches the profile user ID
-            setOwnerProfile(userId === id);
-            fetchUserData();
+            setIsCustomerOwner(userId === id);
+            fetchCustomerData();
         }
-    }, [id, ownerProfile]);
-
+    }, [id, isCustomerOwner]);
 
     if (!customerData || !customerData.user) {
         return <div>Loading...</div>;
@@ -55,30 +51,43 @@ function CustomerInfoStatus() {
 
     return (
         <div className='mx-4'>
-            <div className='DetaliedBooknormalFont'>
-                <div className='DetaliedBook'>
-                    <div className=''>
-                        <p className='pt-2 profileTitle'>View {customerData.user.name} Bookings</p>
+            <div className=' normalFont'>
+                <div className=''>
+                    <div className='DetaliedBook'>
+                        <p className='pt-2 fst-normal'>{customerData.user.name}</p>
                     </div>
-                    <p className='small'>Stay in control of the customer scheduled.</p>
-                    <div className="row">
-                        <div className="col-md-6">
-                            <div>
-                                <HistoryOrders />
-                            </div>
-                        </div>
-                        <div className="col-md-6">
-                                <CustomerStatus />
-                                <CustomerFeedback />
+                    <p className='small text-secondary fst-normal'>Stay organized and in control of Users info.</p>
+                    <hr />
+                    <ul className="nav nav-tabs">
+                        <li className="nav-item">
+                            <a className={`nav-link text-dark px-5 ${activeTab === 'orders' ? 'active' : ''}`} onClick={() => setActiveTab('orders')} href="#">
+                                Orders
+                            </a>
+                        </li>
+                        <li className="nav-item">
+                            <a className={`nav-link px-5 text-dark ${activeTab === 'schedule' ? 'active' : ''}`} onClick={() => setActiveTab('schedule')} href="#">
+                                Order Schedule
+                            </a>
+                        </li>
+                        <li className="nav-item">
+                            <a className={`nav-link text-dark px-5 ${activeTab === 'feedback' ? 'active' : ''}`} onClick={() => setActiveTab('feedback')} href="#">
+                                Feedback
+                            </a>
+                        </li>
+                        <li className="nav-item">
+                            <a className={`nav-link px-5 text-dark ${activeTab === 'payment' ? 'active' : ''}`} onClick={() => setActiveTab('payment')} href="#">
+                                Payment
+                            </a>
+                        </li>
+                    </ul>
+                    <div>
+                        {activeTab === 'orders' && <HistoryOrders />}
+                        {activeTab === 'schedule' && <CustomerSchedule />}
+                        {activeTab === 'feedback' && <CustomerFeedback  />}
+                        {activeTab === 'payment' && <CustomerPayment id={id}  />}
 
-                              
-
-                        </div>
                     </div>
-
-
                 </div>
-                <hr />
             </div>
         </div>
     );

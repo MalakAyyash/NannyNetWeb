@@ -12,9 +12,7 @@ import reportWebVitals from './reportWebVitals';
 import Layout from './Component/Layout/Layout.jsx';
 import Home from './Component/Home/Home.jsx';
 import ServicePage from './Component/ServicePage/ServicePage';
-import BookingForm from './Component/BookingForm/BookingForm.jsx';
 import BabysitterRequest from './Component/BabysitterRequest/BabysitterRequest.jsx';
-import Account from './Component/Account/Account.jsx';
 import SignUp from './Component/SignUp/SignUp.jsx';
 import AdminHome from './Admin/AdminHome/AdminHome.jsx';
 import UserEditAccount from './Component/UserEditAccount/UserEditAccount.jsx';
@@ -49,6 +47,8 @@ import ViewBlog from './Admin/Blog/Blog.jsx';
 import Offers from './Component/Offers/Offers.jsx';
 import OfferDetails from './Component/Offers/OfferDetails.jsx';
 import OfferBooking from './Component/OfferBooking/OfferBooking.jsx';
+import Payment from './Admin/Payment/Payment.jsx';
+import OfferDetailedBook from './Component/DetailedBook/OfferDetailedBook.jsx';
 
 
 
@@ -66,9 +66,8 @@ function Main() {
     { path: 'service', element: <ServicePage /> },
     { path: 'BabysittersList', element: <BabysittersList /> },
     { path: 'DetailedBook', element: <DetailedBook /> },
-    { path: 'BookingForm', element: <BookingForm /> },
+    { path: 'OfferDetailedBook', element: <OfferDetailedBook /> },
     { path: 'BabysitterRequest', element: <BabysitterRequest /> },
-    { path: 'Account/:babysitterKey', element: <Account /> },
     { path: 'user-profile/:id', element: <UserProfile /> },
     { path: 'profile', element: <UserProfile /> },
     { path: 'UserEditAccount', element: <UserEditAccount /> },
@@ -86,11 +85,6 @@ function Main() {
     { path: 'offers/:id', element: <Offers /> },
     { path: 'offerDetails/:id', element: <OfferDetails /> },
     { path: 'offerBookings/:id', element: <OfferBooking /> },
-
-
-
-
-
 
 
   ],
@@ -118,6 +112,8 @@ function Main() {
     { path: 'AddOffer', element: <AddOffer /> },
     { path: 'ViewOffer', element: <ViewOffer /> },
     { path: 'blog', element: <ViewBlog /> },
+    { path: 'payment', element: <Payment /> },
+
 
 
 

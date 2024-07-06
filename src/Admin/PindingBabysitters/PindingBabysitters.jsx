@@ -27,7 +27,6 @@ function PendingBabysitters() {
       { Header: 'Gender', accessor: 'gender' },
       { Header: 'Type', accessor: 'type' },
       { Header: 'City', accessor: 'city' },
-      { Header: 'Availability', accessor: 'availability' },
       { Header: 'Phone', accessor: 'telNumber' },
       { Header: 'Date of Birth', accessor: 'dateOfBirth' },
       { Header: 'Stars', accessor: 'stars' },
@@ -143,28 +142,27 @@ function PendingBabysitters() {
 
   if (babysittersData.length === 0) {
     return (
+      <>
+    
       <div className='DetaliedBook'>
-        <p className='mt-4 profileTitle'>Pinding Babysitters</p>
+        <p className='mt-4 fst-normal '>Pending Babysitters</p>
+        </div>
         <p className='small text-secondary fst-normal'>Review the list of pending babysitters below. Click "Accept" to confirm a babysitter.</p>
         <hr></hr>
         <div className="container mt-4 d-flex justify-content-center align-items-center" style={{ minHeight: '50vh' }}>
-
-          <p className=''>There Is No Pinding Babysitters To Show.</p>
+          <p className=''>There Is No Pending Babysitters To Show.</p>
         </div>
-
-      </div>
-
+        </>
     );
   }
 
   return (
     <div className="container mt-4">
         <div className='DetaliedBook'>
-        <p className='mt-4 profileTitle'>All Babysitters</p>
-        <p className='small text-secondary fst-normal'>Review the list of All babysitters below.</p>
-        <hr></hr>
+        <p className='mt-4 fst-normal'>All Babysitters</p>
       </div>
-
+      <p className='small text-secondary fst-normal'>Review the list of All babysitters below.</p>
+      <hr></hr>
       <div className='d-flex justify-content-center ps-5'>
         <table {...getTableProps()} className="table table-striped">
           {/* Render table headers */}

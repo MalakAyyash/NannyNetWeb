@@ -135,7 +135,6 @@ function UserProfile() {
               <RouterLink to="/UserEditAccount" className={`nav-link`}>Account</RouterLink>
             </li>
           )}
-
         </ul>
       )}
       <div className='DetaliedBook mt-5 normalFont'>
@@ -148,6 +147,13 @@ function UserProfile() {
             <div className='d-flex m-auto p-3 col-md-2'>
               <div className='border-0 fs-6 redColor text-light normalFont rounded-0 w-100 p-2'>
                 <RouterLink to="/UserEditAccount" className="text-decoration-none d-flex justify-content-center text-light">Edit Account</RouterLink>
+              </div>
+            </div>
+          )}
+            {!isOwnProfile && (
+            <div className='d-flex m-auto p-3 col-md-2'>
+              <div className='border-0 fs-6 redColor text-light normalFont rounded-0 w-100 p-2'>
+                <RouterLink  to={`/Feedback/${customerData.user.id}`} className="text-decoration-none d-flex justify-content-center text-light">Feedback</RouterLink>
               </div>
             </div>
           )}

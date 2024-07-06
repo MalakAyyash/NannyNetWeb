@@ -4,11 +4,15 @@ import Cookies from 'js-cookie';
 import HistoryOrders from './HistoryOrders';
 import BabysitterStatus from './BabysitterStatus';
 import BabysitterFeedback from './BabysitterFeedback';
+import BabysitterPayment from './BabysitterPayment';
+import BabysitterSchedule from './BabysitterSchedule';
 
 function BabysitterInfoStatus() {
     const [babysitterData, setBabysitterData] = useState(null);
     const [isBabysitterOwner, setIsBabysitterOwner] = useState(false); // State to determine if the viewer is the owner of the profile
     const { id } = useParams(); // Get the ID parameter from the URL
+    const [activeTab, setActiveTab] = useState('orders');
+
 
     useEffect(() => {
         const fetchBabysitterData = async () => {
@@ -47,25 +51,44 @@ function BabysitterInfoStatus() {
 
     return (
         <div className='mx-4'>
-            <div className='DetaliedBooknormalFont'>
-                <div className='DetaliedBook'>
-                    <div className=''>
-                        <p className='pt-2 profileTitle'>View {babysitterData.user.name} Orders</p>
+            <div className=' normalFont'>
+                <div className=''>
+                    <div className='DetaliedBook'>
+                        <p className='pt-2 fst-normal'>{babysitterData.user.name}</p>
                     </div>
-                    <p className='small'>Stay in control of the babysitter scheduled.</p>
-                    <div className="row">
-                        <div className="col-md-6">
-                            <div>
-                                <HistoryOrders />
-                            </div>
-                        </div>
-                        <div className="col-md-6">
-                            <BabysitterStatus />
-                            <BabysitterFeedback/>
-                        </div>
+                    <p className='small text-secondary fst-normal'>Stay organized and in control of Users info.</p>
+                    <hr />
+                    <ul className="nav nav-tabs">
+
+                        <li className="nav-item">
+                            <a className={`nav-link text-dark px-5 ${activeTab === 'orders' ? 'active' : ''}`} onClick={() => setActiveTab('orders')} href="#">
+                                Orders
+                            </a>
+                        </li>
+                        <li className="nav-item">
+                            <a className={`nav-link text-dark px-5 ${activeTab === 'schedule' ? 'active' : ''}`} onClick={() => setActiveTab('schedule')} href="#">
+                                Orders Schedule
+                            </a>
+                        </li>
+                        <li className="nav-item">
+                            <a className={`nav-link text-dark px-5 ${activeTab === 'feedback' ? 'active' : ''}`} onClick={() => setActiveTab('feedback')} href="#">
+                                Feedback
+                            </a>
+                        </li>
+                        <li className="nav-item">
+                            <a className={`nav-link px-5 text-dark ${activeTab === 'payment' ? 'active' : ''}`} onClick={() => setActiveTab('payment')} href="#">
+                                Payment
+                            </a>
+                        </li>
+                    </ul>
+                    <div>
+                        {activeTab === 'orders' && <HistoryOrders />}
+                        {activeTab === 'schedule' && <BabysitterSchedule />}
+                        {activeTab === 'feedback' && <BabysitterFeedback />}
+                        {activeTab === 'payment' && <BabysitterPayment id={id} />}
+
                     </div>
                 </div>
-                <hr />
             </div>
         </div>
     );

@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 
 function AllBabysitters() {
   const [babysittersData, setBabysittersData] = useState([]);
+
   const renderStarRating = (stars) => {
     const starElements = [];
     for (let i = 1; i <= 5; i++) {
@@ -21,7 +22,46 @@ function AllBabysitters() {
     }
     return starElements;
   };
-  
+
+  const formatDate = (dateString) => {
+    if (!dateString) return 'Unknown';
+    const date = new Date(dateString);
+    return date.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+  };
+
+  const deleteBabysitter = async (userId) => {
+    try {
+      const token = Cookies.get('jwt');
+      if (!token) {
+        console.error('Token not found.');
+        return;
+      }
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      await axios.get(`http://176.119.254.188:8080/admin/delete/user/${userId}`, config);
+      Swal.fire({
+        icon: 'success',
+        title: 'Deleted',
+        text: 'Babysitter has been deleted successfully.',
+      });
+
+      // Refresh data after deletion
+      fetchData();
+    } catch (error) {
+      console.error('Error deleting babysitter:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: error.message || 'Unknown error occurred.',
+      });
+    }
+  };
+
   const columns = React.useMemo(
     () => [
       { Header: 'ID', accessor: 'babysitter.user.id' },
@@ -42,9 +82,25 @@ function AllBabysitters() {
       { Header: 'City', accessor: 'city' },
       { Header: 'Availability', accessor: 'availability' },
       { Header: 'Phone', accessor: 'babysitter.user.telNumber' },
-      { Header: 'Date of Birth', accessor: 'dateOfBirth' },
+      {
+        Header: 'Date of Birth',
+        accessor: 'dateOfBirth',
+        Cell: ({ value }) => formatDate(value),
+      },
       { Header: 'Stars', accessor: 'stars', Cell: ({ value }) => renderStarRating(value) },
       { Header: '#Cancellations', accessor: 'numOfCancelation' },
+      {
+        Header: 'Actions',
+        accessor: 'actions',
+        Cell: ({ row }) => (
+          <button
+            className="btn btn-danger btn-sm"
+            onClick={() => deleteBabysitter(row.original.babysitter.user.id)}
+          >
+            Delete
+          </button>
+        ),
+      },
     ],
     []
   );
@@ -63,7 +119,7 @@ function AllBabysitters() {
         },
       };
 
-      const response = await axios.get('http://176.119.254.188:8080/admin/getAllEmployees');
+      const response = await axios.get('http://176.119.254.188:8080/admin/getAllEmployees', config);
 
       if (response && response.data) {
         const bookings = response.data;
@@ -151,7 +207,7 @@ function AllBabysitters() {
     {
       columns,
       data,
-      initialState: { pageSize: 10 },
+      initialState: { pageSize: 6 }, // Display only 6 rows
     },
     useSortBy,
     usePagination
@@ -160,10 +216,10 @@ function AllBabysitters() {
   return (
     <div className="container mt-4">
       <div className='DetaliedBook'>
-        <p className='mt-4 profileTitle'>All Babysitters</p>
-        <p className='small text-secondary fst-normal'>Review the list of All babysitters below.</p>
-        <hr></hr>
+        <p className='mt-4 fst-normal'>All Babysitters</p>
       </div>
+      <p className='small text-secondary fst-normal'>Review the list of All babysitters below.</p>
+      <hr></hr>
       <div className='d-flex justify-content-center ps-5'>
         <table {...getTableProps()} className="table table-striped">
           <thead>

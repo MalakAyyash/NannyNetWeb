@@ -27,7 +27,7 @@ function LeaveFeedback() {
                     },
                 };
 
-                const response = await axios.get('http://176.119.254.188:8080/customer/orders/outgoing', config);
+                const response = await axios.get('http://176.119.254.188:8080/customer/orders/submitted', config);
 
                 if (response && response.data) {
                     setCustomerOrders(response.data);
@@ -141,7 +141,7 @@ function LeaveFeedback() {
                                                         <div className="modal-body text-center">
                                                         <div className=''>
 
-                                                            <p className=''> We are always looking for ways to improve your experience. Please take a moment to evaluate and tell us what you think. </p>
+                                                            <p className='fst-normal'> We are always looking for ways to improve your experience. Please take a moment to evaluate and tell us what you think. </p>
                                                             </div>
                                                             <div className='d-flex justify-content-center'>
                                                                 <Rating onClick={handleRating} ratingValue={ratingValue} />

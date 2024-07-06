@@ -13,6 +13,8 @@ function UpcomingBookings() {
 
   const columns = React.useMemo(
     () => [
+      { Header: 'Booking ID', accessor: 'id' },
+
       {
         Header: 'Customer Username',
         accessor: 'customerUsername',
@@ -32,12 +34,8 @@ function UpcomingBookings() {
       { Header: 'Start Time', accessor: 'startTime' },
       { Header: 'End Time', accessor: 'endTime' },
       {
-        Header: 'Tel Number',
-        accessor: 'customer.user.telNumber',
-      },
-      {
         Header: 'Actions',
-        accessor: 'id',
+        accessor: 'actions',  // Changed accessor to 'actions'
         Cell: ({ row }) => (
           <button className="btn btn-warning" onClick={() => handleCancel(row.original.id)}>
             Cancel
@@ -62,7 +60,7 @@ function UpcomingBookings() {
         },
       };
 
-      const response = await axios.get('http://176.119.254.188:8080/provider/orders/outgoing', config);
+      const response = await axios.get('http://176.119.254.188:8080/provider/orders/accepted', config);
 
       if (response && response.data) {
         const bookings = response.data;

@@ -4,11 +4,11 @@ import * as Yup from 'yup';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 
-const schema = Yup.object({ // validation 
+const schema = Yup.object({
   fname: Yup.string().required("First Name is required"),
   lname: Yup.string().required("Last Name is required"),
   username: Yup.string().required("Username is required"),
-  email: Yup.string().required("Email is required").email('not valid Email'),
+  email: Yup.string().required("Email is required").email('Invalid Email'),
   telNumber: Yup.number().required("Number is required"),
   streetData: Yup.string().required("Area is required"),
   confirmPassword: Yup.string().required("Confirm Password is required").oneOf([Yup.ref('password'), null], 'Passwords must match'),
@@ -16,6 +16,7 @@ const schema = Yup.object({ // validation
     .required("Password is required")
     .matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/, "Password must contain at least one letter and one number, and be at least 6 characters long"),
 });
+
 function SignUp() {
 
   const formik = useFormik({
@@ -26,7 +27,7 @@ function SignUp() {
       username: '',
       password: '',
       telNumber: '',
-      gender: 'Male',
+      gender: 'male',
       city: 'Ramallah',
       streetData: '',
       extraDescription: '',
@@ -41,16 +42,19 @@ function SignUp() {
         const location = { city, streetData, extraDescription};
         const dataToSend = { ...otherValues, name, location };
         const response = await axios.post('http://176.119.254.188:8080/signup/customer', dataToSend);
-        console.log(response.data);
         if (response.status === 200) {
           Swal.fire({
             title: "Great!",
-            text: "Signup successfully!",
+            text: "Signup successful!",
             icon: "success",
             didOpen: () => {
               const confirmButton = Swal.getConfirmButton();
               confirmButton.style.backgroundColor = "rgb(194, 39, 75)";
               confirmButton.style.color = "white";
+            }
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.href = '/';
             }
           });
         } else {
@@ -60,8 +64,8 @@ function SignUp() {
             icon: "error",
           });
         }
-      }  catch (error) {
-        if (error.response && error.response.status === 409) { // Check if it's a conflict error (username or email already in use)
+      } catch (error) {
+        if (error.response && error.response.status === 409) {
           Swal.fire({
             title: "Error!",
             text: "Username or email already in use.",
@@ -73,18 +77,13 @@ function SignUp() {
             text: "An unexpected error occurred. Please try again later.",
             icon: "error",
           });
-
         }
       }
-      
     }
   });
 
-  
-  
   return (
     <>
-    
       <div className=' Book-container-fluid my-5 pt-5'>
         <div className="row mt-5 pt-5">
           <div className="col-md-8">
@@ -110,13 +109,11 @@ function SignUp() {
                           <label htmlFor="username" className="form-label">Username</label>
                           <input type="text" className="form-control" id="username" placeholder="" value={formik.values.username} onChange={formik.handleChange} />
                           <p className='text-danger small'>{formik.errors.username}</p>
-
                         </div>
                         <div className="form-outline col-md-6">
                           <label htmlFor="email" className="form-label">Email address</label>
                           <input type="email" className="form-control" id="email" placeholder="name@example.com" value={formik.values.email} onChange={formik.handleChange} />
                           <p className='text-danger small'>{formik.errors.email}</p>
-
                         </div>
                         <div className='col-md-6 form-outline'>
                           <label htmlFor="telNumber" className="form-label">Phone</label>
@@ -125,24 +122,24 @@ function SignUp() {
                         </div>
                         <div className=" col-md-6 form-outline">
                           <label htmlFor="gender" className="form-label">Gender</label>
-                          <select class="form-select" id="gender" aria-label="Default select example" name="gender" value={formik.values.gender} onChange={formik.handleChange}>
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
+                          <select className="form-select" id="gender" aria-label="Default select example" name="gender" value={formik.values.gender} onChange={formik.handleChange}>
+                            <option value="male">male</option>
+                            <option value="female">female</option>
                           </select>
                           <p className='text-danger small'>{formik.errors.gender}</p>
                         </div>
                         <div className=" col-md-6 form-outline">
                           <label htmlFor="city" className="form-label">City Location</label>
-                          <select class="form-select" id="city" aria-label="Default select example" name="city" value={formik.values.city} onChange={formik.handleChange}>
+                          <select className="form-select" id="city" aria-label="Default select example" name="city" value={formik.values.city} onChange={formik.handleChange}>
                             <option value="Ramallah">Ramallah</option>
                             <option value="Nablus">Nablus</option>
                             <option value="Salfit">Salfeet</option>
-                            <option value="Ramallah">BeitSahour</option>
-                            <option value="Nablus">BeitLehem</option>
-                            <option value="Salfit">Jenin</option>
-                            <option value="Ramallah">Hebron</option>
-                            <option value="Nablus">Qalqilya</option>
-                            <option value="Salfit">Tulkarm</option>
+                            <option value="BeitSahour">BeitSahour</option>
+                            <option value="BeitLehem">BeitLehem</option>
+                            <option value="Jenin">Jenin</option>
+                            <option value="Hebron">Hebron</option>
+                            <option value="Qalqilya">Qalqilya</option>
+                            <option value="Tulkarm">Tulkarm</option>
                           </select>
                           <p className='text-danger small'>{formik.errors.city}</p>
                         </div>

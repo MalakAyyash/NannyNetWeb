@@ -33,31 +33,22 @@ function BabysitterRequest() {
       username: '',
       password: '',
       telNumber: '',
-      gender: 'Male',
+      gender: 'male',
       city: 'Ramallah',
       describtion:'',
       accountNumber: '',
-      type:'',
+      type:'above 5Y old',
       date:'',
     },
     validationSchema: schema,
     validateOnChange: true,
     validateOnBlur: true,
     onSubmit: async (values) => {
-
-        console.log('Submitting form...');
-
       try {
-        console.log("hello");
-
         const { fname, lname, ...otherValues } = values;
         const name = `${fname} ${lname}`;
         const dataToSend = { ...otherValues, name };
-        console.log("hello");
-        console.log(dataToSend);
         const response = await axios.post('http://176.119.254.188:8080/signup/provider', dataToSend);
-        console.log(response.data);
-        console.log(response.status);
         if (response.status === 200) {
           Swal.fire({
             title: "Great!",
@@ -82,7 +73,11 @@ function BabysitterRequest() {
             title: "Error!",
             text: "Username or email already in use.",
             icon: "error",
-          });
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = '/';
+          }
+        });
         } else {
           Swal.fire({
             title: "Error!",
@@ -96,8 +91,6 @@ function BabysitterRequest() {
     }
   });
 
-  
-  
   return (
     <>
     
@@ -142,8 +135,8 @@ function BabysitterRequest() {
                         <div className=" col-md-6 form-outline">
                           <label htmlFor="gender" className="form-label">Gender</label>
                           <select class="form-select" id="gender" aria-label="Default select example" name="gender" value={formik.values.gender} onChange={formik.handleChange}>
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
+                            <option value="male">male</option>
+                            <option value="female">female</option>
                           </select>
                           <p className='text-danger small'>{formik.errors.gender}</p>
                         </div>
@@ -152,7 +145,7 @@ function BabysitterRequest() {
                           <select class="form-select" id="city" aria-label="Default select example" name="city" value={formik.values.city} onChange={formik.handleChange}>
                             <option value="Ramallah">Ramallah</option>
                             <option value="Nablus">Nablus</option>
-                            <option value="Salfit">Salfit</option>
+                            <option value="Salfit">Salfeet</option>
                           </select>
                           <p className='text-danger small'>{formik.errors.city}</p>
                         </div>
@@ -169,7 +162,13 @@ function BabysitterRequest() {
 
                         <div className=" form-outline">
                           <label htmlFor="type" className="form-label">Type</label>
-                          <input type='text' className="form-control" id="type" value={formik.values.type} onChange={formik.handleChange} />
+                          <select class="form-select" id="type" aria-label="Default select example" name="type" value={formik.values.type} onChange={formik.handleChange}>
+                            <option value="above 5Y old">above 5Y old</option>
+                            <option value="Under 5Y old">Under 5Y old</option>
+                            <option value="Medical">Medical</option>
+                            <option value="Special Care">Special Care</option>
+                          </select>
+                          <p className='text-danger small'>{formik.errors.type}</p>
                         </div>
 
                         <div className=" form-outline">

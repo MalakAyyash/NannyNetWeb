@@ -93,10 +93,10 @@ function ViewBlog() {
   return (
     <div className="container mt-4">
       <div className='DetaliedBook'>
-        <p className='mt-4 profileTitle'>View Blogs</p>
-        <p className='small text-secondary fst-normal'>Review the list of all blogs below.</p>
-        <hr></hr>
+        <p className='mt-4 fst-normal'>View Blogs</p>
       </div>
+      <p className='small text-secondary fst-normal'>Review the list of all blogs below.</p>
+        <hr></hr>
       <div className='d-flex justify-content-center'>
         <table {...getTableProps()} className="table table-striped">
           <thead>

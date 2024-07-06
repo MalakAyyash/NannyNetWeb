@@ -121,7 +121,9 @@ function Navbar() {
             )}
              {Cookies.get('jwt') && userId && isCustomer && (
               <li className="nav-item me-3">
-                <RouterLink to={`/offers/${userId}`} className="nav-link">Offers</RouterLink>
+                <RouterLink to={`/offers/${userId}`} className="nav-link position-relative">
+                  Special Offers
+                </RouterLink>
               </li>
             )}
           </ul>
@@ -129,7 +131,7 @@ function Navbar() {
             {Cookies.get('jwt') ? (
               <div className="d-flex align-items-center">
                 <div className="me-3 icons">
-                  <Notification /> {/* Include the Notification component */}
+                  <Notification />
                 </div>
                 <div className="dropdown">
                   {userData && (
@@ -142,7 +144,7 @@ function Navbar() {
                       {isCustomer && userData.user && (
                         <>
                           <RouterLink to={`/user-profile/${userData.user.id}`} className="dropdown-item">Profile</RouterLink>
-                          <RouterLink to={`/user-account`} className="dropdown-item">Account</RouterLink>
+                          <RouterLink to={`/UserEditAccount`} className="dropdown-item">Account</RouterLink>
                           <RouterLink to={`/customerBookings/${userData.user.id}`} className="dropdown-item">Bookings</RouterLink>
                           <RouterLink to={`/offerBookings/${userData.user.id}`} className="dropdown-item">Offer Bookings</RouterLink>
                           <RouterLink to={`/Feedback/${userData.user.id}`} className="dropdown-item">Feedback</RouterLink>

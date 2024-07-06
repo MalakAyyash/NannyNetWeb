@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 import UpcomingBookings from './UpcomingBookings.jsx';
 import HistoryBookings from './HistoryBookings.jsx';
 import RequestBookings from './RequestBookings.jsx';
+import BabysitterSubmitted from './BabysitterSubmitted.jsx';
+import BabysitterSceduleTable from './BabysitterSceduleTable.jsx';
 
 
 
@@ -182,24 +184,30 @@ function BabysitterBookings() {
                                 Upcoming
                             </a>
                         </li>
-
-                       
+                        <li className="nav-item">
+                            <a className={`nav-link px-5 text-dark ${activeTab === 'submitted' ? 'active' : ''}`} onClick={() => setActiveTab('submitted')} href="#">
+                                Submitted
+                            </a>
+                        </li>
                         <li className="nav-item">
                             <a className={`nav-link px-5 text-dark ${activeTab === 'history' ? 'active' : ''}`} onClick={() => setActiveTab('history')} href="#">
                                 History
                             </a>
                         </li>
+                        <li className="nav-item">
+                            <a className={`nav-link px-5 text-dark ${activeTab === 'scedule' ? 'active' : ''}`} onClick={() => setActiveTab('scedule')} href="#">
+                                Your Scedule
+                            </a>
+                        </li>
                     </ul>
                     <div>
                     {activeTab === 'request' && <RequestBookings />}
-
-                        {activeTab === 'upcoming' && <UpcomingBookings />}
-                        {activeTab === 'history' && <HistoryBookings />}
-
+                    {activeTab === 'upcoming' && <UpcomingBookings />}
+                    {activeTab === 'history' && <HistoryBookings />}
+                    {activeTab === 'submitted' && <BabysitterSubmitted />}
+                    {activeTab === 'scedule' && <BabysitterSceduleTable />}
                     </div>
                 </div> 
-      
-
                 <hr />
             </div>
         </div>

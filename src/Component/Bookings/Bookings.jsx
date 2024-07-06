@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 import UserRequestBookings from './UserRequestBookings.jsx';
 import UserUpcomingBookings from './UserUpcomingBookings.jsx';
 import UserHistoryBookings from './UserHistoryBookings.jsx';
+import UserSubmitted from './UserSubmitted.jsx';
+import UserRequestTable from './UserRquestTable.jsx';
 
 function Bookings() {
     const [customerData, setCustomerData] = useState(null);
@@ -115,7 +117,6 @@ function Bookings() {
               <input id="image-upload" type="file" accept="image/*" onChange={handleImageUpload} className="input-file" />
             </div>
           </div>
-
           <div>
             <h2 className='text-light pt-5 mt-5'>{customerData.user.username}</h2>
             <i className="fa-solid fa-user text-secondary small fs-6"> Parent</i>
@@ -144,11 +145,8 @@ function Bookings() {
               <li className={`nav-item`}>
                 <RouterLink to="/UserEditAccount" className={`nav-link `}>Account</RouterLink>
               </li>
-            
           </ul>
-            
             <div className='DetaliedBook mt-5 normalFont'>
-    
                 <div className='DetaliedBook mt-5'>
                     <div className=''>
                         <p className='pt-2 profileTitle'>Manage Your Bookings</p>
@@ -161,31 +159,37 @@ function Bookings() {
                                 Pending
                             </a>
                         </li>
-                  
                         <li className="nav-item">
                             <a className={`nav-link text-dark px-5 ${activeTab === 'upcoming' ? 'active' : ''}`} onClick={() => setActiveTab('upcoming')} href="#">
                                 Upcoming
                             </a>
                         </li>
-
-                       
+                        <li className="nav-item">
+                            <a className={`nav-link px-5 text-dark ${activeTab === 'submitted' ? 'active' : ''}`} onClick={() => setActiveTab('submitted')} href="#">
+                                Sumbited
+                            </a>
+                        </li>
                         <li className="nav-item">
                             <a className={`nav-link px-5 text-dark ${activeTab === 'history' ? 'active' : ''}`} onClick={() => setActiveTab('history')} href="#">
                                 History
                             </a>
                         </li>
+                        <li className="nav-item">
+                            <a className={`nav-link px-5 text-dark ${activeTab === 'scedule' ? 'active' : ''}`} onClick={() => setActiveTab('scedule')} href="#">
+                                My Scedule
+                            </a>
+                        </li>
                     </ul>
                     <div>
                     {activeTab === 'request' && <UserRequestBookings />}
-
                         {activeTab === 'upcoming' && <UserUpcomingBookings />}
                         {activeTab === 'history' && <UserHistoryBookings />}
+                        {activeTab === 'submitted' && <UserSubmitted />}
+                        {activeTab === 'scedule' && <UserRequestTable />}
 
 
                     </div>
                 </div> 
-      
-
                 <hr />
             </div>
         </div>

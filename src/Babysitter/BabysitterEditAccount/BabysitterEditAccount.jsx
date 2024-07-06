@@ -6,7 +6,6 @@ import Cookies from 'js-cookie';
 import { Link as RouterLink } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
-
 function BabysitterEditAccount() {
     const [customerData, setCustomerData] = useState(null);
     const [profileImageUrl, setProfileImageUrl] = useState(null);
@@ -18,13 +17,14 @@ function BabysitterEditAccount() {
                 if (!token) {
                     console.error('Token not found.');
                     return;
-                  }
-          
-                  const config = {
+                }
+
+                const config = {
                     headers: {
-                      Authorization: `Bearer ${token}`,
+                        Authorization: `Bearer ${token}`,
                     },
-                  };
+                };
+
                 const response = await fetch(`http://176.119.254.188:8080/employee/${Cookies.get('userId')}`);
                 if (response.ok) {
                     const data = await response.json();
@@ -35,11 +35,11 @@ function BabysitterEditAccount() {
 
                 const responseImage = await fetch(`http://176.119.254.188:8080/user`, config);
                 if (responseImage.ok) {
-                  const imageData = await responseImage.blob(); // Convert response to Blob
-                  const imageUrl = URL.createObjectURL(imageData); // Create a Blob URL
-                  setProfileImageUrl(imageUrl);
+                    const imageData = await responseImage.blob();
+                    const imageUrl = URL.createObjectURL(imageData);
+                    setProfileImageUrl(imageUrl);
                 } else {
-                  console.error('Failed to fetch profile image');
+                    console.error('Failed to fetch profile image');
                 }
 
             } catch (error) {
@@ -50,60 +50,56 @@ function BabysitterEditAccount() {
         if (Cookies.get('userId')) {
             fetchCustomerData();
         }
-    }, [profileImageUrl]);
+    }, [token]);
 
-const handleSubmit = async (values, actions) => {
-    try {
-        const token = Cookies.get('jwt');
-        const config = {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        };
-
-        const response = await axios.post('http://176.119.254.188:8080/provider/edit', values, config);
-
-        console.log('Server response:', response.data);
-
-        actions.setSubmitting(false);
-
-        if (response.status === 200) {
-            // Show success message
-            Swal.fire({
-                title: 'Great!',
-                text: 'Updated successfully!',
-                icon: 'success',
-                didOpen: () => {
-                    const confirmButton = Swal.getConfirmButton();
-                    confirmButton.style.backgroundColor = 'rgb(194, 39, 75)';
-                    confirmButton.style.color = 'white';
+    const handleSubmit = async (values, actions) => {
+        try {
+            const token = Cookies.get('jwt');
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`,
                 },
-            });
-        } else {
-            // Handle unsuccessful response
-            console.error('Error updating profile:', response.data.error);
+            };
+
+            const response = await axios.post('http://176.119.254.188:8080/provider/edit', values, config);
+
+            console.log('Server response:', response.data);
+
+            actions.setSubmitting(false);
+
+            if (response.status === 200) {
+                // Show success message
+                Swal.fire({
+                    title: 'Great!',
+                    text: 'Updated successfully!',
+                    icon: 'success',
+                    didOpen: () => {
+                        const confirmButton = Swal.getConfirmButton();
+                        confirmButton.style.backgroundColor = 'rgb(194, 39, 75)';
+                        confirmButton.style.color = 'white';
+                    },
+                });
+            } else {
+                // Handle unsuccessful response
+                console.error('Error updating profile:', response.data);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+
+            if (error.response) {
+                console.error('Error Response:', error.response.data);
+            }
+
+            alert('An error occurred while updating profile.');
+            actions.setSubmitting(false);
         }
-    } catch (error) {
-        // Handle network errors or unexpected errors
-        console.error('Error:', error);
-
-        // Log specific error response if available
-        if (error.response) {
-            console.error('Error Response:', error.response.data);
-        }
-
-        alert('An error occurred while updating profile.');
-        actions.setSubmitting(false);
-    }
-};
-
+    };
 
     const profileValidationSchema = Yup.object().shape({
         name: Yup.string().required('Name is required'),
         telNumber: Yup.string().required('Phone Number is required'),
         city: Yup.string().required('City is required'),
-        accountNumber: Yup.string().required('accountNumber is required'),
-
+        accountNumber: Yup.string().required('Account Number is required'),
     });
 
     const passwordValidationSchema = Yup.object().shape({
@@ -130,10 +126,10 @@ const handleSubmit = async (values, actions) => {
         },
         validationSchema: profileValidationSchema,
         onSubmit: handleSubmit,
+        enableReinitialize: true, // Enable reinitialization
     });
 
     useEffect(() => {
-        // Update form values when customerData changes
         if (customerData) {
             profileFormik.setValues({
                 name: customerData?.user?.name || '',
@@ -141,35 +137,17 @@ const handleSubmit = async (values, actions) => {
                 email: customerData?.user?.email || '',
                 telNumber: customerData?.user?.telNumber || '',
                 describtion: customerData?.user?.describtion || '',
-                city: customerData?.city || '',  // Ensure correct path to city
+                city: customerData?.city || '',
                 gender: customerData?.user?.gender || '',
-                accountNumber: customerData?.user?.accountNumber || '',
+                accountNumber: customerData?.accountNumber || '',
                 currentPassword:  '',
                 newPassword:  '',
-                confirmPassword:  '',
+                confirmPassword: '',
             });
         }
     }, [customerData]); // Re-run when customerData changes
 
-    useEffect(() => {
-        // console.log(customerData.user.gender)
-        if (customerData) {
-            passwordFormik.setValues({
-                name: customerData?.user?.name || '',
-                username: customerData?.user?.username || '',
-                email: customerData?.user?.email || '',
-                telNumber: customerData?.user?.telNumber || '',
-                describtion: customerData?.user?.describtion || '',
-                gender: customerData?.user?.gender || '',
-                city: customerData?.city || '',
-                accountNumber: customerData?.user?.accountNumber || '',
-                currentPassword:  '',
-                newPassword: '',
-                confirmPassword:  '',
-            });
-        }
-    }, [customerData]);
-    
+
     const passwordFormik = useFormik({
         initialValues: {
             name: customerData?.user?.name || '',
@@ -177,40 +155,60 @@ const handleSubmit = async (values, actions) => {
             email: customerData?.user?.email || '',
             telNumber: customerData?.user?.telNumber || '',
             describtion: customerData?.user?.describtion || '',
-            city: customerData?.city || '', 
+            city: customerData?.city || '',
             gender: customerData?.user?.gender || '',
-            accountNumber: customerData?.user?.accountNumber || '',
-            currentPassword: '',
-            newPassword: '',
+            accountNumber: customerData?.accountNumber || '',
+            currentPassword:  '',
+            newPassword:  '',
             confirmPassword: '',
         },
         validationSchema: passwordValidationSchema,
         onSubmit: handleSubmit,
     });
+
+    useEffect(() => {
+        if (customerData) {
+            passwordFormik.setValues({
+                name: customerData?.user?.name || '',
+                username: customerData?.user?.username || '',
+                email: customerData?.user?.email || '',
+                telNumber: customerData?.user?.telNumber || '',
+                describtion: customerData?.user?.describtion || '',
+                city: customerData?.city || '',
+                gender: customerData?.user?.gender || '',
+                accountNumber: customerData?.accountNumber || '',
+                currentPassword:  '',
+                newPassword:  '',
+                confirmPassword: '',
+            });
+        }
+    }, [customerData]); // Re-run when customerData changes
+
+
     const handleImageUpload = async (event) => {
         const file = event.target.files[0];
         const formData = new FormData();
         formData.append('image', file);
-    
+
         try {
-          const response = await fetch('http://176.119.254.188:8080/upload/profile/image', {
-            method: 'POST',
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-            body: formData,
-          });
-    
-          if (response.ok) {
-            const updatedImageUrl = await response.text();
-            setProfileImageUrl(updatedImageUrl);
-          } else {
-            console.error('Failed to upload image');
-          }
+            const response = await fetch('http://176.119.254.188:8080/upload/profile/image', {
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                body: formData,
+            });
+
+            if (response.ok) {
+                const updatedImageUrl = await response.text();
+                setProfileImageUrl(updatedImageUrl);
+            } else {
+                console.error('Failed to upload image');
+            }
         } catch (error) {
-          console.error('Error uploading image:', error);
+            console.error('Error uploading image:', error);
         }
-      };
+    };
 
     if (!customerData) {
         return <div>Loading...</div>;
@@ -322,7 +320,7 @@ const handleSubmit = async (values, actions) => {
                             >
                                 <option value='ramallah'>Ramallah</option>
                                 <option value='nablus'>Nablus</option>
-                                <option value='Salfit'>Salfit</option>
+                                <option value='Salfeet'>Salfeet</option>
                                 <option value='Bethlehem'>Bethlehem</option>
                                 <option value='Hebron'>Hebron</option>
                                 <option value='Jenen'>Jenen</option>

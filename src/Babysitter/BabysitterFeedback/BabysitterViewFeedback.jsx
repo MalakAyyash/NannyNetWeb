@@ -90,10 +90,10 @@ function BabysitterViewFeedback() {
                                     </td>
                                     <td>{`${feedback.customer.location.city}/${feedback.customer.location.streetData}`}</td>
                                     <td>{new Date(feedback.feedbackSubmittedDate).toLocaleDateString()}</td>
-                                    <td>
+                                    <td >
                                         {renderStarRating(feedback.stars)}
                                     </td>
-                                    <td>{feedback.comment}</td>
+                                    <td className='text-center'>{feedback.comment}</td>
                                 </tr>
                             ))}
                         </tbody>

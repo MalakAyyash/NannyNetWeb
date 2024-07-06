@@ -4,7 +4,6 @@ import { useTable, useSortBy, usePagination } from 'react-table';
 import { useParams } from 'react-router-dom';
 import { FaCaretSquareDown, FaCaretSquareUp } from 'react-icons/fa';
 import Cookies from 'js-cookie';
-import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 
 const BabysitterFeedback = () => {
   const [feedbackData, setFeedbackData] = useState([]);
@@ -32,7 +31,7 @@ const BabysitterFeedback = () => {
 
         if (response && response.data) {
           setFeedbackData(response.data);
-          console.log(response.data)
+          console.log(response.data);
         }
       } catch (error) {
         console.error('Error fetching feedback data:', error);
@@ -58,8 +57,8 @@ const BabysitterFeedback = () => {
   const columns = useMemo(
     () => [
       { Header: 'ID', accessor: 'employee.user.id' },
-      { Header: 'Babysitter Name', accessor: 'employee.user.username' },
-      { Header: 'Feedback Text', accessor: 'comment', Cell: ({ value }) => <div className='feedback-text-container'>{value}</div> },
+      { Header: 'Parent Name', accessor: 'customer.user.username' },
+      { Header: 'Feedback Text', accessor: 'comment', Cell: ({ value }) => <div className=''>{value}</div> },
       { Header: 'Stars', accessor: 'stars', Cell: ({ value }) => renderStarRating(value) },
       { Header: 'Feedback Date', accessor: 'feedbackSubmittedDate' },
     ],
@@ -90,9 +89,6 @@ const BabysitterFeedback = () => {
 
   return (
     <div className="container mt-4">
-      <div className="text-end">
-        <Link to={`/Admin/AllBabysitterFeedback/${id}`} className='textRedColor'>See All</Link>
-      </div>
       <div className="d-flex justify-content-center">
         {feedbackData.length === 0 ? (
           <div className="text-center mb-3">

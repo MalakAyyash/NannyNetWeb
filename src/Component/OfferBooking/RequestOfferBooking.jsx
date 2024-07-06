@@ -58,6 +58,7 @@ function RequestOfferBooking() {
   
       if (response && response.data) {
         const bookings = response.data;
+        console.log(bookings)
         const bookingsWithData = await Promise.all(
           bookings.map(async (booking) => {
             const babysitterId = booking.employee?.user?.id;

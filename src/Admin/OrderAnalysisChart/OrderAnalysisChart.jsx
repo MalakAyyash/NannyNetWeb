@@ -29,14 +29,14 @@ const OverallOrdersChart = () => {
         datasets: [
           {
             label: 'Total Orders',
-            borderColor: 'rgba(255, 99, 132, 1)',
-            backgroundColor: 'rgba(255, 99, 132, 0.2)', // Color for the area under the line
+            borderColor: 'rgb(194, 39, 75)',
+            backgroundColor: 'rgb(194, 39, 75)', // Color for the area under the line
             data: totalOrders,
           },
           {
             label: 'Cancelled Orders',
-            borderColor: 'rgba(255, 206, 86, 1)',
-            backgroundColor: 'rgba(255, 206, 86, 0.2)', // Color for the area under the line
+            borderColor: '556b8d',
+            backgroundColor: '#556b8d', // Color for the area under the line
             data: cancelledOrders,
           },
         ],

@@ -4,6 +4,8 @@ import Cookies from 'js-cookie';
 import { Link } from 'react-router-dom';
 import RequestOfferBooking from './RequestOfferBooking';
 import UpcomingOfferBooking from './UpcomingOfferBooking';
+import CustomerOffers from './CustomerOffers';
+import SubmittedOfferBooking from './SubmittedOfferBooking';
 
 
 function OfferBooking() {
@@ -11,7 +13,7 @@ function OfferBooking() {
     const [ownerProfile, setOwnerProfile] = useState(false); // State to determine if the viewer is the owner of the profile
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     const { id } = useParams(); // Get the ID parameter from the URL
-    const [activeTab, setActiveTab] = useState('request');
+    const [activeTab, setActiveTab] = useState('offers');
     const [profileImageUrl, setProfileImageUrl] = useState(null);
     const token = Cookies.get('jwt');
 
@@ -157,36 +159,35 @@ function OfferBooking() {
                     <ul className="nav nav-tabs mb-5">
 
                     <li className="nav-item">
+                            <a className={`nav-link text-dark px-5 ${activeTab === 'offers' ? 'active' : ''}`} onClick={() => setActiveTab('offers')} href="#">
+                                My Offers
+                            </a>
+                        </li>
+
+                    <li className="nav-item">
                             <a className={`nav-link text-dark px-5 ${activeTab === 'request' ? 'active' : ''}`} onClick={() => setActiveTab('request')} href="#">
-                                Pending
+                                Pending offer orders
                             </a>
                         </li>
                   
                         <li className="nav-item">
                             <a className={`nav-link text-dark px-5 ${activeTab === 'upcoming' ? 'active' : ''}`} onClick={() => setActiveTab('upcoming')} href="#">
-                                Upcoming
+                                Upcoming offer orders
                             </a>
                         </li>
-
-                       
                         <li className="nav-item">
-                            <a className={`nav-link px-5 text-dark ${activeTab === 'history' ? 'active' : ''}`} onClick={() => setActiveTab('history')} href="#">
-                                History
+                            <a className={`nav-link px-5 text-dark ${activeTab === 'submitted' ? 'active' : ''}`} onClick={() => setActiveTab('submitted')} href="#">
+                                Submitted offer orders
                             </a>
                         </li>
                     </ul>
                     <div>
                    {activeTab === 'request' && <RequestOfferBooking />}
-                   
-
-                        {activeTab === 'upcoming' && <UpcomingOfferBooking />}
-                         {/*{activeTab === 'history' && <UserHistoryBookings />} */}
-
-
+                   {activeTab === 'offers' && <CustomerOffers />}
+                   {activeTab === 'upcoming' && <UpcomingOfferBooking />}
+                   {activeTab === 'submitted' && <SubmittedOfferBooking/>}
                     </div>
                 </div> 
-      
-
                 <hr />
             </div>
         </div>
