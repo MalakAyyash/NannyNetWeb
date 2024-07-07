@@ -129,7 +129,7 @@ function Navbar() {
               </div>
             </div>
           ) : (
-            <span className="d-flex">
+            <span className="d-flex me-3">
               <div className='me-3 icons'>
                 <i className="fa-solid fa-bell" onClick={() => <Notification />} />
               </div>
@@ -159,13 +159,12 @@ function Navbar() {
                 <RouterLink to={`/FastBooking/${userId}`} className="nav-link">Fast Booking</RouterLink>
               </li>
             )}
-            {Cookies.get('jwt') && userId && isCustomer && (
+         
               <li className="nav-item me-3">
                 <RouterLink to={`/offers/${userId}`} className="nav-link position-relative">
                   Special Offers
                 </RouterLink>
               </li>
-            )}
           </ul>
           <div className="d-none d-lg-flex ms-auto me-5 pe-5">
             {Cookies.get('jwt') ? (

@@ -8,32 +8,23 @@ function ServicePage() {
         <>
         <div className='container-fluid'>
             <div className='AboutBackground Service pt-5 mt-5'>
-                <h2 className='py-5'>Our Services</h2>
-                <div className='row w-75 m-auto'>
+                <h2 className=''>Our Services</h2>
+                <div className='row pb-5 w-75 m-auto'>
                     <div className='col-md-4 pt-5'>
                         <div className="icon-container">
                             <i className="fas fa-baby-carriage"></i>
                         </div>
                         <h3 className=' pt-3'>Babysitting at Home</h3>
-                        <p className='w-50 m-auto'>At Nanny Net, we offer the convenience of babysitting in your own home. Our experienced and trusted babysitters will come to your house and take care of your children while you go out and enjoy your time.</p>
+                        <p className='w-75 m-auto'>At Nanny Net, we offer the convenience of babysitting in your own home. Our experienced and trusted babysitters will come to your house and take care of your children while you go out and enjoy your time.</p>
                     </div>
                     <div className='col-md-4 pt-5'>
                         <div className="icon-container">
                             <i class="fa-solid fa-droplet"></i>
                         </div>
                         <h3 className='pt-3'>Lactation Support</h3>
-                        <p className='w-50 m-auto'>Our lactation consultants are here to help you with any breastfeeding issues you may be facing. We offer one-on-one consultations to help you improve your breastfeeding experience and ensure that your baby is getting the nutrition they need.</p>
+                        <p className='w-75 m-auto'>Our lactation consultants are here to help you with any breastfeeding issues you may be facing. We offer one-on-one consultations to help you improve your breastfeeding experience and ensure that your baby is getting the nutrition they need.</p>
                     </div>
                     <div className='col-md-4 pt-5'>
-                        <div className="icon-container">
-                            <i class="fa-solid fa-heart"></i>
-                        </div>
-                        <h3 className='pt-3'>Birth Support</h3>
-                        <p className='w-50 m-auto'>Our birth doulas provide emotional and physical support to expectant mothers throughout their pregnancy, labor, and delivery. We're here to help you have the best birth experience possible.</p>
-                    </div>
-                </div>
-                <div className='row w-75 m-auto pt-5'>
-                    <div className='col-md-4'>
                         <div className="icon-container">
                         <i class="fa-solid fa-ice-cream"></i>                         </div>
                         <h3 className=' pt-3'>Expert Advice</h3>
@@ -53,7 +44,7 @@ function ServicePage() {
                         <h3 className='pt-3'>Sleep Solutions</h3>
                         <p className='w-75 m-auto'>Our sleep lab offers solutions to help your child get the restful sleep they need for optimal growth and development. From sleep training to bedtime routines, we're here to help you establish healthy sleep habits for your child.</p>
                     </div>
-                </div>
+                    </div>
                 <div className=''>
                 <img className="ServicePageImg" src="../images/babycare2.jpg" alt="Baby care" />
 

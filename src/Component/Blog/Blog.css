@@ -9,5 +9,7 @@
     font-family: forum, serif;
     font-style: italic;
     font-size: 20px;
+    display: flex;
+    justify-content: center !important;
 }
 

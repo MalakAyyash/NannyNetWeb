@@ -11,36 +11,16 @@ function Offers() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const token = Cookies.get('jwt');
 
   useEffect(() => {
-    const fetchOffersAndCurrentOffer = async () => {
+    const fetchOffers = async () => {
       try {
-        const token = Cookies.get('jwt');
-        if (!token) {
-          console.error('Token not found.');
-          return;
-        }
-
-        const config = {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        };
-
-        const offersResponse = await axios.get('http://176.119.254.188:8080/offerType/view/all', config);
-        const currentOfferResponse = await axios.get('http://176.119.254.188:8080/customer/offer/view/current', config);
-
+        const offersResponse = await axios.get('http://176.119.254.188:8080/offerType/view/all');
         if (offersResponse.status === 200) {
           setOffers(offersResponse.data);
         } else {
           throw new Error('Failed to fetch offers');
-        }
-
-        if (currentOfferResponse.status === 200) {
-          setCurrentOffer(currentOfferResponse.data);
-
-        } else {
-          throw new Error('Failed to fetch current offer');
         }
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -55,10 +35,48 @@ function Offers() {
       }
     };
 
-    fetchOffersAndCurrentOffer();
-  }, []);
+    fetchOffers();
+
+    if (token) {
+      const fetchCurrentOffer = async () => {
+        try {
+          const config = {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          };
+
+          const currentOfferResponse = await axios.get('http://176.119.254.188:8080/customer/offer/view/current', config);
+          if (currentOfferResponse.status === 200) {
+            setCurrentOffer(currentOfferResponse.data);
+          } else {
+            throw new Error('Failed to fetch current offer');
+          }
+        } catch (error) {
+          console.error('Error fetching current offer:', error);
+          setError(error.message || 'Failed to fetch current offer. Please try again later.');
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: error.message || 'Failed to fetch current offer. Please try again later.',
+          });
+        }
+      };
+
+      fetchCurrentOffer();
+    }
+  }, [token]);
 
   const handleTakeOffer = (offerId) => {
+    if (!token) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'You need to be logged in to take an offer.',
+      });
+      return;
+    }
+
     if (!currentOffer) {
       navigate(`/offerDetails/${offerId}`);
     } else {
@@ -122,7 +140,7 @@ function Offers() {
                     <button
                       className="btn deleteBtn btn-red-background w-100 text-light ps-5 btn-sm"
                       onClick={() => handleTakeOffer(offer.id)}
-                      disabled={currentOffer}
+                      disabled={!token || currentOffer}
                     >
                       Take This Offer
                     </button>
