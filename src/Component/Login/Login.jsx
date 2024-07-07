@@ -52,7 +52,7 @@ export default function Login() {
 
   return (
     <div>
-      <div className="dropdown">
+      <div className="btn-group dropstart">
         <button type="button" className="btn LoginBtn" data-bs-toggle="dropdown" aria-expanded="false">
           <p className="">Login</p>
         </button>

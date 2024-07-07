@@ -42,7 +42,7 @@ function BabysitterSubmitted() {
         Header: 'Actions',
         accessor: 'actions',
         Cell: ({ row }) => (
-          <button className="btn btn-warning" onClick={() => handleCancel(row.original.id)}>
+          <button className="btn btn-warning actionbtn" onClick={() => handleCancel(row.original.id)}>
             Cancel
           </button>
         ),
@@ -219,7 +219,7 @@ function BabysitterSubmitted() {
                 return (
                   <tr {...row.getRowProps()} className='table-row'>
                     {row.cells.map((cell) => (
-                      <td {...cell.getCellProps()} className="text-center">
+                      <td {...cell.getCellProps()} className="text-center border">
                         {cell.render('Cell')}
                       </td>
                     ))}

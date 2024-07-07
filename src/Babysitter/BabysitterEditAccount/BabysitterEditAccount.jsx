@@ -220,7 +220,7 @@ function BabysitterEditAccount() {
           <div className='position-relative'>
             <div className='photo-container mt-5 me-3 position-relative'>
                 <label htmlFor="image-upload">
-                  <i className="fa-solid fa-camera position-absolute bottom-0 start-0 translate-middle mb-1 ms-3 text-dark rounded bg-light p-1"
+                  <i className="fa-solid fa-camera position-absolute bottom-0 start-0 translate-middle mb-1 ms-3 text-dark rounded p-1"
                      style={{ fontSize: '24px' }}
                      data-bs-toggle="tooltip"
                      data-bs-placement="top"
@@ -235,12 +235,12 @@ function BabysitterEditAccount() {
           </div>
 
           <div>
-            <h2 className='text-light pt-5 mt-5'>{customerData.user.username}</h2>
+            <h2 className='text-light'>{customerData.user.username}</h2>
             <i className="fa-solid fa-user-tie text-secondary small fs-6">Babysitter</i>
             </div>
         </div>
       </div>
-        <ul className="nav">
+        <ul className="nav d-none d-md-flex">
             <li className={`nav-item `}>
             <RouterLink to={`/babysitter-profile/${customerData.user.id}`} className={`nav-link`}>Profile</RouterLink>
             </li>
@@ -260,6 +260,28 @@ function BabysitterEditAccount() {
                 <RouterLink to={`/BabysitterNotification/${customerData.user.id}`} className={`nav-link`}>Notification</RouterLink>
                 </li>
         </ul>
+        <div className="d-md-none">
+        <div>
+          <hr />
+          <div className="btn-group w-100">
+            Account
+            <button type="button" className="btn btn-secondary dropdown-toggle border-0 dropdown-toggle-split d-flex justify-content-end px-0" data-bs-toggle="dropdown" aria-expanded="false">
+              <span className="visually-hidden">Toggle Dropdown</span>
+            </button>
+            <ul className="dropdown-menu w-100">
+              <div id="mobile-nav" className="mt-2">
+                <RouterLink to={`/babysitter-profile/${customerData.user.id}`} className={`nav-link border-bottom`}>Profile</RouterLink>
+                <RouterLink to={`/BabysitterBookings/${customerData.user.id}`} className={`nav-link d-block mb-2`}>My Bookings</RouterLink>
+                <RouterLink to={`/BabysitterFeedback/${customerData.user.id}`} className={`nav-link d-block mb-2`}>Feedback</RouterLink>
+                <RouterLink to={`/BabysitterNotification/${customerData.user.id}`} className={`nav-link d-block mb-2`}>Notification</RouterLink>
+                <button className={`nav-link d-block mb-2`}>My Wallet</button>
+              </div>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+      <hr />
        
         <div className='DetaliedBook mt-5'>
             <div className=''>

@@ -115,7 +115,7 @@ function BabysitterProfile() {
           <div className='position-relative'>
             <div className='photo-container mt-5 me-3 position-relative'>
                 <label htmlFor="image-upload">
-                  <i className="fa-solid fa-camera position-absolute bottom-0 start-0 translate-middle mb-1 ms-3 text-dark rounded bg-light p-1"
+                  <i className="fa-solid fa-camera position-absolute bottom-0 start-0 translate-middle mb-1 ms-3 text-dark rounded p-1"
                      style={{ fontSize: '24px' }}
                      data-bs-toggle="tooltip"
                      data-bs-placement="top"
@@ -130,13 +130,13 @@ function BabysitterProfile() {
           </div>
 
           <div>
-            <h2 className='text-light pt-5 mt-5'>{babysitterData.user.username}</h2>
+            <h2 className='text-light'>{babysitterData.user.username}</h2>
             <i className="fa-solid fa-user-tie text-secondary small fs-6">Babysitter</i>
             </div>
         </div>
       </div>
             {ownerProfile && (
-                <ul className="nav">
+                <ul className="nav d-none d-md-flex">
                     <li className={`nav-item`}>
                         <RouterLink to={`/babysitter-profile/${babysitterData.user.id}`} className={`nav-link border-bottom`}>Profile</RouterLink>
                     </li>
@@ -158,7 +158,29 @@ function BabysitterProfile() {
                    
                 </ul>
             )}
-            <div className='DetaliedBook mt-5 normalFont'>
+              <div className="d-md-none">
+        <div>
+          <hr />
+          <div className="btn-group w-100">
+            Profile
+            <button type="button" className="btn btn-secondary dropdown-toggle border-0 dropdown-toggle-split d-flex justify-content-end px-0" data-bs-toggle="dropdown" aria-expanded="false">
+              <span className="visually-hidden">Toggle Dropdown</span>
+            </button>
+            <ul className="dropdown-menu w-100">
+              <div id="mobile-nav" className="mt-2">
+                <RouterLink to={`/BabysitterBookings/${babysitterData.user.id}`} className={`nav-link d-block mb-2`}>My Bookings</RouterLink>
+                <RouterLink to={`/BabysitterFeedback/${babysitterData.user.id}`} className={`nav-link d-block mb-2`}>Feedback</RouterLink>
+                <RouterLink to={`/BabysitterNotification/${babysitterData.user.id}`} className={`nav-link d-block mb-2`}>Notification</RouterLink>
+                <RouterLink to="/BabysitterEditAccount" className={`nav-link`}>Account</RouterLink>
+                <button className={`nav-link d-block mb-2`}>My Wallet</button>
+              </div>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+      <hr />
+            <div className='DetaliedBook normalFont'>
                 <div className="row">
                     <div className="col-md-10">
                         <p className='pt-2 profileTitle'>Profile</p>
@@ -181,6 +203,17 @@ function BabysitterProfile() {
                     </div>
                 </div>
                 <hr />
+                <div className="d-md-none d-md-flex">
+          <div className="BookingForm">
+            <div className='mt-2 ServiceDeatils '>
+              <p className='text-dark normalFont'><i className="fa-solid fa-user pe-3"></i>{babysitterData.user.name}</p>
+              <p className='normalFont'><i className="fa-solid fa-envelope pe-3"></i>{babysitterData.user.email}</p>
+              {ownerProfile && (<p className='text-dark normalFont'><i className="fa-solid fa-phone pe-3"></i>{babysitterData.user.telNumber}</p>)}
+              <p className='normalFont'><i className="fa-solid fa-venus-mars pe-3"></i>{babysitterData.user.gender}</p>
+              <p className='normalFont'><i className="fa-solid fa-location-dot pe-3"></i>{babysitterData.city}</p>
+            </div>
+          </div>
+        </div>
                 <div className='row mb-5 pb-5'>
                     <div className='col-md-8'>
                         <div className='d-flex justify-content-center m-auto m-5'>
@@ -197,7 +230,7 @@ function BabysitterProfile() {
                             </div>
                         </div>
                     </div>
-                    <div className="col-md-4 pt-4 px-5">
+                    <div className="col-md-4 pt-4 px-5 d-none d-md-block">
                         <div className="BookingForm">
                             <p className='normalFont'>Profile Details</p>
                             <div className='mt-4 my-3 py-3 ServiceDeatils'>

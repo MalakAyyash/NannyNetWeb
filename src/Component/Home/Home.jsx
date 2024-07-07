@@ -18,7 +18,6 @@ function Home() {
         <Blog />
         <Service/>
         <div className='empty-section'></div>
-        <Testimonials />
         </div>
     </div>
     </>

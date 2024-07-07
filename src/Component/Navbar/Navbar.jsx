@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Link as RouterLink, useHistory, useLocation } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import Login from '../Login/Login';
 import SignUp from '../SignUp/SignUp';
 import './Navbar.css';
 import { Link, animateScroll as scroll } from 'react-scroll';
-import Notification from './Notification'; // Import the Notification component
+import Notification from './Notification';
 
 function Navbar() {
   const [showLogin, setShowLogin] = useState(!Cookies.get('jwt'));
@@ -14,7 +14,6 @@ function Navbar() {
   const userRole = Cookies.get('userRole');
   const [profileImageUrl, setProfileImageUrl] = useState(null);
   const token = Cookies.get('jwt');
-
 
   const handleAboutClick = () => {
     window.location.href = '/Home';
@@ -55,14 +54,13 @@ function Navbar() {
             console.error('Failed to fetch user data');
           }
           const responseImage = await fetch(`http://176.119.254.188:8080/user`, config);
-        if (responseImage.ok) {
-          const imageData = await responseImage.blob(); // Convert response to Blob
-          const imageUrl = URL.createObjectURL(imageData); // Create a Blob URL
-          setProfileImageUrl(imageUrl);
-        } else {
-          console.error('Failed to fetch profile image');
-        }
-
+          if (responseImage.ok) {
+            const imageData = await responseImage.blob(); // Convert response to Blob
+            const imageUrl = URL.createObjectURL(imageData); // Create a Blob URL
+            setProfileImageUrl(imageUrl);
+          } else {
+            console.error('Failed to fetch profile image');
+          }
         }
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -91,6 +89,54 @@ function Navbar() {
     <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top">
       <div className="container-fluid">
         <a className="mx-5 navbar-brand" href="#">NannyNet</a>
+        <div className="d-flex ms-auto d-lg-none">
+          {Cookies.get('jwt') ? (
+            <div className="d-flex align-items-center">
+              <div className="me-3 icons">
+                <Notification />
+              </div>
+              <div className="dropdown">
+                {userData && (
+                  <a href="#" className="d-flex align-items-center text-dark link-dark text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src={profileImageUrl || "/images/UserProfile.jpg"} alt="" width={32} height={32} className="rounded-circle me-2" />
+                  </a>
+                )}
+                {userData && (
+                  <ul className="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
+                    {isCustomer && userData.user && (
+                      <>
+                        <RouterLink to={`/user-profile/${userData.user.id}`} className="dropdown-item">Profile</RouterLink>
+                        <RouterLink to={`/UserEditAccount`} className="dropdown-item">Account</RouterLink>
+                        <RouterLink to={`/customerBookings/${userData.user.id}`} className="dropdown-item">Bookings</RouterLink>
+                        <RouterLink to={`/offerBookings/${userData.user.id}`} className="dropdown-item">Offer Bookings</RouterLink>
+                        <RouterLink to={`/Feedback/${userData.user.id}`} className="dropdown-item">Feedback</RouterLink>
+                        <RouterLink to={`/CustomerNotification/${userData.user.id}`} className="dropdown-item">Notification</RouterLink>
+                      </>
+                    )}
+                    {isBabysitter && userData.user && (
+                      <>
+                        <RouterLink to={`/babysitter-profile/${userData.user.id}`} className="dropdown-item">Profile</RouterLink>
+                        <RouterLink to={`/BabysitterEditAccount`} className="dropdown-item">Account</RouterLink>
+                        <RouterLink to={`/BabysitterBookings/${userData.user.id}`} className="dropdown-item">Orders</RouterLink>
+                        <RouterLink to={`/BabysitterFeedback/${userData.user.id}`} className="dropdown-item">Feedback</RouterLink>
+                        <RouterLink to={`/BabysitterNotification/${userData.user.id}`} className="dropdown-item">Notification</RouterLink>
+                      </>
+                    )}
+                    <li><hr className="dropdown-divider" /></li>
+                    <li><RouterLink to="/Home" className="dropdown-item redText" onClick={handleSignOut}>Sign out</RouterLink></li>
+                  </ul>
+                )}
+              </div>
+            </div>
+          ) : (
+            <span className="d-flex">
+              <div className='me-3 icons'>
+                <i className="fa-solid fa-bell" onClick={() => <Notification />} />
+              </div>
+              {showLogin ? <Login toggleForm={toggleForm} /> : <SignUp toggleForm={toggleForm} />}
+            </span>
+          )}
+        </div>
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon" />
         </button>
@@ -113,7 +159,7 @@ function Navbar() {
                 <RouterLink to={`/FastBooking/${userId}`} className="nav-link">Fast Booking</RouterLink>
               </li>
             )}
-             {Cookies.get('jwt') && userId && isCustomer && (
+            {Cookies.get('jwt') && userId && isCustomer && (
               <li className="nav-item me-3">
                 <RouterLink to={`/offers/${userId}`} className="nav-link position-relative">
                   Special Offers
@@ -121,9 +167,9 @@ function Navbar() {
               </li>
             )}
           </ul>
-          <div className="ms-auto pe-5 me-5">
+          <div className="d-none d-lg-flex ms-auto me-5 pe-5">
             {Cookies.get('jwt') ? (
-              <div className="d-flex align-items-center">
+              <div className="d-flex align-items-center ">
                 <div className="me-3 icons">
                   <Notification />
                 </div>
@@ -161,12 +207,9 @@ function Navbar() {
                 </div>
               </div>
             ) : (
-              <span className="d-flex ms-5 ps-5 me-5 pe-5">
+              <span className="d-flex">
                 <div className='me-3 icons'>
                   <i className="fa-solid fa-bell" onClick={() => <Notification />} />
-                </div>
-                <div className='icons'>
-                  <i className="fa-solid fa-circle-user" />
                 </div>
                 {showLogin ? <Login toggleForm={toggleForm} /> : <SignUp toggleForm={toggleForm} />}
               </span>

@@ -46,7 +46,7 @@ function ServicePage() {
                         <h3 className='pt-3'>Child Development Resources</h3>
                         <p className='w-75 m-auto'>We understand that every child goes through different stages of development, and we provide resources to help you navigate those stages. From educational toys to expert advice, we're here to support your child's growth and development.</p>
                     </div>
-                    <div className='col-md-4'>
+                    <div className='col-md-4 pb-3'>
                         <div className="icon-container">
                         <i class="fa-solid fa-baby"></i>
                         </div>
@@ -54,9 +54,6 @@ function ServicePage() {
                         <p className='w-75 m-auto'>Our sleep lab offers solutions to help your child get the restful sleep they need for optimal growth and development. From sleep training to bedtime routines, we're here to help you establish healthy sleep habits for your child.</p>
                     </div>
                 </div>
-                <div className='d-flex justify-content-center'> 
-                    <button className=' py-5 no-background '>Learn More</button>
-                </div> 
                 <div className=''>
                 <img className="ServicePageImg" src="../images/babycare2.jpg" alt="Baby care" />
 

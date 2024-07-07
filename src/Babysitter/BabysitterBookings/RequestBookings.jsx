@@ -31,16 +31,17 @@ function RequestBookings() {
         Cell: ({ value }) => `${value.city}/${value.streetData}`,
       },
       { Header: 'Start Time', accessor: 'startTime' },
+      { Header: 'Description', accessor: 'description' },
       { Header: 'End Time', accessor: 'endTime' },
       {
         Header: 'Accept/Reject',
         accessor: 'actions',
         Cell: ({ row }) => (
           <div>
-            <button className="bg-success btn mb-1 text-light" onClick={() => handleAccept(row.original.id)}>
+            <button className="bg-success btn mb-1 text-light actionbtn" onClick={() => handleAccept(row.original.id)}>
               Accept
             </button>
-            <button className="btn px-3 redColor" onClick={() => handleReject(row.original.id)}>
+            <button className="btn px-3 redColor actionbtn" onClick={() => handleReject(row.original.id)}>
               Reject
             </button>
           </div>
@@ -254,7 +255,7 @@ function RequestBookings() {
                 return (
                   <tr {...row.getRowProps()}>
                     {row.cells.map((cell) => (
-                      <td {...cell.getCellProps()} className="text-center">
+                      <td {...cell.getCellProps()} className="text-center border">
                         {cell.render('Cell')}
                       </td>
                     ))}

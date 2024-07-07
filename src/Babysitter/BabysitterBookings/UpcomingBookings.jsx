@@ -31,13 +31,16 @@ function UpcomingBookings() {
         accessor: 'orderLocation',
         Cell: ({ value }) => `${value.city}/${value.streetData}`,
       },
+      
       { Header: 'Start Time', accessor: 'startTime' },
+      { Header: 'Description', accessor: 'description' },
+
       { Header: 'End Time', accessor: 'endTime' },
       {
         Header: 'Actions',
         accessor: 'actions',  // Changed accessor to 'actions'
         Cell: ({ row }) => (
-          <button className="btn btn-warning" onClick={() => handleCancel(row.original.id)}>
+          <button className="btn btn-warning actionbtn" onClick={() => handleCancel(row.original.id)}>
             Cancel
           </button>
         ),
@@ -214,7 +217,7 @@ function UpcomingBookings() {
                 return (
                   <tr {...row.getRowProps()} className='table-row'>
                     {row.cells.map((cell) => (
-                      <td {...cell.getCellProps()} className="text-center">
+                      <td {...cell.getCellProps()} className="text-center border">
                         {cell.render('Cell')}
                       </td>
                     ))}

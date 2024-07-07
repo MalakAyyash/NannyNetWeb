@@ -119,7 +119,7 @@ function BabysitterBookings() {
           <div className='position-relative'>
             <div className='photo-container mt-5 me-3 position-relative'>
                 <label htmlFor="image-upload">
-                  <i className="fa-solid fa-camera position-absolute bottom-0 start-0 translate-middle mb-1 ms-3 text-dark rounded bg-light p-1"
+                  <i className="fa-solid fa-camera position-absolute bottom-0 start-0 translate-middle mb-1 ms-3 text-dark rounded p-1"
                      style={{ fontSize: '24px' }}
                      data-bs-toggle="tooltip"
                      data-bs-placement="top"
@@ -134,13 +134,13 @@ function BabysitterBookings() {
           </div>
 
           <div>
-            <h2 className='text-light pt-5 mt-5'>{babysitterData.user.username}</h2>
+            <h2 className='text-light'>{babysitterData.user.username}</h2>
             <i className="fa-solid fa-user-tie text-secondary small fs-6">Babysitter</i>
             </div>
         </div>
       </div>
             {ownerProfile && (
-                <ul className="nav">
+                <ul className="nav d-none d-md-flex">
                     <li className={`nav-item`}>
                         <RouterLink to={`/babysitter-profile/${babysitterData.user.id}`} className={`nav-link `}>Profile</RouterLink>
                     </li>
@@ -161,38 +161,60 @@ function BabysitterBookings() {
                 </li>
                 </ul>
             )}
-            <div className='DetaliedBook mt-5 normalFont'>
+              <div className="d-md-none">
+        <div>
+          <hr />
+          <div className="btn-group w-100">
+            My Orders
+            <button type="button" className="btn btn-secondary dropdown-toggle border-0 dropdown-toggle-split d-flex justify-content-end px-0" data-bs-toggle="dropdown" aria-expanded="false">
+              <span className="visually-hidden">Toggle Dropdown</span>
+            </button>
+            <ul className="dropdown-menu w-100">
+              <div id="mobile-nav" className="mt-2">
+              <RouterLink to={`/babysitter-profile/${babysitterData.user.id}`} className={`nav-link border-bottom`}>Profile</RouterLink>
+                <RouterLink to={`/BabysitterFeedback/${babysitterData.user.id}`} className={`nav-link d-block mb-2`}>Feedback</RouterLink>
+                <RouterLink to={`/BabysitterNotification/${babysitterData.user.id}`} className={`nav-link d-block mb-2`}>Notification</RouterLink>
+                <RouterLink to="/BabysitterEditAccount" className={`nav-link`}>Account</RouterLink>
+                <button className={`nav-link d-block mb-2`}>My Wallet</button>
+              </div>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+      <hr />
+            <div className='DetaliedBook normalFont'>
     
-                <div className='DetaliedBook mt-5'>
+                <div className='DetaliedBook'>
                     <div className=''>
-                        <p className='pt-2 profileTitle'>Manage Your Orders</p>
+                        <p className='profileTitle'>Manage Your Orders</p>
                     </div>
-                    <p className='small mb-5 '>Stay organized and in control of your schedule.</p>
+                    <p className='small mb-5 profileDate '>Stay organized and in control of your schedule.</p>
                     <ul className="nav nav-tabs mb-5">
 
                     <li className="nav-item">
-                            <a className={`nav-link text-dark px-5 ${activeTab === 'request' ? 'active' : ''}`} onClick={() => setActiveTab('request')} href="#">
+                            <a className={`nav-link text-dark ${activeTab === 'request' ? 'active' : ''}`} onClick={() => setActiveTab('request')} href="#">
                                 Request
                             </a>
                         </li>
                   
                         <li className="nav-item">
-                            <a className={`nav-link text-dark px-5 ${activeTab === 'upcoming' ? 'active' : ''}`} onClick={() => setActiveTab('upcoming')} href="#">
+                            <a className={`nav-link text-dark ${activeTab === 'upcoming' ? 'active' : ''}`} onClick={() => setActiveTab('upcoming')} href="#">
                                 Upcoming
                             </a>
                         </li>
                         <li className="nav-item">
-                            <a className={`nav-link px-5 text-dark ${activeTab === 'submitted' ? 'active' : ''}`} onClick={() => setActiveTab('submitted')} href="#">
+                            <a className={`nav-link text-dark ${activeTab === 'submitted' ? 'active' : ''}`} onClick={() => setActiveTab('submitted')} href="#">
                                 Submitted
                             </a>
                         </li>
                         <li className="nav-item">
-                            <a className={`nav-link px-5 text-dark ${activeTab === 'history' ? 'active' : ''}`} onClick={() => setActiveTab('history')} href="#">
+                            <a className={`nav-link text-dark ${activeTab === 'history' ? 'active' : ''}`} onClick={() => setActiveTab('history')} href="#">
                                 History
                             </a>
                         </li>
                         <li className="nav-item">
-                            <a className={`nav-link px-5 text-dark ${activeTab === 'scedule' ? 'active' : ''}`} onClick={() => setActiveTab('scedule')} href="#">
+                            <a className={`nav-link text-dark ${activeTab === 'scedule' ? 'active' : ''}`} onClick={() => setActiveTab('scedule')} href="#">
                                 Your Scedule
                             </a>
                         </li>
