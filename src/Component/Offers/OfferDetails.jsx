@@ -19,7 +19,7 @@ function OfferDetails() {
   ]);
   const [selectedCity, setSelectedCity] = useState('');
   const [selectedType, setSelectedType] = useState('All');
-  const [selectedStars, setSelectedStars] = useState(null);
+  const [selectedStars, setSelectedStars] = useState(3);
   const [selectedHours, setSelectedHours] = useState(null); // State for selected hours
   const [selectedBabysitters, setSelectedBabysitters] = useState([]);
   const [offerDetails, setOfferDetails] = useState(null);
@@ -199,7 +199,7 @@ function OfferDetails() {
     <>
       {offerDetails && (
         <div className="Book-container-fluid">
-          <div className="Service pt-5 mt-5">
+          <div className="Service  mt-5">
             <h2 className="py-5">Offer Details</h2>
             <div className="">
               <div className="row pb-1">
@@ -213,10 +213,10 @@ function OfferDetails() {
                 </div>
               </div>
               <div className="row border-top">
-                <div className="col-md-1">
+                <div className="col-4 col-md-1">
                   <p className="pt-2 text">Filter by:</p>
                 </div>
-                <div className="dropdown col-md-2 border-left">
+                <div className="dropdown col-4 col-md-2 border-left">
                   <a
                     className="btn btn-secondary border-0 dropdown-toggle"
                     href="#"
@@ -236,7 +236,7 @@ function OfferDetails() {
                     ))}
                   </ul>
                 </div>
-                <div className="dropdown col-md-2">
+                <div className="dropdown col-4 col-md-2">
                   <a
                     className="btn btn-secondary dropdown-toggle"
                     href="#"
@@ -274,10 +274,10 @@ function OfferDetails() {
                     </li>
                   </ul>
                 </div>
-                <div className="col-md-1 ms-5 ps-4">
-                  <p className="pt-2 text">Up to :</p>
+                <div className="col-4 col-md-2">
+                  <p className="text">Up to :</p>
                 </div>
-                <div className="dropdown col-md-2 border-left">
+                <div className="dropdown col-4 col-md-2 border-left">
                   <a
                     className="btn btn-secondary border-0 dropdown-toggle"
                     href="#"
@@ -295,7 +295,7 @@ function OfferDetails() {
                     ))}
                   </ul>
                 </div>
-                <div className="dropdown col-md-2">
+                <div className="dropdown col-4 col-md-2">
                   <a
                     className="btn btn-secondary dropdown-toggle"
                     href="#"
@@ -326,7 +326,7 @@ function OfferDetails() {
                 <div className="row">
                   {(babysitterData || []).length > 0 ? (
                     applyFilters(babysitterData).map((babysitter) => (
-                      <div className="col-md-4 mb-3" key={babysitter?.user?.id}>
+                      <div className="col-lg-4 col-md-6 mb-3 d-flex justify-content-center" key={babysitter?.user?.id}>
                         <div className="card shadow" style={{ width: '15rem' }}>
                           <div className="w-50 d-flex m-auto mt-2 bg-secondary" style={{ overflow: 'hidden', borderRadius: '100%', aspectRatio: '1/1' }}>
                             <img src={babysitter.profileImageUrl || "/images/UserProfile.jpg"} className="card-img-top w-100" alt="Babysitter" />

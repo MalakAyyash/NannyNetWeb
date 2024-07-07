@@ -100,13 +100,7 @@ function Navbar() {
               <RouterLink to="/Home" className="nav-link active">Home</RouterLink>
             </li>
             <li className="nav-item me-5">
-              <span className="nav-link" onClick={handleAboutClick}>About</span>
-            </li>
-            <li className="nav-item me-5">
               <RouterLink to="/service" className="nav-link">Services</RouterLink>
-            </li>
-            <li className="nav-item me-5">
-              <span className="nav-link" onClick={handleTestimonialsClick}>Testimonials</span>
             </li>
             <li className="nav-item me-5">
               <Link activeClass="active" to="Contact" spy={true} smooth={true} offset={-90} duration={500} className="nav-link">Contact</Link>

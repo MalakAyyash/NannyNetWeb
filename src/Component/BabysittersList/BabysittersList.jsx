@@ -175,7 +175,7 @@ function BabysittersList() {
           <div className="">
             <div className="row pb-1">
               <div className="col-md-8">
-                <p>Discover our babysitters' availability and choose one or more for your booking needs.</p>
+                <p className='profileDate'>Discover our babysitters' availability and choose one or more for your booking needs.</p>
               </div>
               {userRole === 'c' && (
 
@@ -311,10 +311,10 @@ function BabysittersList() {
               </div>
             </div>
 
-            <div className="py-5 my-3">
-              <div className="row">
+            <div className="">
+              <div className="row babysitterList">
                 {(filteredBabysitters || []).map((babysitter) => (
-                  <div className="col-md-4 mb-4" key={babysitter?.user?.id}>
+                  <div className="col-sm-6 col-6 col-lg-4 mb-4" key={babysitter?.user?.id}>
                     <div className="card shadow" style={{ width: '15rem' }}>
                       <div className="w-50 d-flex m-auto mt-2 bg-secondary" style={{ overflow: 'hidden', borderRadius: '100%', aspectRatio: '1/1' }}>
                         <img src={babysitter.profileImageUrl || "/images/UserProfile.jpg"} className="card-img-top" alt="Babysitter" />
@@ -343,10 +343,6 @@ function BabysittersList() {
                   </div>
                 ))}
               </div>
-            </div>
-
-            <div className="mb-5">
-              <button className="text border-0 bg-light d-flex m-auto">See All</button>
             </div>
           </div>
         </div>

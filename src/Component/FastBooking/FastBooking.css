@@ -1,0 +1,9 @@
+.starRating, .star-rating{
+    display: flex;
+    justify-content: center;
+}
+@media (max-width: 700px) {
+    .starRating , .star-rating{
+        justify-content: start;
+    }
+  }

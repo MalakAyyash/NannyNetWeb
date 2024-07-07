@@ -109,7 +109,7 @@ function Feedback() {
           <div className='position-relative'>
             <div className='photo-container mt-5 me-3 position-relative'>
                 <label htmlFor="image-upload">
-                  <i className="fa-solid fa-camera position-absolute bottom-0 start-0 translate-middle mb-1 ms-3 text-dark rounded bg-light p-1"
+                  <i className="fa-solid fa-camera position-absolute bottom-0 start-0 translate-middle mb-1 ms-3 text-dark rounded p-1"
                      style={{ fontSize: '24px' }}
                      data-bs-toggle="tooltip"
                      data-bs-placement="top"
@@ -124,7 +124,7 @@ function Feedback() {
           </div>
 
           <div>
-            <h2 className='text-light pt-5 mt-5'>{customerData.user.username}</h2>
+            <h2 className='text-light'>{customerData.user.username}</h2>
             <i className="fa-solid fa-user text-secondary small fs-6"> Parent</i>
           </div>
         </div>

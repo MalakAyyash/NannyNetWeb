@@ -7,12 +7,13 @@ import { useNavigate } from 'react-router-dom';
 
 function Offers() {
   const [offers, setOffers] = useState([]);
+  const [currentOffer, setCurrentOffer] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchOffers = async () => {
+    const fetchOffersAndCurrentOffer = async () => {
       try {
         const token = Cookies.get('jwt');
         if (!token) {
@@ -26,31 +27,47 @@ function Offers() {
           },
         };
 
-        const response = await axios.get('http://176.119.254.188:8080/offerType/view/all', config);
+        const offersResponse = await axios.get('http://176.119.254.188:8080/offerType/view/all', config);
+        const currentOfferResponse = await axios.get('http://176.119.254.188:8080/customer/offer/view/current', config);
 
-        if (response.status === 200) {
-          setOffers(response.data);
+        if (offersResponse.status === 200) {
+          setOffers(offersResponse.data);
         } else {
           throw new Error('Failed to fetch offers');
         }
+
+        if (currentOfferResponse.status === 200) {
+          setCurrentOffer(currentOfferResponse.data);
+
+        } else {
+          throw new Error('Failed to fetch current offer');
+        }
       } catch (error) {
-        console.error('Error fetching offers:', error);
-        setError(error.message || 'Failed to fetch offers. Please try again later.');
+        console.error('Error fetching data:', error);
+        setError(error.message || 'Failed to fetch data. Please try again later.');
         Swal.fire({
           icon: 'error',
           title: 'Error',
-          text: error.message || 'Failed to fetch offers. Please try again later.',
+          text: error.message || 'Failed to fetch data. Please try again later.',
         });
       } finally {
         setLoading(false);
       }
     };
 
-    fetchOffers();
+    fetchOffersAndCurrentOffer();
   }, []);
 
   const handleTakeOffer = (offerId) => {
-    navigate(`/offerDetails/${offerId}`);
+    if (!currentOffer) {
+      navigate(`/offerDetails/${offerId}`);
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'You already have an active offer.',
+      });
+    }
   };
 
   if (loading) {
@@ -78,7 +95,7 @@ function Offers() {
         <div className="row mb-5">
           {offers.length > 0 ? (
             offers.map((offer) => (
-              <div key={offer.id} className="col-md-4 mb-4">
+              <div key={offer.id} className="col-lg-4 col-md-4 mb-4">
                 <div className="card rounded-0">
                   <div className="card-body">
                     <span className="badge">New</span>
@@ -105,6 +122,7 @@ function Offers() {
                     <button
                       className="btn deleteBtn btn-red-background w-100 text-light ps-5 btn-sm"
                       onClick={() => handleTakeOffer(offer.id)}
+                      disabled={currentOffer}
                     >
                       Take This Offer
                     </button>

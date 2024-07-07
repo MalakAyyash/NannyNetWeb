@@ -154,6 +154,7 @@ function UserProfile() {
                 <RouterLink to={`/offerBookings/${customerData.user.id}`} className={`nav-link d-block mb-2`}>My Offer Bookings</RouterLink>
                 <RouterLink to={`/Feedback/${customerData.user.id}`} className={`nav-link d-block mb-2`}>Feedback</RouterLink>
                 <RouterLink to={`/CustomerNotification/${customerData.user.id}`} className={`nav-link d-block mb-2`}>Notification</RouterLink>
+                <RouterLink to="/UserEditAccount" className={`nav-link`}>Account</RouterLink>
                 <button className={`nav-link d-block mb-2`}>My Wallet</button>
               </div>
             </ul>

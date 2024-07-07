@@ -4,12 +4,16 @@ import Swal from 'sweetalert2';
 import Cookies from 'js-cookie';
 import { FaClock, FaPercent, FaCalendarAlt } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+
 
 function CustomerOffers() {
   const [offer, setOffer] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const userId = Cookies.get('userId');
+
 
   useEffect(() => {
     const fetchOffer = async () => {
@@ -64,7 +68,14 @@ function CustomerOffers() {
   if (!offer) {
     return (
       <div>
-        <p>No offer details available.</p>
+          <div className="text-center mb-3">
+            <p className='mt-3'>You`ve got nothing pinned at the moment</p>
+            <div className=''>
+            <Link to={`/offers/${userId}`} className='text-decoration-none'>
+            <p className='mb-5 redText'>Check Out Our Offers</p>
+            </Link>
+            </div>
+          </div>
       </div>
     );
   }

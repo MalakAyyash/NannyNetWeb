@@ -59,5 +59,12 @@ background-color: white;
     font-size: 20px !important;
     font-style: normal !important;
   }
-
+  .details{
+    margin-left: 5rem;
+  }
+  @media (max-width: 700px) {
+    .details{
+      margin-left: 0;
+    }
+  }
     

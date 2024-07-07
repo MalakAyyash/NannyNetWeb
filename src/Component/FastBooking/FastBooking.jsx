@@ -5,6 +5,8 @@ import 'react-datepicker/dist/react-datepicker.css';
 import Swal from 'sweetalert2';
 import Cookies from 'js-cookie';
 import { useLocation, useParams } from 'react-router-dom';
+import './FastBooking.css';
+
 
 const TimePicker = ({ selectedTime, handleTimeChange }) => {
   return (
@@ -87,7 +89,7 @@ const StarRating = ({ selectedStar, setSelectedStar }) => {
 
   const renderStarRating = () => {
     return (
-      <div className="star-rating d-flex justify-content-center">
+      <div className="star-rating">
         {starOptions.map((option) => (
           <i
             key={option}
@@ -108,7 +110,7 @@ const StarRating = ({ selectedStar, setSelectedStar }) => {
 
 function FastBooking() {
   const [startDate, setStartDate] = useState(new Date());
-  const [numOfKids, setNumOfKids] = useState(1);
+  const [numOfKids, setNumOfKids] = useState('');
   const [city, setCity] = useState('');
   const [streetData, setStreetData] = useState('');
   const [extraDescription, setExtraDescription] = useState('');
@@ -241,7 +243,7 @@ function FastBooking() {
       <h2 className='mb-4'>Appointment</h2>
       <div className="row border-bottom mb-3">
         <div className="col-md-6"><p className='pt-2'>Select Date and Time</p></div>
-        <div className="col-md-6"><p className='d-flex justify-content-center pt-2 ms-5 ps-5'>Service Details</p></div>
+        <div className="col-md-6 d-none d-md-block"><p className='d-flex justify-content-center pt-2 ms-5 ps-5'>Service Details</p></div>
       </div>
 
       <div className="row">
@@ -254,22 +256,12 @@ function FastBooking() {
             showDisabledMonthNavigation
           />
         </div>
-        <div className='mb-5 col-md-4 ps-5 ms-5'>
+        <div className='mb-3 col-md-3 ps-5 details'>
           <p>{startDate.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
-          <div className="row">
-            <div className="col-md-6">
               <p>From :</p>
               <TimePicker  selectedTime={selectedTime1} handleTimeChange={handleTimeChange1} />
-            </div>
-            <div className="col-md-6">
-              <p>To :</p>
+              <p className='mt-2'>To :</p>
               <TimePicker  selectedTime={selectedTime2} handleTimeChange={handleTimeChange2} />
-            </div>
-          </div>
-          <br />
-          <div className="row">
-            <div className="col-md-6">
-              <label htmlFor="numOfKids" className='mt-4 mb-3'>Number of kids</label>
               <input
                 type="number"
                 id="numOfKids"
@@ -278,27 +270,22 @@ function FastBooking() {
                 onChange={handleNumOfKidsChange}
                 min={1}
                 step={1}
+                className='my-2'
               />
-            </div>
-            <div className="col-md-6">
-              <label htmlFor="babysitterTypes" className='mt-4 mb-3'>Babysitter Type</label>
               <MultiSelectDropdown
                 options={['Above 5Y old', 'Under 5Y old', 'Medical', 'Special Care']}
                 selectedOptions={babysitterTypes}
                 onChange={setBabysitterTypes}
               />
-            </div>
-            <div className=''>
-            <label htmlFor="starRating" className='mt-4 mb-3 d-flex justify-content-center'>Babysitter Star Rating</label>
+                <div className=''>
+            <label htmlFor="starRating" className='mt-4 mb-3 starRating'>Babysitter Star Rating</label>
               <StarRating
                 selectedStar={selectedStar}
                 setSelectedStar={setSelectedStar}
               />
-              <br />
             </div>
-          </div>
         </div>
-        <div className="col-md-3 px-5">
+        <div className="col-md-3 px-4 d-flex justify-content-end">
           <div className="BookingForm ms-4">
             <p className='normalFont'>Location</p>
             <div className='ServiceDetails'>

@@ -63,3 +63,21 @@
   .BlueColor{
     background-color: #556b8d !important;
   }
+  .babysitterList{
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+  @media (max-width: 500px) {
+    .babysitterList .card{
+      width: 10rem !important;
+    }
+    .babysitterList{
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+    
+    }

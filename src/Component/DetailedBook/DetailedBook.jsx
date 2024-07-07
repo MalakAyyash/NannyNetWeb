@@ -25,7 +25,7 @@ const TimePicker = ({ selectedTime, handleTimeChange }) => {
 
 function DetailedBook() {
   const [startDate, setStartDate] = useState(new Date());
-  const [numOfKids, setNumOfKids] = useState(1);
+  const [numOfKids, setNumOfKids] = useState('');
   const [city, setCity] = useState('');
   const [streetData, setStreetData] = useState('');
   const [extraDescription, setExtraDescription] = useState('');
@@ -111,31 +111,54 @@ function DetailedBook() {
         }
       });
 
+      // if (response.status === 200) {
+      //   Swal.fire({
+      //     title: "Great!",
+      //     text: "Appointment request submitted successfully!",
+      //     icon: "success"
+      //   });
+      // } else {
+      //   throw new Error('Unexpected response status');
+      // }
       if (response.status === 200) {
         Swal.fire({
           title: "Great!",
           text: "Appointment request submitted successfully!",
-          icon: "success"
+          icon: "success",
+          didOpen: () => {
+            const confirmButton = Swal.getConfirmButton();
+            confirmButton.style.backgroundColor = "rgb(194, 39, 75)";
+            confirmButton.style.color = "white";
+          }
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = `/customerBookings/${Cookies.get('userId')}`;
+          }
         });
       } else {
-        throw new Error('Unexpected response status');
+        Swal.fire({
+          title: "Error!",
+          text: response.data.error || "An unknown error occurred.",
+          icon: "error",
+        });
       }
     } catch (error) {
-      console.error('Error submitting data:', error);
-      Swal.fire({
-        title: "Oops!",
-        text: "Something went wrong. Please try again.",
-        icon: "error"
-      });
+    
+        Swal.fire({
+          title: "Error!",
+          text: "An unexpected error occurred. Please try again later.",
+          icon: "error",
+        });
+      
     }
-  };
+  }
 
   return (
     <div className='DetailedBook Service Book-container-fluid mt-5 pt-5'>
       <h2 className='mb-4'>Appointment</h2>
       <div className="row border-bottom mb-3">
         <div className="col-md-6"><p className='pt-2'>Select Date and Time</p></div>
-        <div className="col-md-6"><p className='d-flex justify-content-center pt-2 ms-5 ps-5'>Service Details</p></div>
+        <div className="col-md-6 d-none d-md-block"><p className='d-flex justify-content-center pt-2 ms-5 ps-5'>Service Details</p></div>
       </div>
 
       <div className="row">
@@ -148,15 +171,13 @@ function DetailedBook() {
             showDisabledMonthNavigation
           />
         </div>
-        <div className='mb-5 col-md-4 ps-5 ms-5'>
+        <div className='mb-2 col-md-3 ps-5 details'>
           <p>{startDate.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
           <p>From :</p>
           <TimePicker selectedTime={selectedTime1} handleTimeChange={handleTimeChange1} />
-          <br />
-          <p>To :</p>
+          <p className='mt-2'>To :</p>
           <TimePicker selectedTime={selectedTime2} handleTimeChange={handleTimeChange2} />
-          <label htmlFor="numOfKids" className='mt-4 mb-3'>Number of kids</label>
-          <br></br>
+          <label htmlFor="numOfKids" className='mt-2 mb-3'>Number of kids</label>
           <input
             type="number"
             id="numOfKids"
